@@ -1,0 +1,68 @@
+{
+  "name": "solid-petstore",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "A skeleton solidjs app for the petstore api.",
+  "keywords": [
+    "chubbyts",
+    "skleton",
+    "solid"
+  ],
+  "author": "Dominik Zogg",
+  "license": "MIT",
+  "repository": "chubbyts/solid-petstore",
+  "scripts": {
+    "build": "tsc && vite build",
+    "cs-fix": "prettier --write src tests *.cjs *.js *.ts",
+    "cs": "prettier --check src tests *.cjs *.js *.ts",
+    "develop": "vite",
+    "lint-fix": "eslint src tests *.cjs *.js *.ts --fix",
+    "lint": "eslint src tests *.cjs *.js *.ts",
+    "start": "pnpm i && pnpm cs-fix && pnpm develop",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@chubbyts/chubbyts-throwable-to-error": "^1.2.1",
+    "@solidjs/router": "^0.12.4",
+    "autoprefixer": "^10.4.17",
+    "date-fns": "^3.3.1",
+    "i": "^0.3.7",
+    "postcss": "^8.4.35",
+    "qs": "^6.11.2",
+    "solid-js": "^1.8.15",
+    "tailwindcss": "^3.4.1",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@solidjs/testing-library": "^0.8.6",
+    "@testing-library/jest-dom": "^6.4.2",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/node": "^20.11.20",
+    "@types/prettier": "^2.7.3",
+    "@types/qs": "^6.9.12",
+    "@typescript-eslint/eslint-plugin": "^7.1.0",
+    "@typescript-eslint/parser": "^7.1.0",
+    "@vitest/coverage-v8": "^1.3.1",
+    "cross-fetch": "^4.0.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-solid": "^0.13.1",
+    "eslint-plugin-tailwindcss": "^3.14.3",
+    "fetch-mock": "^9.11.0",
+    "jsdom": "^24.0.0",
+    "prettier": "^2.8.8",
+    "typescript": "^5.2.2",
+    "vite": "^5.1.4",
+    "vite-plugin-solid": "^2.10.1",
+    "vitest": "^1.3.1"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "prettier": {
+    "printWidth": 120,
+    "tabWidth": 2,
+    "singleQuote": true,
+    "trailingComma": "all"
+  }
+}
