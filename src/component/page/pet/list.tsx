@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from '@solidjs/router';
 import qs from 'qs';
 import type { PetFilters, PetListRequest, PetListResponse, PetSort } from '../../../model/pet';
 import { petFiltersSchema, petSortSchema } from '../../../model/pet';
-import { DeletePet, ListPets } from '../../../client/pet';
+import { deletePetClient, listPetsClient } from '../../../client/pet';
 import { HttpError as HttpErrorPartial } from '../../partial/http-error';
 import { HttpError } from '../../../client/error';
 import { H1 } from '../../heading';
@@ -48,7 +48,7 @@ const PetListComponent: Component = () => {
   };
 
   const fetchPetList = async () => {
-    const response = await ListPets(getPetListRequest());
+    const response = await listPetsClient(getPetListRequest());
 
     if (response instanceof HttpError) {
       setHttpErrorOrUndefined(response);
@@ -59,7 +59,7 @@ const PetListComponent: Component = () => {
   };
 
   const deletePet = async (id: string) => {
-    const deleteResponse = await DeletePet(id);
+    const deleteResponse = await deletePetClient(id);
 
     if (deleteResponse instanceof HttpError) {
       setHttpErrorOrUndefined(deleteResponse);

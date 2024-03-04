@@ -9,21 +9,21 @@ import type { RouteSectionProps } from '@solidjs/router';
 import { Route, Router, useNavigate } from '@solidjs/router';
 import { createEffect } from 'solid-js';
 import { render, screen } from '@solidjs/testing-library';
-import type { DeletePet, ListPets } from '../../../../src/client/pet';
+import type { deletePetClient, listPetsClient } from '../../../../src/client/pet';
 import type { PaginationProps } from '../../../../src/component/partial/pagination';
 import { NetworkError } from '../../../../src/client/error';
 import { userEvent } from '@testing-library/user-event';
 
-let mockListPets: typeof ListPets;
-let mockDeletePet: typeof DeletePet;
+let mockDeletePetClient: typeof deletePetClient;
+let mockListPetsClient: typeof listPetsClient;
 
 vi.mock('../../../../src/client/pet', () => {
   return {
-    DeletePet: (id: string) => {
-      return mockDeletePet(id);
+    deletePetClient: (id: string) => {
+      return mockDeletePetClient(id);
     },
-    ListPets: (petListRequest: PetListRequest) => {
-      return mockListPets(petListRequest);
+    listPetsClient: (petListRequest: PetListRequest) => {
+      return mockListPetsClient(petListRequest);
     },
   };
 });
@@ -68,11 +68,11 @@ vi.mock('../../../../src/component/partial/pagination', () => {
 });
 
 test('network error', async () => {
-  mockListPets = async () => {
+  mockListPetsClient = async () => {
     return Promise.resolve(new NetworkError({ title: 'network error' }));
   };
 
-  mockDeletePet = async () => undefined;
+  mockDeletePetClient = async () => undefined;
 
   const App = (props: RouteSectionProps) => {
     const navigate = useNavigate();
@@ -109,7 +109,7 @@ test('network error', async () => {
 });
 
 test('default', async () => {
-  mockListPets = async (petListRequest: PetListRequest) => {
+  mockListPetsClient = async (petListRequest: PetListRequest) => {
     expect(petListRequest).toEqual({
       offset: 0,
       limit: 10,
@@ -144,7 +144,7 @@ test('default', async () => {
     };
   };
 
-  mockDeletePet = async () => undefined;
+  mockDeletePetClient = async () => undefined;
 
   const App = (props: RouteSectionProps) => {
     const navigate = useNavigate();
@@ -304,7 +304,7 @@ test('default', async () => {
 });
 
 test('delete error', async () => {
-  mockListPets = async (petListRequest: PetListRequest) => {
+  mockListPetsClient = async (petListRequest: PetListRequest) => {
     expect(petListRequest).toEqual({
       offset: 0,
       limit: 10,
@@ -339,7 +339,7 @@ test('delete error', async () => {
     };
   };
 
-  mockDeletePet = async (id: string) => {
+  mockDeletePetClient = async (id: string) => {
     expect(id).toBe('4d783b77-eb09-4603-b99b-f590b605eaa9');
 
     return new NetworkError({ title: 'network error' });
@@ -452,7 +452,7 @@ test('delete success', async () => {
     },
   ];
 
-  mockListPets = async (petListRequest: PetListRequest) => {
+  mockListPetsClient = async (petListRequest: PetListRequest) => {
     const petListCall = petListCalls.shift();
     if (!petListCall) {
       throw new Error('Missing call');
@@ -463,7 +463,7 @@ test('delete success', async () => {
     return petListCall.return;
   };
 
-  mockDeletePet = async (id: string) => {
+  mockDeletePetClient = async (id: string) => {
     expect(id).toBe('4d783b77-eb09-4603-b99b-f590b605eaa9');
 
     return undefined;
@@ -609,7 +609,7 @@ test('submit', async () => {
     },
   ];
 
-  mockListPets = async (petListRequest: PetListRequest) => {
+  mockListPetsClient = async (petListRequest: PetListRequest) => {
     const petListCall = petListCalls.shift();
     if (!petListCall) {
       throw new Error('Missing call');
@@ -620,7 +620,7 @@ test('submit', async () => {
     return petListCall.return;
   };
 
-  mockDeletePet = async () => undefined;
+  mockDeletePetClient = async () => undefined;
 
   const App = (props: RouteSectionProps) => {
     const navigate = useNavigate();

@@ -1,7 +1,14 @@
 import { z } from 'zod';
-import { modelResponseSchema, listRequestSchema, sortSchema, listResponseSchema } from './model';
+import {
+  modelRequestSchema,
+  modelResponseSchema,
+  modelListRequestSchema,
+  sortSchema,
+  modelListResponseSchema,
+} from './model';
 
 export const petRequestSchema = z.object({
+  ...modelRequestSchema.shape,
   name: z.string(),
   tag: z.string().nullish(),
   vaccinations: z.array(
@@ -33,7 +40,7 @@ export const petSortSchema = z.object({
 export type PetSort = z.infer<typeof petSortSchema>;
 
 export const petListRequestSchema = z.object({
-  ...listRequestSchema.shape,
+  ...modelListRequestSchema.shape,
   filters: petFiltersSchema.optional(),
   sort: petSortSchema.optional(),
 });
@@ -41,7 +48,7 @@ export const petListRequestSchema = z.object({
 export type PetListRequest = z.infer<typeof petListRequestSchema>;
 
 export const petListResponseSchema = z.object({
-  ...listResponseSchema.shape,
+  ...modelListResponseSchema.shape,
   filters: petFiltersSchema,
   sort: petSortSchema,
   items: z.array(petResponseSchema),

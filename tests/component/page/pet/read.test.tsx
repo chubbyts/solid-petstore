@@ -9,20 +9,20 @@ import { Route, Router, useNavigate } from '@solidjs/router';
 import { createEffect } from 'solid-js';
 import { render, screen } from '@solidjs/testing-library';
 import type { PetResponse } from '../../../../src/model/pet';
-import type { ReadPet } from '../../../../src/client/pet';
+import type { readPetClient } from '../../../../src/client/pet';
 
-let mockReadPet: typeof ReadPet;
+let mockReadPetClient: typeof readPetClient;
 
 vi.mock('../../../../src/client/pet', () => {
   return {
-    ReadPet: (id: string) => {
-      return mockReadPet(id);
+    readPetClient: (id: string) => {
+      return mockReadPetClient(id);
     },
   };
 });
 
 test('not found', async () => {
-  mockReadPet = async (id: string) => {
+  mockReadPetClient = async (id: string) => {
     expect(id).toBe('4d783b77-eb09-4603-b99b-f590b605eaa9');
 
     return new Promise<NotFound>((resolve) => resolve(new NotFound({ title: 'title' })));
@@ -80,7 +80,7 @@ test('success', async () => {
     _links: {},
   };
 
-  mockReadPet = async (id: string) => {
+  mockReadPetClient = async (id: string) => {
     expect(id).toBe('4d783b77-eb09-4603-b99b-f590b605eaa9');
 
     return new Promise<PetResponse>((resolve) => resolve(petResponse));

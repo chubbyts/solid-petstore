@@ -10,19 +10,19 @@ import type { RouteSectionProps } from '@solidjs/router';
 import { Route, Router, useNavigate } from '@solidjs/router';
 import { createEffect } from 'solid-js';
 import { render, screen } from '@solidjs/testing-library';
-import type { ReadPet, UpdatePet } from '../../../../src/client/pet';
+import type { readPetClient, updatePetClient } from '../../../../src/client/pet';
 import { userEvent } from '@testing-library/user-event';
 
-let mockReadPet: typeof ReadPet;
-let mockUpdatePet: typeof UpdatePet;
+let mockReadPetClient: typeof readPetClient;
+let mockUpdatePetClient: typeof updatePetClient;
 
 vi.mock('../../../../src/client/pet', () => {
   return {
-    ReadPet: (id: string) => {
-      return mockReadPet(id);
+    readPetClient: (id: string) => {
+      return mockReadPetClient(id);
     },
-    UpdatePet: (id: string, pet: PetRequest) => {
-      return mockUpdatePet(id, pet);
+    updatePetClient: (id: string, pet: PetRequest) => {
+      return mockUpdatePetClient(id, pet);
     },
   };
 });
@@ -47,7 +47,7 @@ vi.mock('../../../../src/component/form/pet-form', () => {
 });
 
 test('not found', async () => {
-  mockReadPet = async (id: string) => {
+  mockReadPetClient = async (id: string) => {
     expect(id).toBe('4d783b77-eb09-4603-b99b-f590b605eaa9');
 
     return new Promise<NotFound>((resolve) => resolve(new NotFound({ title: 'title' })));
@@ -105,7 +105,7 @@ test('default', async () => {
     _links: {},
   };
 
-  mockReadPet = async (id: string) => {
+  mockReadPetClient = async (id: string) => {
     expect(id).toBe('4d783b77-eb09-4603-b99b-f590b605eaa9');
 
     return new Promise<PetResponse>((resolve) => resolve(petResponse));
@@ -165,13 +165,13 @@ test('network error', async () => {
     _links: {},
   };
 
-  mockReadPet = async (id: string) => {
+  mockReadPetClient = async (id: string) => {
     expect(id).toBe('4d783b77-eb09-4603-b99b-f590b605eaa9');
 
     return new Promise<PetResponse>((resolve) => resolve(petResponse));
   };
 
-  mockUpdatePet = async (id: string) => {
+  mockUpdatePetClient = async (id: string) => {
     expect(id).toBe('4d783b77-eb09-4603-b99b-f590b605eaa9');
 
     return new Promise<NetworkError>((resolve) => resolve(new NetworkError({ title: 'network error' })));
@@ -238,13 +238,13 @@ test('unprocessable entity', async () => {
     _links: {},
   };
 
-  mockReadPet = async (id: string) => {
+  mockReadPetClient = async (id: string) => {
     expect(id).toBe('4d783b77-eb09-4603-b99b-f590b605eaa9');
 
     return new Promise<PetResponse>((resolve) => resolve(petResponse));
   };
 
-  mockUpdatePet = async (id: string) => {
+  mockUpdatePetClient = async (id: string) => {
     expect(id).toBe('4d783b77-eb09-4603-b99b-f590b605eaa9');
 
     return new Promise<UnprocessableEntity>((resolve) =>
@@ -317,13 +317,13 @@ test('successful', async () => {
     _links: {},
   };
 
-  mockReadPet = async (id: string) => {
+  mockReadPetClient = async (id: string) => {
     expect(id).toBe('4d783b77-eb09-4603-b99b-f590b605eaa9');
 
     return new Promise<PetResponse>((resolve) => resolve(petResponse));
   };
 
-  mockUpdatePet = async (id: string, petRequest: PetRequest) => {
+  mockUpdatePetClient = async (id: string, petRequest: PetRequest) => {
     expect(id).toBe('4d783b77-eb09-4603-b99b-f590b605eaa9');
 
     expect(petRequest).toEqual(petRequest);
