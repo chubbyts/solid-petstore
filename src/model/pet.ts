@@ -28,13 +28,13 @@ export const petResponseSchema = z.object({
 export type PetResponse = z.infer<typeof petResponseSchema>;
 
 export const petFiltersSchema = z.object({
-  name: z.string().optional(),
+  name: z.string().nullish(),
 });
 
 export type PetFilters = z.infer<typeof petFiltersSchema>;
 
 export const petSortSchema = z.object({
-  name: sortSchema.optional(),
+  name: sortSchema.nullish(),
 });
 
 export type PetSort = z.infer<typeof petSortSchema>;

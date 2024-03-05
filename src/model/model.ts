@@ -22,12 +22,12 @@ export const modelResponseSchema = z
   .object({
     id: z.string(),
     createdAt: z.string(),
-    updatedAt: z.string().optional(),
+    updatedAt: z.string().nullish(),
     _links: z
       .object({
-        read: linkSchema.optional(),
-        update: linkSchema.optional(),
-        delete: linkSchema.optional(),
+        read: linkSchema.nullish(),
+        update: linkSchema.nullish(),
+        delete: linkSchema.nullish(),
       })
       .strict(),
   })
@@ -55,7 +55,7 @@ export const modelListResponseSchema = z
     count: numberSchema,
     items: z.array(modelResponseSchema),
     _links: z.object({
-      create: linkSchema.optional(),
+      create: linkSchema.nullish(),
     }),
   })
   .strict();
