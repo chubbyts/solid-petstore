@@ -1,5 +1,5 @@
 import type { PetFilters } from '../../model/pet';
-import { createInvalidParametersByName, getInvalidParametersByNames, type HttpError } from '../../client/error';
+import { createInvalidParametersByName, type HttpError } from '../../client/error';
 import type { Component } from 'solid-js';
 import { createEffect, createMemo } from 'solid-js';
 import { createStore } from 'solid-js/store';
@@ -41,9 +41,7 @@ export const PetFiltersForm: Component<PetFiltersFormProps> = (props: PetFilters
           label="Name"
           getValue={() => petFilters.name ?? ''}
           setValue={(value) => setPetFilters('name', value === '' ? undefined : value)}
-          getInvalidParameters={() =>
-            getInvalidParametersByNames(getGroupInvalidParametersByName(), ['filters[name]', 'filters.name'])
-          }
+          getInvalidParameters={() => getGroupInvalidParametersByName().get('filters[name]') ?? []}
         />
         <Button data-testid="pet-filters-form-submit" colorTheme="blue">
           Filter

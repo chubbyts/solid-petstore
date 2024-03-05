@@ -1,5 +1,5 @@
 import type { PetRequest } from '../../model/pet';
-import { createInvalidParametersByName, getInvalidParametersByNames, type HttpError } from '../../client/error';
+import { createInvalidParametersByName, type HttpError } from '../../client/error';
 import type { Component } from 'solid-js';
 import { For, createEffect, createMemo } from 'solid-js';
 import { createStore } from 'solid-js/store';
@@ -44,14 +44,14 @@ export const PetForm: Component<PetFormProps> = (props: PetFormProps) => {
           label="Name"
           getValue={() => pet.name}
           setValue={(value) => setPet('name', value)}
-          getInvalidParameters={() => getInvalidParametersByNames(getGroupInvalidParametersByName(), ['name'])}
+          getInvalidParameters={() => getGroupInvalidParametersByName().get('name') ?? []}
         />
         <TextField
           data-testid="pet-form-tag"
           label="Tag"
           getValue={() => pet.tag ?? ''}
           setValue={(value) => setPet('tag', value === '' ? undefined : value)}
-          getInvalidParameters={() => getInvalidParametersByNames(getGroupInvalidParametersByName(), ['tag'])}
+          getInvalidParameters={() => getGroupInvalidParametersByName().get('tag') ?? []}
         />
         <div class="mb-3">
           <div class="mb-2 block">Vaccinations</div>
@@ -75,10 +75,7 @@ export const PetForm: Component<PetFormProps> = (props: PetFormProps) => {
                       ])
                     }
                     getInvalidParameters={() =>
-                      getInvalidParametersByNames(getGroupInvalidParametersByName(), [
-                        `vaccinations[${getIndex()}][name]`,
-                        `vaccinations[${getIndex()}].name`,
-                      ])
+                      getGroupInvalidParametersByName().get(`vaccinations[${getIndex()}][name]`) ?? []
                     }
                   />
                   <Button

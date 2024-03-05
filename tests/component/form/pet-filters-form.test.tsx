@@ -116,47 +116,6 @@ test('bad request - with query string name', () => {
   `);
 });
 
-test('bad request - with custom string name', () => {
-  const getHttpErrorOrUndefined = () =>
-    new BadRequest({ title: 'bad request', invalidParameters: [{ name: 'filters.name', reason: 'reason' }] });
-  const getInitialPetFilters = () => ({});
-  const submitPetFilters = () => {};
-
-  const { container } = render(() => (
-    <PetFiltersForm
-      getHttpErrorOrUndefined={getHttpErrorOrUndefined}
-      getInitialPetFilters={getInitialPetFilters}
-      submitPetFilters={submitPetFilters}
-    />
-  ));
-
-  expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
-    "<div>
-      <form>
-        <fieldset class="mb-3 border border-gray-300 px-4 py-3">
-          <label class="block"
-            >Name<input
-              type="text"
-              data-testid="pet-filters-form-name"
-              class="mb-3 mt-2 block w-full border px-3 py-2 border-red-600 bg-red-100"
-            />
-            <ul class="mb-3 text-red-600">
-              <li>reason</li>
-            </ul></label
-          ><button
-            data-testid="pet-filters-form-submit"
-            colortheme="blue"
-            class="inline-block px-5 py-2 text-white bg-blue-600 hover:bg-blue-700"
-          >
-            Filter
-          </button>
-        </fieldset>
-      </form>
-    </div>
-    "
-  `);
-});
-
 test('submit with name', async () => {
   const getHttpErrorOrUndefined = () => undefined;
   const getInitialPetFilters = () => ({ name: 'Brown' });

@@ -56,12 +56,3 @@ export const createInvalidParametersByName = (
     return map;
   }, new Map<string, Array<InvalidParameter>>());
 };
-
-export const getInvalidParametersByNames = (
-  invalidParameterByName: Map<string, Array<InvalidParameter>>,
-  names: Array<string>,
-) => {
-  return names.reduce((invalidParameters: Array<InvalidParameter>, name: string): Array<InvalidParameter> => {
-    return [...invalidParameters, ...(invalidParameterByName.get(name) ?? [])];
-  }, []);
-};
