@@ -4,7 +4,7 @@ import { H1 } from '../../heading';
 import { useParams } from '@solidjs/router';
 import type { PetResponse } from '../../../model/pet';
 import { HttpError } from '../../../client/error';
-import { ReadPet } from '../../../client/pet';
+import { readPetClient } from '../../../client/pet';
 import { HttpError as HttpErrorPartial } from '../../partial/http-error';
 import { AnchorButton } from '../../button';
 import { de } from 'date-fns/locale';
@@ -20,7 +20,7 @@ const PetRead: Component = () => {
   const [getHttpErrorOrUndefined, setHttpErrorOrUndefined] = createSignal<HttpError>();
 
   const fetchPet = async () => {
-    const response = await ReadPet(id);
+    const response = await readPetClient(id);
 
     if (response instanceof HttpError) {
       setHttpErrorOrUndefined(response);

@@ -11,14 +11,14 @@ import type { RouteSectionProps } from '@solidjs/router';
 import { Route, Router, useNavigate } from '@solidjs/router';
 import { createEffect } from 'solid-js';
 import { render, screen } from '@solidjs/testing-library';
-import type { CreatePet } from '../../../../src/client/pet';
+import type { createPetClient } from '../../../../src/client/pet';
 
-let mockCreatePet: typeof CreatePet;
+let mockCreatePetClient: typeof createPetClient;
 
 vi.mock('../../../../src/client/pet', () => {
   return {
-    CreatePet: (pet: PetRequest) => {
-      return mockCreatePet(pet);
+    createPetClient: (pet: PetRequest) => {
+      return mockCreatePetClient(pet);
     },
   };
 });
@@ -88,7 +88,7 @@ test('default', async () => {
 
 test('network error', async () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  mockCreatePet = async (_: PetRequest) => {
+  mockCreatePetClient = async (_: PetRequest) => {
     return new Promise<NetworkError>((resolve) => resolve(new NetworkError({ title: 'network error' })));
   };
 
@@ -144,7 +144,7 @@ test('network error', async () => {
 
 test('unprocessable entity', async () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  mockCreatePet = async (_: PetRequest) => {
+  mockCreatePetClient = async (_: PetRequest) => {
     return new Promise<UnprocessableEntity>((resolve) =>
       resolve(new UnprocessableEntity({ title: 'unprocessable entity' })),
     );
@@ -201,7 +201,7 @@ test('unprocessable entity', async () => {
 });
 
 test('successful', async () => {
-  mockCreatePet = async (petRequest: PetRequest) => {
+  mockCreatePetClient = async (petRequest: PetRequest) => {
     const petResponse: PetResponse = {
       id: '4d783b77-eb09-4603-b99b-f590b605eaa9',
       createdAt: '2005-08-15T15:52:01+00:00',

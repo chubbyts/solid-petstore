@@ -3,7 +3,7 @@ import { Show, createEffect, createSignal, onCleanup } from 'solid-js';
 import { H1 } from '../../heading';
 import { HttpError } from '../../../client/error';
 import { useNavigate } from '@solidjs/router';
-import { CreatePet } from '../../../client/pet';
+import { createPetClient } from '../../../client/pet';
 import { HttpError as HttpErrorPartial } from '../../partial/http-error';
 import { PetForm } from '../../form/pet-form';
 import { AnchorButton } from '../../button';
@@ -17,7 +17,7 @@ const PetCreate: Component = () => {
   const [getHttpErrorOrUndefined, setHttpErrorOrUndefined] = createSignal<HttpError>();
 
   const submitPet = async (pet: PetRequest) => {
-    const response = await CreatePet(pet);
+    const response = await createPetClient(pet);
 
     if (response instanceof HttpError) {
       setHttpErrorOrUndefined(response);

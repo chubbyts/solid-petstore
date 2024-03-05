@@ -14,18 +14,28 @@ const linkSchema = z.object({
   href: z.string(),
 });
 
-export const modelResponseSchema = z.object({
-  id: z.string(),
-  createdAt: z.string(),
-  updatedAt: z.string().optional(),
-  _links: z.object({
-    read: linkSchema.optional(),
-    update: linkSchema.optional(),
-    delete: linkSchema.optional(),
-  }),
-});
+export const modelRequestSchema = z.object({}).strict();
 
-export const listRequestSchema = z
+export type ModelRequest = z.infer<typeof modelRequestSchema>;
+
+export const modelResponseSchema = z
+  .object({
+    id: z.string(),
+    createdAt: z.string(),
+    updatedAt: z.string().optional(),
+    _links: z
+      .object({
+        read: linkSchema.optional(),
+        update: linkSchema.optional(),
+        delete: linkSchema.optional(),
+      })
+      .strict(),
+  })
+  .strict();
+
+export type ModelResponse = z.infer<typeof modelResponseSchema>;
+
+export const modelListRequestSchema = z
   .object({
     offset: numberSchema.optional(),
     limit: numberSchema.optional(),
@@ -34,7 +44,9 @@ export const listRequestSchema = z
   })
   .strict();
 
-export const listResponseSchema = z
+export type ModelListRequest = z.infer<typeof modelListRequestSchema>;
+
+export const modelListResponseSchema = z
   .object({
     offset: numberSchema,
     limit: numberSchema,
@@ -47,3 +59,5 @@ export const listResponseSchema = z
     }),
   })
   .strict();
+
+export type ModelListResponse = z.infer<typeof modelListResponseSchema>;
