@@ -9,12 +9,12 @@ import type { PetRequest } from '../../../src/model/pet';
 import { userEvent } from '@testing-library/user-event';
 
 test('without initial pet', () => {
-  const getHttpErrorOrUndefined = () => undefined;
+  const getHttpError = () => undefined;
   const getInitialPet = () => undefined;
   const submitPet = () => {};
 
   const { container } = render(() => (
-    <PetForm getHttpErrorOrUndefined={getHttpErrorOrUndefined} getInitialPet={getInitialPet} submitPet={submitPet} />
+    <PetForm getHttpError={getHttpError} getInitialPet={getInitialPet} submitPet={submitPet} />
   ));
 
   expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
@@ -59,12 +59,12 @@ test('without initial pet', () => {
 });
 
 test('with initial pet', () => {
-  const getHttpErrorOrUndefined = () => undefined;
+  const getHttpError = () => undefined;
   const getInitialPet = () => ({ name: 'Brownie', tag: '0001-000', vaccinations: [{ name: 'rabies' }] });
   const submitPet = () => {};
 
   const { container } = render(() => (
-    <PetForm getHttpErrorOrUndefined={getHttpErrorOrUndefined} getInitialPet={getInitialPet} submitPet={submitPet} />
+    <PetForm getHttpError={getHttpError} getInitialPet={getInitialPet} submitPet={submitPet} />
   ));
 
   expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
@@ -123,30 +123,26 @@ test('with initial pet', () => {
 });
 
 test('network error', () => {
-  const getHttpErrorOrUndefined = () => new NetworkError({ title: 'network error' });
+  const getHttpError = () => new NetworkError({ title: 'network error' });
   const getInitialPet = () => ({ name: 'Brownie', tag: '0001-000', vaccinations: [{ name: 'rabies' }] });
   const submitPet = () => {};
 
-  render(() => (
-    <PetForm getHttpErrorOrUndefined={getHttpErrorOrUndefined} getInitialPet={getInitialPet} submitPet={submitPet} />
-  ));
+  render(() => <PetForm getHttpError={getHttpError} getInitialPet={getInitialPet} submitPet={submitPet} />);
 });
 
 test('bad request', () => {
-  const getHttpErrorOrUndefined = () =>
+  const getHttpError = () =>
     new BadRequest({
       title: 'bad request',
     });
   const getInitialPet = () => ({ name: 'Brownie', tag: '0001-000', vaccinations: [{ name: 'rabies' }] });
   const submitPet = () => {};
 
-  render(() => (
-    <PetForm getHttpErrorOrUndefined={getHttpErrorOrUndefined} getInitialPet={getInitialPet} submitPet={submitPet} />
-  ));
+  render(() => <PetForm getHttpError={getHttpError} getInitialPet={getInitialPet} submitPet={submitPet} />);
 });
 
 test('bad request - with query string name', () => {
-  const getHttpErrorOrUndefined = () =>
+  const getHttpError = () =>
     new BadRequest({
       title: 'bad request',
       invalidParameters: [
@@ -158,7 +154,7 @@ test('bad request - with query string name', () => {
   const submitPet = () => {};
 
   const { container } = render(() => (
-    <PetForm getHttpErrorOrUndefined={getHttpErrorOrUndefined} getInitialPet={getInitialPet} submitPet={submitPet} />
+    <PetForm getHttpError={getHttpError} getInitialPet={getInitialPet} submitPet={submitPet} />
   ));
 
   expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
@@ -225,15 +221,13 @@ test('bad request - with query string name', () => {
 });
 
 test('submit with name', async () => {
-  const getHttpErrorOrUndefined = () => undefined;
+  const getHttpError = () => undefined;
   const getInitialPet = () => ({ name: 'Brown', vaccinations: [{ name: 'rabie' }, { name: 'cat cold' }] });
   const submitPet = vi.fn((pet: PetRequest) => {
     expect(pet).toEqual({ name: 'Brownie', vaccinations: [{ name: 'rabies' }, { name: 'cat cold' }, { name: '' }] });
   });
 
-  render(() => (
-    <PetForm getHttpErrorOrUndefined={getHttpErrorOrUndefined} getInitialPet={getInitialPet} submitPet={submitPet} />
-  ));
+  render(() => <PetForm getHttpError={getHttpError} getInitialPet={getInitialPet} submitPet={submitPet} />);
 
   const nameField = await screen.findByTestId('pet-form-name');
 

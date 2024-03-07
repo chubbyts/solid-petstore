@@ -1,29 +1,25 @@
 import type { Component } from 'solid-js';
-import { Show, createEffect, createSignal, onCleanup } from 'solid-js';
+import { Show, createEffect, onCleanup } from 'solid-js';
 import { H1 } from '../../heading';
-import { HttpError } from '../../../client/error';
 import { useNavigate } from '@solidjs/router';
-import { createPetClient } from '../../../client/pet';
+import { createPetClient as createClient } from '../../../client/pet';
 import { HttpError as HttpErrorPartial } from '../../partial/http-error';
 import { PetForm } from '../../form/pet-form';
 import { AnchorButton } from '../../button';
 import type { PetRequest } from '../../../model/pet';
+import { createModelResource } from '../../../hook/create-model-resource';
 
 const pageTitle = 'Pet Create';
 
 const PetCreate: Component = () => {
   const navigate = useNavigate();
 
-  const [getHttpErrorOrUndefined, setHttpErrorOrUndefined] = createSignal<HttpError>();
+  const { getHttpError, actions } = createModelResource({ createClient });
 
   const submitPet = async (pet: PetRequest) => {
-    const response = await createPetClient(pet);
+    await actions.createModel(pet);
 
-    if (response instanceof HttpError) {
-      setHttpErrorOrUndefined(response);
-    } else {
-      setHttpErrorOrUndefined(undefined);
-
+    if (!getHttpError()) {
       navigate('/pet');
     }
   };
@@ -38,13 +34,9 @@ const PetCreate: Component = () => {
 
   return (
     <div data-testid="page-pet-create">
-      <Show when={getHttpErrorOrUndefined()}>{(getHttpError) => <HttpErrorPartial httpError={getHttpError()} />}</Show>
+      <Show when={getHttpError()}>{(getHttpError) => <HttpErrorPartial httpError={getHttpError()} />}</Show>
       <H1>{pageTitle}</H1>
-      <PetForm
-        getHttpErrorOrUndefined={getHttpErrorOrUndefined}
-        getInitialPet={() => undefined}
-        submitPet={submitPet}
-      />
+      <PetForm getHttpError={getHttpError} getInitialPet={() => undefined} submitPet={submitPet} />
       <AnchorButton href="/pet" colorTheme="gray">
         List
       </AnchorButton>

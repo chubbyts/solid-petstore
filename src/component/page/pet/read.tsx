@@ -1,14 +1,13 @@
 import type { Component } from 'solid-js';
-import { For, Show, createEffect, createSignal, onCleanup } from 'solid-js';
+import { For, Show, createEffect, onCleanup } from 'solid-js';
 import { H1 } from '../../heading';
 import { useParams } from '@solidjs/router';
-import type { PetResponse } from '../../../model/pet';
-import { HttpError } from '../../../client/error';
-import { readPetClient } from '../../../client/pet';
+import { readPetClient as readClient } from '../../../client/pet';
 import { HttpError as HttpErrorPartial } from '../../partial/http-error';
 import { AnchorButton } from '../../button';
 import { de } from 'date-fns/locale';
 import { format } from 'date-fns';
+import { createModelResource } from '../../../hook/create-model-resource';
 
 const pageTitle = 'Pet Read';
 
@@ -16,24 +15,11 @@ const PetRead: Component = () => {
   const params = useParams();
   const id = params.id;
 
-  const [getPetOrUndefined, setPetOrUndefined] = createSignal<PetResponse>();
-  const [getHttpErrorOrUndefined, setHttpErrorOrUndefined] = createSignal<HttpError>();
-
-  const fetchPet = async () => {
-    const response = await readPetClient(id);
-
-    if (response instanceof HttpError) {
-      setHttpErrorOrUndefined(response);
-    } else {
-      setHttpErrorOrUndefined(undefined);
-      setPetOrUndefined(response);
-    }
-  };
+  const { getModel, getHttpError, actions } = createModelResource({ readClient });
 
   createEffect(() => {
     document.title = pageTitle;
-
-    fetchPet();
+    actions.readModel(id);
   });
 
   onCleanup(() => {
@@ -41,13 +27,11 @@ const PetRead: Component = () => {
   });
 
   return (
-    <Show when={getPetOrUndefined() || getHttpErrorOrUndefined()}>
+    <Show when={getModel() || getHttpError()}>
       <div data-testid="page-pet-read">
-        <Show when={getHttpErrorOrUndefined()}>
-          {(getHttpError) => <HttpErrorPartial httpError={getHttpError()} />}
-        </Show>
+        <Show when={getHttpError()}>{(getHttpError) => <HttpErrorPartial httpError={getHttpError()} />}</Show>
         <H1>{pageTitle}</H1>
-        <Show when={getPetOrUndefined()}>
+        <Show when={getModel()}>
           {(getPet) => (
             <div>
               <dl>

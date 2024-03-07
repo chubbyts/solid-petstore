@@ -1,12 +1,11 @@
 import type { Component } from 'solid-js';
-import { createEffect, onCleanup, createSignal, Show, For } from 'solid-js';
+import { createEffect, onCleanup, Show, For } from 'solid-js';
 import { useNavigate, useLocation } from '@solidjs/router';
 import qs from 'qs';
-import type { PetFilters, PetListRequest, PetListResponse, PetSort } from '../../../model/pet';
+import type { PetFilters, PetListRequest, PetSort } from '../../../model/pet';
 import { petFiltersSchema, petSortSchema } from '../../../model/pet';
-import { deletePetClient, listPetsClient } from '../../../client/pet';
+import { deletePetClient as deleteClient, listPetsClient as listClient } from '../../../client/pet';
 import { HttpError as HttpErrorPartial } from '../../partial/http-error';
-import { HttpError } from '../../../client/error';
 import { H1 } from '../../heading';
 import { format } from 'date-fns';
 import { Pagination } from '../../partial/pagination';
@@ -16,6 +15,7 @@ import { AnchorButton, Button } from '../../button';
 import { PetFiltersForm } from '../../form/pet-filters-form';
 import { z } from 'zod';
 import { numberSchema } from '../../../model/model';
+import { createModelResource } from '../../../hook/create-model-resource';
 
 const pageTitle = 'Pet List';
 
@@ -31,8 +31,10 @@ const PetListComponent: Component = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [getPetListOrUndefined, setPetListOrUndefined] = createSignal<PetListResponse>();
-  const [getHttpErrorOrUndefined, setHttpErrorOrUndefined] = createSignal<HttpError>();
+  const { getModelList, getHttpError, actions } = createModelResource({
+    listClient,
+    deleteClient,
+  });
 
   const getQuery = () => querySchema.parse(qs.parse(location.search.substring(1)));
 
@@ -48,23 +50,13 @@ const PetListComponent: Component = () => {
   };
 
   const fetchPetList = async () => {
-    const response = await listPetsClient(getPetListRequest());
-
-    if (response instanceof HttpError) {
-      setHttpErrorOrUndefined(response);
-    } else {
-      setHttpErrorOrUndefined(undefined);
-      setPetListOrUndefined(response);
-    }
+    actions.listModel(getPetListRequest());
   };
 
   const deletePet = async (id: string) => {
-    const deleteResponse = await deletePetClient(id);
+    await actions.deleteModel(id);
 
-    if (deleteResponse instanceof HttpError) {
-      setHttpErrorOrUndefined(deleteResponse);
-    } else {
-      setHttpErrorOrUndefined(undefined);
+    if (!getHttpError()) {
       fetchPetList();
     }
   };
@@ -98,13 +90,11 @@ const PetListComponent: Component = () => {
   });
 
   return (
-    <Show when={getPetListOrUndefined() || getHttpErrorOrUndefined()}>
+    <Show when={getModelList() || getHttpError()}>
       <div data-testid="page-pet-list">
-        <Show when={getHttpErrorOrUndefined()}>
-          {(getHttpError) => <HttpErrorPartial httpError={getHttpError()} />}
-        </Show>
+        <Show when={getHttpError()}>{(getHttpError) => <HttpErrorPartial httpError={getHttpError()} />}</Show>
         <H1>{pageTitle}</H1>
-        <Show when={getPetListOrUndefined()}>
+        <Show when={getModelList()}>
           {(getPetList) => (
             <div>
               <Show when={getPetList()._links?.create}>
@@ -114,7 +104,7 @@ const PetListComponent: Component = () => {
               </Show>
               <div class="mt-4">
                 <PetFiltersForm
-                  getHttpErrorOrUndefined={getHttpErrorOrUndefined}
+                  getHttpError={getHttpError}
                   getInitialPetFilters={() => getQuery().filters}
                   submitPetFilters={submitPetFilters}
                 />

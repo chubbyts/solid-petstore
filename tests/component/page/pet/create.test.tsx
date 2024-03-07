@@ -33,7 +33,7 @@ vi.mock('../../../../src/component/form/pet-form', () => {
       return (
         <button
           data-testid="pet-form-submit"
-          data-has-http-error={!!props.getHttpErrorOrUndefined()}
+          data-has-http-error={!!props.getHttpError()}
           data-has-initial-pet={!!props.getInitialPet()}
           onClick={onSubmit}
         />

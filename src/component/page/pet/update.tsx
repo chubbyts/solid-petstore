@@ -1,13 +1,13 @@
 import type { Component } from 'solid-js';
-import { Show, createEffect, createSignal, onCleanup } from 'solid-js';
+import { Show, createEffect, onCleanup } from 'solid-js';
 import { H1 } from '../../heading';
 import { useNavigate, useParams } from '@solidjs/router';
-import type { PetRequest, PetResponse } from '../../../model/pet';
-import { HttpError } from '../../../client/error';
-import { readPetClient, updatePetClient } from '../../../client/pet';
+import type { PetRequest } from '../../../model/pet';
+import { readPetClient as readClient, updatePetClient as updateClient } from '../../../client/pet';
 import { HttpError as HttpErrorPartial } from '../../partial/http-error';
 import { AnchorButton } from '../../button';
 import { PetForm } from '../../form/pet-form';
+import { createModelResource } from '../../../hook/create-model-resource';
 
 const pageTitle = 'Pet Update';
 
@@ -17,37 +17,19 @@ const PetUpdate: Component = () => {
 
   const navigate = useNavigate();
 
-  const [getPetOrUndefined, setPetOrUndefined] = createSignal<PetResponse>();
-  const [getHttpErrorOrUndefined, setHttpErrorOrUndefined] = createSignal<HttpError>();
-
-  const fetchPet = async () => {
-    const response = await readPetClient(id);
-
-    if (response instanceof HttpError) {
-      setHttpErrorOrUndefined(response);
-    } else {
-      setHttpErrorOrUndefined(undefined);
-      setPetOrUndefined(response);
-    }
-  };
+  const { getModel, getHttpError, actions } = createModelResource({ readClient, updateClient });
 
   const submitPet = async (petRequest: PetRequest) => {
-    const response = await updatePetClient(id, petRequest);
+    await actions.updateModel(id, petRequest);
 
-    if (response instanceof HttpError) {
-      setHttpErrorOrUndefined(response);
-    } else {
-      setHttpErrorOrUndefined(undefined);
-      setPetOrUndefined(response);
-
+    if (!getHttpError()) {
       navigate('/pet');
     }
   };
 
   createEffect(() => {
     document.title = pageTitle;
-
-    fetchPet();
+    actions.readModel(id);
   });
 
   onCleanup(() => {
@@ -55,16 +37,12 @@ const PetUpdate: Component = () => {
   });
 
   return (
-    <Show when={getPetOrUndefined() || getHttpErrorOrUndefined()}>
+    <Show when={getModel() || getHttpError()}>
       <div data-testid="page-pet-update">
-        <Show when={getHttpErrorOrUndefined()}>
-          {(getHttpError) => <HttpErrorPartial httpError={getHttpError()} />}
-        </Show>
+        <Show when={getHttpError()}>{(getHttpError) => <HttpErrorPartial httpError={getHttpError()} />}</Show>
         <H1>{pageTitle}</H1>
-        <Show when={getPetOrUndefined()}>
-          {(getPet) => (
-            <PetForm getHttpErrorOrUndefined={getHttpErrorOrUndefined} getInitialPet={getPet} submitPet={submitPet} />
-          )}
+        <Show when={getModel()}>
+          {(getPet) => <PetForm getHttpError={getHttpError} getInitialPet={getPet} submitPet={submitPet} />}
         </Show>
         <AnchorButton href="/pet" colorTheme="gray">
           List

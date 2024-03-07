@@ -6,7 +6,7 @@ import type { z } from 'zod';
 
 export type Fetch = (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
 
-type ListClient<ModelListRequest, ModelListResponse> = (
+export type ListClient<ModelListRequest, ModelListResponse> = (
   modelListRequest: ModelListRequest,
 ) => Promise<HttpError | ModelListResponse>;
 
@@ -48,7 +48,9 @@ export const createListClient = <ModelListRequestSchema extends z.ZodType, Model
   };
 };
 
-type CreateClient<ModelRequest, ModelResponse> = (modelRequest: ModelRequest) => Promise<ModelResponse | HttpError>;
+export type CreateClient<ModelRequest, ModelResponse> = (
+  modelRequest: ModelRequest,
+) => Promise<ModelResponse | HttpError>;
 
 export const createCreateClient = <ModelRequestSchema extends z.ZodType, ModelResponseSchema extends z.ZodType>(
   fetch: Fetch,
@@ -92,7 +94,7 @@ export const createCreateClient = <ModelRequestSchema extends z.ZodType, ModelRe
   };
 };
 
-type ReadClient<ModelResponse> = (id: string) => Promise<ModelResponse | HttpError>;
+export type ReadClient<ModelResponse> = (id: string) => Promise<ModelResponse | HttpError>;
 
 export const createReadClient = <ModelResponseSchema extends z.ZodType>(
   fetch: Fetch,
@@ -127,7 +129,7 @@ export const createReadClient = <ModelResponseSchema extends z.ZodType>(
   };
 };
 
-type UpdateClient<ModelRequest, ModelResponse> = (
+export type UpdateClient<ModelRequest, ModelResponse> = (
   id: string,
   modelRequest: ModelRequest,
 ) => Promise<ModelResponse | HttpError>;
@@ -179,7 +181,7 @@ export const createUpdateClient = <ModelRequestSchema extends z.ZodType, ModelRe
   };
 };
 
-type DeleteClient = (id: string) => Promise<undefined | HttpError>;
+export type DeleteClient = (id: string) => Promise<undefined | HttpError>;
 
 export const createDeleteClient = (fetch: Fetch, url: string): DeleteClient => {
   return async (id: string): Promise<HttpError | undefined> => {
