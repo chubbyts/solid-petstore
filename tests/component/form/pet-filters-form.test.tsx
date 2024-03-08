@@ -9,13 +9,13 @@ import { userEvent } from '@testing-library/user-event';
 import type { PetFilters } from '../../../src/model/pet';
 
 test('default', () => {
-  const getHttpErrorOrUndefined = () => undefined;
+  const getHttpError = () => undefined;
   const getInitialPetFilters = () => ({});
   const submitPetFilters = () => {};
 
   const { container } = render(() => (
     <PetFiltersForm
-      getHttpErrorOrUndefined={getHttpErrorOrUndefined}
+      getHttpError={getHttpError}
       getInitialPetFilters={getInitialPetFilters}
       submitPetFilters={submitPetFilters}
     />
@@ -45,13 +45,13 @@ test('default', () => {
 });
 
 test('network error', () => {
-  const getHttpErrorOrUndefined = () => new NetworkError({ title: 'network error' });
+  const getHttpError = () => new NetworkError({ title: 'network error' });
   const getInitialPetFilters = () => ({});
   const submitPetFilters = () => {};
 
   render(() => (
     <PetFiltersForm
-      getHttpErrorOrUndefined={getHttpErrorOrUndefined}
+      getHttpError={getHttpError}
       getInitialPetFilters={getInitialPetFilters}
       submitPetFilters={submitPetFilters}
     />
@@ -59,7 +59,7 @@ test('network error', () => {
 });
 
 test('bad request', () => {
-  const getHttpErrorOrUndefined = () =>
+  const getHttpError = () =>
     new BadRequest({
       title: 'bad request',
     });
@@ -68,7 +68,7 @@ test('bad request', () => {
 
   render(() => (
     <PetFiltersForm
-      getHttpErrorOrUndefined={getHttpErrorOrUndefined}
+      getHttpError={getHttpError}
       getInitialPetFilters={getInitialPetFilters}
       submitPetFilters={submitPetFilters}
     />
@@ -76,14 +76,14 @@ test('bad request', () => {
 });
 
 test('bad request - with query string name', () => {
-  const getHttpErrorOrUndefined = () =>
+  const getHttpError = () =>
     new BadRequest({ title: 'bad request', invalidParameters: [{ name: 'filters[name]', reason: 'reason' }] });
   const getInitialPetFilters = () => ({});
   const submitPetFilters = () => {};
 
   const { container } = render(() => (
     <PetFiltersForm
-      getHttpErrorOrUndefined={getHttpErrorOrUndefined}
+      getHttpError={getHttpError}
       getInitialPetFilters={getInitialPetFilters}
       submitPetFilters={submitPetFilters}
     />
@@ -117,7 +117,7 @@ test('bad request - with query string name', () => {
 });
 
 test('submit with name', async () => {
-  const getHttpErrorOrUndefined = () => undefined;
+  const getHttpError = () => undefined;
   const getInitialPetFilters = () => ({ name: 'Brown' });
   const submitPetFilters = vi.fn((petFilters: PetFilters) => {
     expect(petFilters).toEqual({ name: 'Brownie' });
@@ -125,7 +125,7 @@ test('submit with name', async () => {
 
   render(() => (
     <PetFiltersForm
-      getHttpErrorOrUndefined={getHttpErrorOrUndefined}
+      getHttpError={getHttpError}
       getInitialPetFilters={getInitialPetFilters}
       submitPetFilters={submitPetFilters}
     />
@@ -143,7 +143,7 @@ test('submit with name', async () => {
 });
 
 test('submit without name', async () => {
-  const getHttpErrorOrUndefined = () => undefined;
+  const getHttpError = () => undefined;
   const getInitialPetFilters = () => ({ name: '' });
   const submitPetFilters = vi.fn((petFilters: PetFilters) => {
     expect(petFilters).toEqual({ name: undefined });
@@ -151,7 +151,7 @@ test('submit without name', async () => {
 
   render(() => (
     <PetFiltersForm
-      getHttpErrorOrUndefined={getHttpErrorOrUndefined}
+      getHttpError={getHttpError}
       getInitialPetFilters={getInitialPetFilters}
       submitPetFilters={submitPetFilters}
     />

@@ -7,15 +7,13 @@ import { FieldSet, TextField } from './form';
 import { Button } from '../button';
 
 export type PetFiltersFormProps = {
-  getHttpErrorOrUndefined: () => HttpError | undefined;
+  getHttpError: () => HttpError | undefined;
   getInitialPetFilters: () => PetFilters;
   submitPetFilters: (petFilters: PetFilters) => void;
 };
 
 export const PetFiltersForm: Component<PetFiltersFormProps> = (props: PetFiltersFormProps) => {
-  const getGroupInvalidParametersByName = createMemo(() =>
-    createInvalidParametersByName(props.getHttpErrorOrUndefined()),
-  );
+  const getGroupInvalidParametersByName = createMemo(() => createInvalidParametersByName(props.getHttpError()));
 
   const [petFilters, setPetFilters] = createStore<PetFilters>({});
 
