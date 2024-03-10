@@ -11,7 +11,7 @@ import { createEffect } from 'solid-js';
 import { render, screen } from '@solidjs/testing-library';
 import type { deletePetClient, listPetsClient } from '../../../../src/client/pet';
 import type { PaginationProps } from '../../../../src/component/partial/pagination';
-import { NetworkError } from '../../../../src/client/error';
+import { BadRequest, NetworkError } from '../../../../src/client/error';
 import { userEvent } from '@testing-library/user-event';
 
 let mockDeletePetClient: typeof deletePetClient;
@@ -57,7 +57,7 @@ vi.mock('../../../../src/component/partial/pagination', () => {
       return (
         <button
           data-testid="pagination-next"
-          data-current-page={props.getPage()}
+          data-current-page={props.getCurrentPage()}
           data-total-pages={props.getTotalPages()}
           data-max-pages={props.getMaxPages()}
           onClick={onClick}
@@ -67,9 +67,16 @@ vi.mock('../../../../src/component/partial/pagination', () => {
   };
 });
 
-test('network error', async () => {
-  mockListPetsClient = async () => {
-    return Promise.resolve(new NetworkError({ title: 'network error' }));
+test('bad request', async () => {
+  mockListPetsClient = async (petListRequest: PetListRequest) => {
+    expect(petListRequest).toEqual({
+      offset: 0,
+      limit: 10,
+      filters: {},
+      sort: {},
+    });
+
+    return new Promise<BadRequest>((resolve) => resolve(new BadRequest({ title: 'bad request' })));
   };
 
   mockDeletePetClient = async () => undefined;
@@ -98,7 +105,7 @@ test('network error', async () => {
       <div>
         <div data-testid="page-pet-list">
           <div data-testid="http-error" class="mb-6 bg-red-300 px-5 py-4">
-            <p class="font-bold">network error</p>
+            <p class="font-bold">bad request</p>
           </div>
           <h1 class="mb-4 border-b pb-2 text-4xl font-black">Pet List</h1>
         </div>
@@ -108,7 +115,164 @@ test('network error', async () => {
   `);
 });
 
-test('default', async () => {
+test('default minimal', async () => {
+  mockListPetsClient = async (petListRequest: PetListRequest) => {
+    expect(petListRequest).toEqual({
+      offset: 0,
+      limit: 10,
+      filters: {},
+      sort: {},
+    });
+
+    return {
+      offset: 0,
+      limit: 10,
+      filters: {},
+      sort: {},
+      count: 1,
+      items: [
+        {
+          id: '4d783b77-eb09-4603-b99b-f590b605eaa9',
+          createdAt: '2005-08-15T15:52:01+00:00',
+          updatedAt: '2005-08-15T15:55:01+00:00',
+          name: 'Brownie',
+          vaccinations: [],
+          _links: {},
+        },
+      ],
+      _links: {},
+    };
+  };
+
+  mockDeletePetClient = async () => undefined;
+
+  const App = (props: RouteSectionProps) => {
+    const navigate = useNavigate();
+
+    createEffect(() => {
+      navigate('/pet', { scroll: false });
+    });
+
+    return <div>{props.children}</div>;
+  };
+
+  const { container } = render(() => (
+    <Router root={App}>
+      <Route path="/" component={() => <div />} />
+      <Route path="/pet" component={List} />
+    </Router>
+  ));
+
+  await screen.findByTestId('page-pet-list');
+
+  expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
+    "<div>
+      <div>
+        <div data-testid="page-pet-list">
+          <h1 class="mb-4 border-b pb-2 text-4xl font-black">Pet List</h1>
+          <div>
+            <button
+              data-testid="pet-filters-form-submit"
+              data-has-http-error="false"
+              data-has-initial-pet-filters="true"
+            ></button>
+            <div class="mt-4">
+              <div class="block w-full md:table">
+                <div class="block w-full md:table-header-group">
+                  <div class="mb-5 block even:bg-gray-100 md:mt-0 md:table-row">
+                    <div
+                      class="block border-x border-gray-300 bg-gray-100 px-4 font-bold first:border-t first:pt-3 last:border-b last:pb-3 md:table-cell md:border-x-0 md:border-y md:px-4 md:py-3 md:first:border-l md:last:border-r"
+                    >
+                      Id
+                    </div>
+                    <div
+                      class="block border-x border-gray-300 bg-gray-100 px-4 font-bold first:border-t first:pt-3 last:border-b last:pb-3 md:table-cell md:border-x-0 md:border-y md:px-4 md:py-3 md:first:border-l md:last:border-r"
+                    >
+                      CreatedAt
+                    </div>
+                    <div
+                      class="block border-x border-gray-300 bg-gray-100 px-4 font-bold first:border-t first:pt-3 last:border-b last:pb-3 md:table-cell md:border-x-0 md:border-y md:px-4 md:py-3 md:first:border-l md:last:border-r"
+                    >
+                      UpdatedAt
+                    </div>
+                    <div
+                      class="block border-x border-gray-300 bg-gray-100 px-4 font-bold first:border-t first:pt-3 last:border-b last:pb-3 md:table-cell md:border-x-0 md:border-y md:px-4 md:py-3 md:first:border-l md:last:border-r"
+                    >
+                      <span>Name (</span
+                      ><button data-testid="pet-sort-name-asc">
+                        <span class="mx-1 inline-block">A-Z</span></button
+                      ><span>|</span
+                      ><button data-testid="pet-sort-name-desc">
+                        <span class="mx-1 inline-block">Z-A</span></button
+                      ><span>|</span
+                      ><button data-testid="pet-sort-name--">
+                        <span class="mx-1 inline-block">---</span></button
+                      ><span>)</span>
+                    </div>
+                    <div
+                      class="block border-x border-gray-300 bg-gray-100 px-4 font-bold first:border-t first:pt-3 last:border-b last:pb-3 md:table-cell md:border-x-0 md:border-y md:px-4 md:py-3 md:first:border-l md:last:border-r"
+                    >
+                      Tag
+                    </div>
+                    <div
+                      class="block border-x border-gray-300 bg-gray-100 px-4 font-bold first:border-t first:pt-3 last:border-b last:pb-3 md:table-cell md:border-x-0 md:border-y md:px-4 md:py-3 md:first:border-l md:last:border-r"
+                    >
+                      Actions
+                    </div>
+                  </div>
+                </div>
+                <div class="block w-full md:table-row-group">
+                  <div
+                    data-testid="pet-list-0"
+                    class="mb-5 block even:bg-gray-100 md:mt-0 md:table-row"
+                  >
+                    <div
+                      class="block border-x border-gray-300 px-4 first:border-t first:pt-3 last:border-b last:pb-3 md:table-cell md:border-x-0 md:border-b md:px-4 md:py-3 md:first:border-l md:first:border-t-0 md:last:border-r"
+                    >
+                      4d783b77-eb09-4603-b99b-f590b605eaa9
+                    </div>
+                    <div
+                      class="block border-x border-gray-300 px-4 first:border-t first:pt-3 last:border-b last:pb-3 md:table-cell md:border-x-0 md:border-b md:px-4 md:py-3 md:first:border-l md:first:border-t-0 md:last:border-r"
+                    >
+                      15.08.2005 - 17:52:01
+                    </div>
+                    <div
+                      class="block border-x border-gray-300 px-4 first:border-t first:pt-3 last:border-b last:pb-3 md:table-cell md:border-x-0 md:border-b md:px-4 md:py-3 md:first:border-l md:first:border-t-0 md:last:border-r"
+                    >
+                      15.08.2005 - 17:55:01
+                    </div>
+                    <div
+                      class="block border-x border-gray-300 px-4 first:border-t first:pt-3 last:border-b last:pb-3 md:table-cell md:border-x-0 md:border-b md:px-4 md:py-3 md:first:border-l md:first:border-t-0 md:last:border-r"
+                    >
+                      Brownie
+                    </div>
+                    <div
+                      class="block border-x border-gray-300 px-4 first:border-t first:pt-3 last:border-b last:pb-3 md:table-cell md:border-x-0 md:border-b md:px-4 md:py-3 md:first:border-l md:first:border-t-0 md:last:border-r"
+                    ></div>
+                    <div
+                      class="block border-x border-gray-300 px-4 first:border-t first:pt-3 last:border-b last:pb-3 md:table-cell md:border-x-0 md:border-b md:px-4 md:py-3 md:first:border-l md:first:border-t-0 md:last:border-r"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mt-4">
+              <button
+                data-testid="pagination-next"
+                data-current-page="1"
+                data-total-pages="1"
+                data-max-pages="7"
+              ></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    "
+  `);
+});
+
+test('default maximal', async () => {
   mockListPetsClient = async (petListRequest: PetListRequest) => {
     expect(petListRequest).toEqual({
       offset: 0,
@@ -174,17 +338,14 @@ test('default', async () => {
             <a
               colortheme="green"
               href="/pet/create"
-              class="inline-block px-5 py-2 text-white bg-green-600 hover:bg-green-700 inactive"
+              class="inline-block px-5 py-2 text-white bg-green-600 hover:bg-green-700 mb-4 inactive"
               link=""
               >Create</a
-            >
-            <div class="mt-4">
-              <button
-                data-testid="pet-filters-form-submit"
-                data-has-http-error="false"
-                data-has-initial-pet-filters="true"
-              ></button>
-            </div>
+            ><button
+              data-testid="pet-filters-form-submit"
+              data-has-http-error="false"
+              data-has-initial-pet-filters="true"
+            ></button>
             <div class="mt-4">
               <div class="block w-full md:table">
                 <div class="block w-full md:table-header-group">

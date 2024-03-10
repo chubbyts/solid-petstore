@@ -30,7 +30,7 @@ describe('createModelResource', () => {
       expect(getModelList()).toBeUndefined();
       expect(getHttpError()).toBeUndefined();
 
-      await actions.listModel({});
+      expect(await actions.listModel({})).toBe(false);
 
       expect(getModelList()).toBeUndefined();
       expect(getHttpError()).toBe(httpError);
@@ -58,7 +58,7 @@ describe('createModelResource', () => {
       expect(getModelList()).toBeUndefined();
       expect(getHttpError()).toBeUndefined();
 
-      await actions.listModel({});
+      expect(await actions.listModel({})).toBe(true);
 
       expect(getModelList()).toBe(modelListResponse);
       expect(getHttpError()).toBeUndefined();
@@ -91,7 +91,7 @@ describe('createModelResource', () => {
       expect(getModel()).toBeUndefined();
       expect(getHttpError()).toBeUndefined();
 
-      await actions.createModel({});
+      expect(await actions.createModel({})).toBe(false);
 
       expect(getModel()).toBeUndefined();
       expect(getHttpError()).toBe(httpError);
@@ -115,7 +115,7 @@ describe('createModelResource', () => {
       expect(getModel()).toBeUndefined();
       expect(getHttpError()).toBeUndefined();
 
-      await actions.createModel({});
+      expect(await actions.createModel({})).toBe(true);
 
       expect(getModel()).toBe(modelResponse);
       expect(getHttpError()).toBeUndefined();
@@ -148,7 +148,7 @@ describe('createModelResource', () => {
       expect(getModel()).toBeUndefined();
       expect(getHttpError()).toBeUndefined();
 
-      await actions.readModel('ddbb7edb-8c53-4586-9844-769e1c830719');
+      expect(await actions.readModel('ddbb7edb-8c53-4586-9844-769e1c830719')).toBe(false);
 
       expect(getModel()).toBeUndefined();
       expect(getHttpError()).toBe(httpError);
@@ -172,7 +172,7 @@ describe('createModelResource', () => {
       expect(getModel()).toBeUndefined();
       expect(getHttpError()).toBeUndefined();
 
-      await actions.readModel('ddbb7edb-8c53-4586-9844-769e1c830719');
+      expect(await actions.readModel('ddbb7edb-8c53-4586-9844-769e1c830719')).toBe(true);
 
       expect(getModel()).toBe(modelResponse);
       expect(getHttpError()).toBeUndefined();
@@ -205,7 +205,7 @@ describe('createModelResource', () => {
       expect(getModel()).toBeUndefined();
       expect(getHttpError()).toBeUndefined();
 
-      await actions.updateModel('ddbb7edb-8c53-4586-9844-769e1c830719', {});
+      expect(await actions.updateModel('ddbb7edb-8c53-4586-9844-769e1c830719', {})).toBe(false);
 
       expect(getModel()).toBeUndefined();
       expect(getHttpError()).toBe(httpError);
@@ -229,7 +229,7 @@ describe('createModelResource', () => {
       expect(getModel()).toBeUndefined();
       expect(getHttpError()).toBeUndefined();
 
-      await actions.updateModel('ddbb7edb-8c53-4586-9844-769e1c830719', {});
+      expect(await actions.updateModel('ddbb7edb-8c53-4586-9844-769e1c830719', {})).toBe(true);
 
       expect(getModel()).toBe(modelResponse);
       expect(getHttpError()).toBeUndefined();
@@ -262,7 +262,7 @@ describe('createModelResource', () => {
       expect(getModel()).toBeUndefined();
       expect(getHttpError()).toBeUndefined();
 
-      await actions.deleteModel('ddbb7edb-8c53-4586-9844-769e1c830719');
+      expect(await actions.deleteModel('ddbb7edb-8c53-4586-9844-769e1c830719')).toBe(false);
 
       expect(getModel()).toBeUndefined();
       expect(getHttpError()).toBe(httpError);
@@ -280,7 +280,7 @@ describe('createModelResource', () => {
       expect(getModel()).toBeUndefined();
       expect(getHttpError()).toBeUndefined();
 
-      await actions.deleteModel('ddbb7edb-8c53-4586-9844-769e1c830719');
+      expect(await actions.deleteModel('ddbb7edb-8c53-4586-9844-769e1c830719')).toBe(true);
 
       expect(getModel()).toBeUndefined();
       expect(getHttpError()).toBeUndefined();

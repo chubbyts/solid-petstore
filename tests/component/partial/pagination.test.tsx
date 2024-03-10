@@ -10,7 +10,7 @@ test('max pages 1', () => {
   const submitPage = (): void => {};
 
   const { container } = render(() => (
-    <Pagination getPage={() => 1} getMaxPages={() => 1} getTotalPages={() => 10} submitPage={submitPage} />
+    <Pagination getCurrentPage={() => 1} getMaxPages={() => 1} getTotalPages={() => 10} submitPage={submitPage} />
   ));
 
   expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
@@ -23,7 +23,7 @@ test('total pages 1', () => {
   const submitPage = (): void => {};
 
   const { container } = render(() => (
-    <Pagination getPage={() => 1} getMaxPages={() => 7} getTotalPages={() => 1} submitPage={submitPage} />
+    <Pagination getCurrentPage={() => 1} getMaxPages={() => 7} getTotalPages={() => 1} submitPage={submitPage} />
   ));
 
   expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
@@ -36,7 +36,7 @@ test('current 1', () => {
   const submitPage = (): void => {};
 
   const { container } = render(() => (
-    <Pagination getPage={() => 1} getMaxPages={() => 7} getTotalPages={() => 10} submitPage={submitPage} />
+    <Pagination getCurrentPage={() => 1} getMaxPages={() => 7} getTotalPages={() => 10} submitPage={submitPage} />
   ));
 
   expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
@@ -79,7 +79,7 @@ test('current 4', () => {
   const submitPage = (): void => {};
 
   const { container } = render(() => (
-    <Pagination getPage={() => 4} getMaxPages={() => 7} getTotalPages={() => 10} submitPage={submitPage} />
+    <Pagination getCurrentPage={() => 4} getMaxPages={() => 7} getTotalPages={() => 10} submitPage={submitPage} />
   ));
 
   expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
@@ -128,7 +128,7 @@ test('current 7', () => {
   const submitPage = (): void => {};
 
   const { container } = render(() => (
-    <Pagination getPage={() => 7} getMaxPages={() => 7} getTotalPages={() => 10} submitPage={submitPage} />
+    <Pagination getCurrentPage={() => 7} getMaxPages={() => 7} getTotalPages={() => 10} submitPage={submitPage} />
   ));
 
   expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
@@ -177,7 +177,7 @@ test('current 10', () => {
   const submitPage = (): void => {};
 
   const { container } = render(() => (
-    <Pagination getPage={() => 10} getMaxPages={() => 7} getTotalPages={() => 10} submitPage={submitPage} />
+    <Pagination getCurrentPage={() => 10} getMaxPages={() => 7} getTotalPages={() => 10} submitPage={submitPage} />
   ));
 
   expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
@@ -223,7 +223,9 @@ test('buttons', async () => {
     pages.push(page);
   };
 
-  render(() => <Pagination getPage={() => 7} getMaxPages={() => 7} getTotalPages={() => 10} submitPage={submitPage} />);
+  render(() => (
+    <Pagination getCurrentPage={() => 7} getMaxPages={() => 7} getTotalPages={() => 10} submitPage={submitPage} />
+  ));
 
   for await (const element of screen.getAllByRole('button')) {
     await userEvent.click(element);

@@ -31,7 +31,11 @@ const PetListComponent: Component = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { getModelList, getHttpError, actions } = createModelResource({
+  const {
+    getModelList: getPetList,
+    getHttpError,
+    actions,
+  } = createModelResource({
     listClient,
     deleteClient,
   });
@@ -54,9 +58,7 @@ const PetListComponent: Component = () => {
   };
 
   const deletePet = async (id: string) => {
-    await actions.deleteModel(id);
-
-    if (!getHttpError()) {
+    if (await actions.deleteModel(id)) {
       fetchPetList();
     }
   };
@@ -90,25 +92,23 @@ const PetListComponent: Component = () => {
   });
 
   return (
-    <Show when={getModelList() || getHttpError()}>
+    <Show when={getPetList() || getHttpError()}>
       <div data-testid="page-pet-list">
         <Show when={getHttpError()}>{(getHttpError) => <HttpErrorPartial httpError={getHttpError()} />}</Show>
         <H1>{pageTitle}</H1>
-        <Show when={getModelList()}>
+        <Show when={getPetList()}>
           {(getPetList) => (
             <div>
               <Show when={getPetList()._links?.create}>
-                <AnchorButton href="/pet/create" colorTheme="green">
+                <AnchorButton href="/pet/create" colorTheme="green" class="mb-4">
                   Create
                 </AnchorButton>
               </Show>
-              <div class="mt-4">
-                <PetFiltersForm
-                  getHttpError={getHttpError}
-                  getInitialPetFilters={() => getQuery().filters}
-                  submitPetFilters={submitPetFilters}
-                />
-              </div>
+              <PetFiltersForm
+                getHttpError={getHttpError}
+                getInitialPetFilters={() => getQuery().filters}
+                submitPetFilters={submitPetFilters}
+              />
               <div class="mt-4">
                 <Table>
                   <Thead>
@@ -190,7 +190,7 @@ const PetListComponent: Component = () => {
               </div>
               <div class="mt-4">
                 <Pagination
-                  getPage={() => getQuery().page}
+                  getCurrentPage={() => getQuery().page}
                   getTotalPages={() => Math.ceil(getPetList().count / limit)}
                   getMaxPages={() => 7}
                   submitPage={submitPage}

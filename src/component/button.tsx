@@ -36,7 +36,7 @@ export const Button: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement> & { c
   return (
     <button
       {...props}
-      class={`inline-block px-5 py-2 text-white ${getColorThemeClasses(props.colorTheme)}  ${props.class ?? ''}`}
+      class={`inline-block px-5 py-2 text-white ${getColorThemeClasses(props.colorTheme)} ${props.class ?? ''}`}
     >
       {props.children}
     </button>

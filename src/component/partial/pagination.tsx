@@ -3,14 +3,14 @@ import { For, Show } from 'solid-js';
 
 export type PaginationProps = {
   submitPage: (page: number) => void;
-  getPage: Accessor<number>;
+  getCurrentPage: Accessor<number>;
   getTotalPages: Accessor<number>;
   getMaxPages: Accessor<number>;
 };
 
 export const Pagination: Component<PaginationProps> = (props: PaginationProps) => {
   const getPages = () => {
-    const page = props.getPage();
+    const page = props.getCurrentPage();
     const totalPages = props.getTotalPages();
     const maxPages = props.getMaxPages();
 
@@ -46,7 +46,7 @@ export const Pagination: Component<PaginationProps> = (props: PaginationProps) =
   return (
     <Show when={getPages().length > 0}>
       <ul class="w-fit border-y border-l border-gray-300">
-        <Show when={props.getPage() > 2}>
+        <Show when={props.getCurrentPage() > 2}>
           <li class="inline-block">
             <button
               class="border-r border-gray-300 px-3 py-2"
@@ -58,12 +58,12 @@ export const Pagination: Component<PaginationProps> = (props: PaginationProps) =
             </button>
           </li>
         </Show>
-        <Show when={props.getPage() > 1}>
+        <Show when={props.getCurrentPage() > 1}>
           <li class="inline-block">
             <button
               class="border-r border-gray-300 px-3 py-2"
               onClick={() => {
-                props.submitPage(props.getPage() - 1);
+                props.submitPage(props.getCurrentPage() - 1);
               }}
             >
               &lt;
@@ -74,7 +74,7 @@ export const Pagination: Component<PaginationProps> = (props: PaginationProps) =
           {(page) => (
             <li class="inline-block">
               <button
-                class={`border-r border-gray-300 px-3 py-2 ${props.getPage() === page ? 'bg-gray-100' : ''}`}
+                class={`border-r border-gray-300 px-3 py-2 ${props.getCurrentPage() === page ? 'bg-gray-100' : ''}`}
                 onClick={() => {
                   props.submitPage(page);
                 }}
@@ -84,19 +84,19 @@ export const Pagination: Component<PaginationProps> = (props: PaginationProps) =
             </li>
           )}
         </For>
-        <Show when={props.getPage() < props.getTotalPages()}>
+        <Show when={props.getCurrentPage() < props.getTotalPages()}>
           <li class="inline-block">
             <button
               class="border-r border-gray-300 px-3 py-2"
               onClick={() => {
-                props.submitPage(props.getPage() + 1);
+                props.submitPage(props.getCurrentPage() + 1);
               }}
             >
               &gt;
             </button>
           </li>
         </Show>
-        <Show when={props.getPage() < props.getTotalPages() - 1}>
+        <Show when={props.getCurrentPage() < props.getTotalPages() - 1}>
           <li class="inline-block">
             <button
               class="border-r border-gray-300 px-3 py-2"

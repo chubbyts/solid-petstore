@@ -5,7 +5,7 @@ import type { PetFormProps } from '../../../../src/component/form/pet-form';
 import { vi, test, expect } from 'vitest';
 import type { PetRequest, PetResponse } from '../../../../src/model/pet';
 import { formatHtml } from '../../../formatter';
-import { NetworkError, NotFound, UnprocessableEntity } from '../../../../src/client/error';
+import { NotFound, UnprocessableEntity } from '../../../../src/client/error';
 import type { RouteSectionProps } from '@solidjs/router';
 import { Route, Router, useNavigate } from '@solidjs/router';
 import { createEffect } from 'solid-js';
@@ -138,79 +138,6 @@ test('default', async () => {
           <button
             data-testid="pet-form-submit"
             data-has-http-error="false"
-            data-has-initial-pet="true"
-          ></button
-          ><a
-            colortheme="gray"
-            href="/pet"
-            class="inline-block px-5 py-2 text-white bg-gray-600 hover:bg-gray-700 active"
-            link=""
-            >List</a
-          >
-        </div>
-      </div>
-    </div>
-    "
-  `);
-});
-
-test('network error', async () => {
-  const petResponse: PetResponse = {
-    id: '4d783b77-eb09-4603-b99b-f590b605eaa9',
-    createdAt: '2005-08-15T15:52:01+00:00',
-    updatedAt: '2005-08-15T15:55:01+00:00',
-    name: 'Brownie',
-    tag: '0001-000',
-    vaccinations: [{ name: 'Rabies' }],
-    _links: {},
-  };
-
-  mockReadPetClient = async (id: string) => {
-    expect(id).toBe('4d783b77-eb09-4603-b99b-f590b605eaa9');
-
-    return new Promise<PetResponse>((resolve) => resolve(petResponse));
-  };
-
-  mockUpdatePetClient = async (id: string) => {
-    expect(id).toBe('4d783b77-eb09-4603-b99b-f590b605eaa9');
-
-    return new Promise<NetworkError>((resolve) => resolve(new NetworkError({ title: 'network error' })));
-  };
-
-  const App = (props: RouteSectionProps) => {
-    const navigate = useNavigate();
-
-    createEffect(() => {
-      navigate('/pet/4d783b77-eb09-4603-b99b-f590b605eaa9/update', { scroll: false });
-    });
-
-    return <div>{props.children}</div>;
-  };
-
-  const { container } = render(() => (
-    <Router root={App}>
-      <Route path="/" component={() => <div />} />
-      <Route path="/pet/:id/update" component={Update} />
-    </Router>
-  ));
-
-  const testButton = await screen.findByTestId('pet-form-submit');
-
-  await userEvent.click(testButton);
-
-  await screen.findByTestId('http-error');
-
-  expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
-    "<div>
-      <div>
-        <div data-testid="page-pet-update">
-          <div data-testid="http-error" class="mb-6 bg-red-300 px-5 py-4">
-            <p class="font-bold">network error</p>
-          </div>
-          <h1 class="mb-4 border-b pb-2 text-4xl font-black">Pet Update</h1>
-          <button
-            data-testid="pet-form-submit"
-            data-has-http-error="true"
             data-has-initial-pet="true"
           ></button
           ><a

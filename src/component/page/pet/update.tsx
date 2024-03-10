@@ -17,12 +17,10 @@ const PetUpdate: Component = () => {
 
   const navigate = useNavigate();
 
-  const { getModel, getHttpError, actions } = createModelResource({ readClient, updateClient });
+  const { getModel: getPet, getHttpError, actions } = createModelResource({ readClient, updateClient });
 
   const submitPet = async (petRequest: PetRequest) => {
-    await actions.updateModel(id, petRequest);
-
-    if (!getHttpError()) {
+    if (await actions.updateModel(id, petRequest)) {
       navigate('/pet');
     }
   };
@@ -37,11 +35,11 @@ const PetUpdate: Component = () => {
   });
 
   return (
-    <Show when={getModel() || getHttpError()}>
+    <Show when={getPet() || getHttpError()}>
       <div data-testid="page-pet-update">
         <Show when={getHttpError()}>{(getHttpError) => <HttpErrorPartial httpError={getHttpError()} />}</Show>
         <H1>{pageTitle}</H1>
-        <Show when={getModel()}>
+        <Show when={getPet()}>
           {(getPet) => <PetForm getHttpError={getHttpError} getInitialPet={getPet} submitPet={submitPet} />}
         </Show>
         <AnchorButton href="/pet" colorTheme="gray">

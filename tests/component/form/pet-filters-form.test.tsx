@@ -93,13 +93,13 @@ test('bad request - with query string name', () => {
     "<div>
       <form>
         <fieldset class="mb-3 border border-gray-300 px-4 py-3">
-          <label class="block"
+          <label class="block text-red-600"
             >Name<input
               type="text"
               data-testid="pet-filters-form-name"
               class="mb-3 mt-2 block w-full border px-3 py-2 border-red-600 bg-red-100"
             />
-            <ul class="mb-3 text-red-600">
+            <ul class="mb-3">
               <li>reason</li>
             </ul></label
           ><button

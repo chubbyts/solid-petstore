@@ -17,9 +17,7 @@ const PetCreate: Component = () => {
   const { getHttpError, actions } = createModelResource({ createClient });
 
   const submitPet = async (pet: PetRequest) => {
-    await actions.createModel(pet);
-
-    if (!getHttpError()) {
+    if (await actions.createModel(pet)) {
       navigate('/pet');
     }
   };

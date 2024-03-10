@@ -22,7 +22,7 @@ export type TextFieldProps = {
 
 export const TextField: Component<TextFieldProps> = (props: TextFieldProps) => {
   return (
-    <label class="block">
+    <label class={`block ${props.getInvalidParameters().length > 0 ? 'text-red-600' : ''} `}>
       {props.label}
       <input
         data-testid={props['data-testid']}
@@ -31,7 +31,7 @@ export const TextField: Component<TextFieldProps> = (props: TextFieldProps) => {
           props.getInvalidParameters().length > 0 ? 'border-red-600 bg-red-100' : 'border-gray-300'
         }`}
         onBlur={(event) => props.setValue(event.currentTarget.value)}
-        onKeyPress={(event) => {
+        onKeyDown={(event) => {
           if (event.code !== 'Enter') {
             return;
           }
@@ -41,7 +41,7 @@ export const TextField: Component<TextFieldProps> = (props: TextFieldProps) => {
         value={props.getValue()}
       />
       <Show when={props.getInvalidParameters().length > 0}>
-        <ul class="mb-3 text-red-600">
+        <ul class="mb-3">
           <For each={props.getInvalidParameters()}>{(invalidParameter) => <li>{invalidParameter.reason}</li>}</For>
         </ul>
       </Show>

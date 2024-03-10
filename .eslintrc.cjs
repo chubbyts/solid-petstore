@@ -50,7 +50,7 @@ module.exports = {
   settings: {
     'import/resolver': {
       node: {
-        extensions: ['.cjs', '.js', '.jsx', '.mjs', '.ts', '.tsx'],
+        extensions: ['.cjs', '.d.ts', '.js', '.jsx', '.mjs', '.ts', '.tsx'],
       },
     },
   },

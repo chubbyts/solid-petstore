@@ -15,7 +15,7 @@ const PetRead: Component = () => {
   const params = useParams();
   const id = params.id;
 
-  const { getModel, getHttpError, actions } = createModelResource({ readClient });
+  const { getModel: getPet, getHttpError, actions } = createModelResource({ readClient });
 
   createEffect(() => {
     document.title = pageTitle;
@@ -27,11 +27,11 @@ const PetRead: Component = () => {
   });
 
   return (
-    <Show when={getModel() || getHttpError()}>
+    <Show when={getPet() || getHttpError()}>
       <div data-testid="page-pet-read">
         <Show when={getHttpError()}>{(getHttpError) => <HttpErrorPartial httpError={getHttpError()} />}</Show>
         <H1>{pageTitle}</H1>
-        <Show when={getModel()}>
+        <Show when={getPet()}>
           {(getPet) => (
             <div>
               <dl>
@@ -51,12 +51,10 @@ const PetRead: Component = () => {
                 <dd class="mb-4">{getPet().tag}</dd>
                 <dt class="font-bold">Vaccinations</dt>
                 <dd class="mb-4">
-                  <Show when={getPet().vaccinations}>
-                    {(getVaccinations) => (
-                      <ul>
-                        <For each={getVaccinations()}>{(vaccination) => <li>{vaccination.name}</li>}</For>
-                      </ul>
-                    )}
+                  <Show when={getPet().vaccinations.length > 0}>
+                    <ul>
+                      <For each={getPet().vaccinations}>{(vaccination) => <li>{vaccination.name}</li>}</For>
+                    </ul>
                   </Show>
                 </dd>
               </dl>

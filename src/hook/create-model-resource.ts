@@ -26,7 +26,7 @@ export const createModelResource = <
   const [getModel, setModel] = createSignal<MRes | undefined>();
   const [getHttpError, setHttpError] = createSignal<HttpError | undefined>();
 
-  const listModel = async (req: MLReq) => {
+  const listModel = async (req: MLReq): Promise<boolean> => {
     if (!listClient) {
       throw new Error('Missing listClient');
     }
@@ -35,19 +35,25 @@ export const createModelResource = <
 
     const response = await listClient(req);
 
+    let success: boolean;
+
     if (response instanceof HttpError) {
       setHttpError(response);
+      success = false;
     } else {
       setHttpError(undefined);
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       setModelList(response);
+      success = true;
     }
 
     setLoading(undefined);
+
+    return success;
   };
 
-  const createModel = async (req: MReq) => {
+  const createModel = async (req: MReq): Promise<boolean> => {
     if (!createClient) {
       throw new Error('Missing createClient');
     }
@@ -56,19 +62,25 @@ export const createModelResource = <
 
     const response = await createClient(req);
 
+    let success: boolean;
+
     if (response instanceof HttpError) {
       setHttpError(response);
+      success = false;
     } else {
       setHttpError(undefined);
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       setModel(response);
+      success = true;
     }
 
     setLoading(undefined);
+
+    return success;
   };
 
-  const readModel = async (id: string) => {
+  const readModel = async (id: string): Promise<boolean> => {
     if (!readClient) {
       throw new Error('Missing readClient');
     }
@@ -77,19 +89,25 @@ export const createModelResource = <
 
     const response = await readClient(id);
 
+    let success: boolean;
+
     if (response instanceof HttpError) {
       setHttpError(response);
+      success = false;
     } else {
       setHttpError(undefined);
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       setModel(response);
+      success = true;
     }
 
     setLoading(undefined);
+
+    return success;
   };
 
-  const updateModel = async (id: string, req: MReq) => {
+  const updateModel = async (id: string, req: MReq): Promise<boolean> => {
     if (!updateClient) {
       throw new Error('Missing updateClient');
     }
@@ -98,19 +116,25 @@ export const createModelResource = <
 
     const response = await updateClient(id, req);
 
+    let success: boolean;
+
     if (response instanceof HttpError) {
       setHttpError(response);
+      success = false;
     } else {
       setHttpError(undefined);
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       setModel(response);
+      success = true;
     }
 
     setLoading(undefined);
+
+    return success;
   };
 
-  const deleteModel = async (id: string) => {
+  const deleteModel = async (id: string): Promise<boolean> => {
     if (!deleteClient) {
       throw new Error('Missing deleteClient');
     }
@@ -119,14 +143,20 @@ export const createModelResource = <
 
     const response = await deleteClient(id);
 
+    let success: boolean;
+
     if (response instanceof HttpError) {
       setHttpError(response);
+      success = false;
     } else {
       setHttpError(undefined);
       setModel(response);
+      success = true;
     }
 
     setLoading(undefined);
+
+    return success;
   };
 
   return {
