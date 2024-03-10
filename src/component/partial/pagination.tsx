@@ -1,6 +1,36 @@
 import type { Accessor, Component } from 'solid-js';
 import { For, Show } from 'solid-js';
 
+const calculatePages = (currentPage: number, totalPages: number, maxPages: number) => {
+  if (totalPages <= 1 || maxPages <= 1 || currentPage > totalPages) {
+    return [];
+  }
+
+  const pages = [currentPage];
+
+  for (let i = 1; ; i++) {
+    if (currentPage - i >= 1) {
+      pages.push(currentPage - i);
+
+      if (pages.length === maxPages || pages.length === totalPages) {
+        break;
+      }
+    }
+
+    if (currentPage + i <= totalPages) {
+      pages.push(currentPage + i);
+
+      if (pages.length === maxPages || pages.length === totalPages) {
+        break;
+      }
+    }
+  }
+
+  pages.sort((a, b) => a - b);
+
+  return pages;
+};
+
 export type PaginationProps = {
   submitPage: (page: number) => void;
   getCurrentPage: Accessor<number>;
@@ -10,37 +40,7 @@ export type PaginationProps = {
 
 export const Pagination: Component<PaginationProps> = (props: PaginationProps) => {
   const getPages = () => {
-    const page = props.getCurrentPage();
-    const totalPages = props.getTotalPages();
-    const maxPages = props.getMaxPages();
-
-    if (totalPages <= 1 || maxPages <= 1 || page > totalPages) {
-      return [];
-    }
-
-    const pages = [page];
-
-    for (let i = 1; ; i++) {
-      if (page - i >= 1) {
-        pages.push(page - i);
-
-        if (pages.length === maxPages || pages.length === totalPages) {
-          break;
-        }
-      }
-
-      if (page + i <= totalPages) {
-        pages.push(page + i);
-
-        if (pages.length === maxPages || pages.length === totalPages) {
-          break;
-        }
-      }
-    }
-
-    pages.sort((a, b) => a - b);
-
-    return pages;
+    return calculatePages(props.getCurrentPage(), props.getTotalPages(), props.getMaxPages());
   };
 
   return (
