@@ -1,5 +1,5 @@
 import type { Component } from 'solid-js';
-import { createEffect, onCleanup, Show, For } from 'solid-js';
+import { createEffect, onCleanup, Show, For, createMemo } from 'solid-js';
 import { useNavigate, useLocation } from '@solidjs/router';
 import qs from 'qs';
 import type { PetFilters, PetListRequest, PetSort } from '../../../model/pet';
@@ -40,7 +40,7 @@ const PetListComponent: Component = () => {
     deleteClient,
   });
 
-  const getQuery = () => querySchema.parse(qs.parse(location.search.substring(1)));
+  const getQuery = createMemo(() => querySchema.parse(qs.parse(location.search.substring(1))));
 
   const getPetListRequest = (): PetListRequest => {
     const query = getQuery();
