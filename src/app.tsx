@@ -30,7 +30,7 @@ const App: Component<RouteSectionProps> = (props: RouteSectionProps) => {
             <A
               href="/pet"
               class=" block px-4 py-2"
-              inactiveClass="bg-gray-300 ext-gray-900 hover:bg-gray-400"
+              inactiveClass="text-gray-900 bg-gray-300 hover:bg-gray-400"
               activeClass="text-gray-100 bg-gray-700 hover:bg-gray-600"
             >
               Pets

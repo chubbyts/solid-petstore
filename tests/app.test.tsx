@@ -38,7 +38,7 @@ test('close navigation', () => {
             <li>
               <a
                 href="/pet"
-                class="block px-4 py-2 bg-gray-300 ext-gray-900 hover:bg-gray-400"
+                class="block px-4 py-2 text-gray-900 bg-gray-300 hover:bg-gray-400"
                 link=""
                 >Pets</a
               >
@@ -87,7 +87,7 @@ test('open navigation', async () => {
             <li>
               <a
                 href="/pet"
-                class="block px-4 py-2 bg-gray-300 ext-gray-900 hover:bg-gray-400"
+                class="block px-4 py-2 text-gray-900 bg-gray-300 hover:bg-gray-400"
                 link=""
                 >Pets</a
               >
