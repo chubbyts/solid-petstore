@@ -139,7 +139,7 @@ export const createModelResource = <
       throw new Error('Missing deleteClient');
     }
 
-    setIsLoading('update');
+    setIsLoading('delete');
 
     const response = await deleteClient(id);
 
@@ -150,7 +150,7 @@ export const createModelResource = <
       success = false;
     } else {
       setHttpError(undefined);
-      setModel(response);
+      setModel(undefined);
       success = true;
     }
 
