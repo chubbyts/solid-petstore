@@ -6,7 +6,7 @@ export const FieldSet: Component<JSX.FieldsetHTMLAttributes<HTMLFieldSetElement>
   props: JSX.FieldsetHTMLAttributes<HTMLFieldSetElement>,
 ) => {
   return (
-    <fieldset {...props} class="mb-3 border border-gray-300 px-4 py-3">
+    <fieldset {...props} class={`mb-3 border border-gray-300 px-4 py-3 ${props.class ?? ''}`}>
       {props.children}
     </fieldset>
   );
