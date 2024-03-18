@@ -168,7 +168,7 @@ test('successful', async () => {
   const { container } = render(() => (
     <Router root={App}>
       <Route path="/" component={() => <div />} />
-      <Route path="/pet" component={() => <div data-testid="page-pet-list" />} />
+      <Route path="/pet" component={() => <div data-testid="page-pet-list-mock" />} />
       <Route path="/pet/create" component={Create} />
     </Router>
   ));
@@ -177,11 +177,11 @@ test('successful', async () => {
 
   await userEvent.click(testButton);
 
-  await screen.findByTestId('page-pet-list');
+  await screen.findByTestId('page-pet-list-mock');
 
   expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
     "<div>
-      <div><div data-testid="page-pet-list"></div></div>
+      <div><div data-testid="page-pet-list-mock"></div></div>
     </div>
     "
   `);
