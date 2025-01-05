@@ -1,11 +1,11 @@
 /** @jsxImportSource solid-js */
 
 import { test, expect, vi } from 'vitest';
+import { render, screen } from '@solidjs/testing-library';
+import { userEvent } from '@testing-library/user-event';
 import { formatHtml } from '../../formatter';
 import { PetFiltersForm } from '../../../src/component/form/pet-filters-form';
-import { render, screen } from '@solidjs/testing-library';
 import { BadRequest, NetworkError } from '../../../src/client/error';
-import { userEvent } from '@testing-library/user-event';
 import type { PetFilters } from '../../../src/model/pet';
 
 test('default', () => {

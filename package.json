@@ -1,7 +1,6 @@
 {
   "name": "solid-petstore",
   "type": "module",
-  "version": "1.0.0",
   "description": "A skeleton solidjs app for the petstore api.",
   "keywords": [
     "chubbyts",
@@ -13,46 +12,49 @@
   "repository": "chubbyts/solid-petstore",
   "scripts": {
     "build": "tsc && vite build",
-    "cs-fix": "prettier --write src tests *.cjs *.js *.ts",
-    "cs": "prettier --check src tests *.cjs *.js *.ts",
+    "cs-fix": "prettier --write src tests *.js *.ts",
+    "cs": "prettier --check src tests *.js *.ts",
     "develop": "vite",
-    "lint-fix": "eslint src tests *.cjs *.js *.ts --fix",
-    "lint": "eslint src tests *.cjs *.js *.ts",
+    "lint-fix": "eslint src tests *.js *.ts --fix",
+    "lint": "eslint src tests",
     "start": "pnpm i && pnpm cs-fix && pnpm develop",
     "test": "vitest"
   },
   "dependencies": {
-    "@chubbyts/chubbyts-throwable-to-error": "^1.2.1",
-    "@prettier/sync": "^0.5.2",
-    "@solidjs/router": "^0.13.5",
-    "cross-fetch": "^4.0.0",
-    "date-fns": "^3.6.0",
-    "qs": "^6.12.1",
-    "solid-js": "^1.8.17",
-    "zod": "^3.23.8"
+    "@chubbyts/chubbyts-throwable-to-error": "^1.3.2",
+    "@solidjs/router": "^0.15.2",
+    "cross-fetch": "^4.1.0",
+    "date-fns": "^4.1.0",
+    "qs": "^6.13.1",
+    "solid-js": "^1.9.3",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
-    "@chubbyts/chubbyts-function-mock": "^1.4.1",
-    "@solidjs/testing-library": "^0.8.8",
+    "@chubbyts/chubbyts-function-mock": "^1.5.2",
+    "@eslint/js": "^9.17.0",
+    "@prettier/sync": "^0.5.2",
+    "@solidjs/testing-library": "^0.8.10",
     "@testing-library/user-event": "^14.5.2",
-    "@types/node": "^20.14.2",
-    "@types/qs": "^6.9.15",
-    "@typescript-eslint/eslint-plugin": "^7.13.0",
-    "@typescript-eslint/parser": "^7.13.0",
-    "@vitest/coverage-v8": "^1.6.0",
-    "autoprefixer": "^10.4.19",
-    "eslint": "^8.57.0",
-    "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-solid": "^0.14.0",
-    "eslint-plugin-tailwindcss": "^3.17.3",
-    "jsdom": "^24.1.0",
-    "postcss": "^8.4.38",
-    "prettier": "^3.3.2",
-    "tailwindcss": "^3.4.4",
-    "typescript": "^5.4.5",
-    "vite": "^5.3.1",
-    "vite-plugin-solid": "^2.10.2",
-    "vitest": "^1.5.0"
+    "@types/node": "^22.10.5",
+    "@types/qs": "^6.9.17",
+    "@vitest/coverage-v8": "^2.1.8",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9.17.0",
+    "eslint-import-resolver-typescript": "^3.7.0",
+    "eslint-plugin-functional": "^7.2.0",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-solid": "^0.14.5",
+    "eslint-plugin-tailwindcss": "^3.17.5",
+    "eslint-plugin-unused-imports": "^4.1.4",
+    "jsdom": "^25.0.1",
+    "postcss": "^8.4.49",
+    "prettier": "^3.4.2",
+    "tailwindcss": "^3.4.17",
+    "typescript-eslint": "^8.19.0",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.7",
+    "vite-plugin-solid": "^2.11.0",
+    "vitest": "^2.1.8"
   },
   "engines": {
     "node": ">=18"
@@ -62,5 +64,6 @@
     "tabWidth": 2,
     "singleQuote": true,
     "trailingComma": "all"
-  }
+  },
+  "packageManager": "pnpm@9.15.2+sha512.93e57b0126f0df74ce6bff29680394c0ba54ec47246b9cf321f0121d8d9bb03f750a705f24edc3c1180853afd7c2c3b94196d0a3d53d3e069d9e2793ef11f321"
 }

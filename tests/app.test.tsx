@@ -1,11 +1,11 @@
 /** @jsxImportSource solid-js */
 
 import { test, expect } from 'vitest';
-import { formatHtml } from './formatter';
 import { render, screen } from '@solidjs/testing-library';
-import App from '../src/app';
 import { Router } from '@solidjs/router';
 import { userEvent } from '@testing-library/user-event';
+import App from '../src/app';
+import { formatHtml } from './formatter';
 
 test('close navigation', () => {
   const { container } = render(() => <Router root={App} />);

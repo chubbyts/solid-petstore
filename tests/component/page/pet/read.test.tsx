@@ -1,20 +1,22 @@
 /** @jsxImportSource solid-js */
 
-import Read from '../../../../src/component/page/pet/read';
 import { vi, test, expect } from 'vitest';
-import { formatHtml } from '../../../formatter';
-import { NotFound } from '../../../../src/client/error';
 import type { RouteSectionProps } from '@solidjs/router';
 import { Route, Router, useNavigate } from '@solidjs/router';
 import { createEffect } from 'solid-js';
 import { render, screen } from '@solidjs/testing-library';
+import { NotFound } from '../../../../src/client/error';
+import { formatHtml } from '../../../formatter';
+import Read from '../../../../src/component/page/pet/read';
 import type { PetResponse } from '../../../../src/model/pet';
 import type { readPetClient } from '../../../../src/client/pet';
 
+// eslint-disable-next-line functional/no-let
 let mockReadPetClient: typeof readPetClient;
 
 vi.mock('../../../../src/client/pet', () => {
   return {
+    // eslint-disable-next-line functional/prefer-tacit
     readPetClient: (id: string) => {
       return mockReadPetClient(id);
     },

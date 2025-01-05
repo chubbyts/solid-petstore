@@ -1,10 +1,10 @@
 /** @jsxImportSource solid-js */
 
-import { HttpError as HttpErrorPartial } from '../../../src/component/partial/http-error';
 import { test, expect } from 'vitest';
+import { render } from '@solidjs/testing-library';
+import { HttpError as HttpErrorPartial } from '../../../src/component/partial/http-error';
 import { formatHtml } from '../../formatter';
 import { HttpError, BadRequestOrUnprocessableEntity } from '../../../src/client/error';
-import { render } from '@solidjs/testing-library';
 
 test('minimal', () => {
   const httpError = new HttpError({

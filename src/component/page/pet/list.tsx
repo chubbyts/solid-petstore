@@ -1,19 +1,19 @@
 import type { Component } from 'solid-js';
-import { createEffect, onCleanup, Show, For, createMemo } from 'solid-js';
+import { createEffect, Show, For, createMemo } from 'solid-js';
 import { useNavigate, useLocation } from '@solidjs/router';
 import qs from 'qs';
+import { format } from 'date-fns';
+import { de } from 'date-fns/locale';
+import { z } from 'zod';
 import type { PetFilters, PetListRequest, PetSort } from '../../../model/pet';
 import { petFiltersSchema, petSortSchema } from '../../../model/pet';
 import { deletePetClient as deleteClient, listPetsClient as listClient } from '../../../client/pet';
 import { HttpError as HttpErrorPartial } from '../../partial/http-error';
 import { H1 } from '../../heading';
-import { format } from 'date-fns';
 import { Pagination } from '../../partial/pagination';
-import { de } from 'date-fns/locale';
 import { Table, Tbody, Td, Th, Thead, Tr } from '../../table';
 import { AnchorButton, Button } from '../../button';
 import { PetFiltersForm } from '../../form/pet-filters-form';
-import { z } from 'zod';
 import { numberSchema } from '../../../model/model';
 import { createModelResource } from '../../../hook/create-model-resource';
 
@@ -81,13 +81,10 @@ const PetListComponent: Component = () => {
   };
 
   createEffect(() => {
+    // eslint-disable-next-line functional/immutable-data
     document.title = pageTitle;
 
     fetchPetList();
-  });
-
-  onCleanup(() => {
-    document.title = '';
   });
 
   return (

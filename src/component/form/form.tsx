@@ -1,6 +1,6 @@
-import type { InvalidParameter } from '../../client/error';
 import type { Component, JSX } from 'solid-js';
 import { For, Show } from 'solid-js';
+import type { InvalidParameter } from '../../client/error';
 
 export const FieldSet: Component<JSX.FieldsetHTMLAttributes<HTMLFieldSetElement>> = (
   props: JSX.FieldsetHTMLAttributes<HTMLFieldSetElement>,

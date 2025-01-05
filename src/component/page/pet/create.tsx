@@ -1,7 +1,7 @@
 import type { Component } from 'solid-js';
-import { Show, createEffect, onCleanup } from 'solid-js';
-import { H1 } from '../../heading';
+import { Show, createEffect } from 'solid-js';
 import { useNavigate } from '@solidjs/router';
+import { H1 } from '../../heading';
 import { createPetClient as createClient } from '../../../client/pet';
 import { HttpError as HttpErrorPartial } from '../../partial/http-error';
 import { PetForm } from '../../form/pet-form';
@@ -23,11 +23,8 @@ const PetCreate: Component = () => {
   };
 
   createEffect(() => {
+    // eslint-disable-next-line functional/immutable-data
     document.title = pageTitle;
-  });
-
-  onCleanup(() => {
-    document.title = '';
   });
 
   return (

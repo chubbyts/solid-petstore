@@ -1,26 +1,30 @@
 /** @jsxImportSource solid-js */
 
-import Update from '../../../../src/component/page/pet/update';
-import type { PetFormProps } from '../../../../src/component/form/pet-form';
 import { vi, test, expect } from 'vitest';
-import type { PetRequest, PetResponse } from '../../../../src/model/pet';
-import { formatHtml } from '../../../formatter';
-import { NotFound, UnprocessableEntity } from '../../../../src/client/error';
 import type { RouteSectionProps } from '@solidjs/router';
 import { Route, Router, useNavigate } from '@solidjs/router';
 import { createEffect } from 'solid-js';
 import { render, screen } from '@solidjs/testing-library';
-import type { readPetClient, updatePetClient } from '../../../../src/client/pet';
 import { userEvent } from '@testing-library/user-event';
+import Update from '../../../../src/component/page/pet/update';
+import type { PetFormProps } from '../../../../src/component/form/pet-form';
+import type { PetRequest, PetResponse } from '../../../../src/model/pet';
+import { formatHtml } from '../../../formatter';
+import { NotFound, UnprocessableEntity } from '../../../../src/client/error';
+import type { readPetClient, updatePetClient } from '../../../../src/client/pet';
 
+// eslint-disable-next-line functional/no-let
 let mockReadPetClient: typeof readPetClient;
+// eslint-disable-next-line functional/no-let
 let mockUpdatePetClient: typeof updatePetClient;
 
 vi.mock('../../../../src/client/pet', () => {
   return {
+    // eslint-disable-next-line functional/prefer-tacit
     readPetClient: (id: string) => {
       return mockReadPetClient(id);
     },
+    // eslint-disable-next-line functional/prefer-tacit
     updatePetClient: (id: string, pet: PetRequest) => {
       return mockUpdatePetClient(id, pet);
     },
