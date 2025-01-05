@@ -1,12 +1,12 @@
 /** @jsxImportSource solid-js */
 
 import { test, expect, vi } from 'vitest';
+import { render, screen } from '@solidjs/testing-library';
+import { userEvent } from '@testing-library/user-event';
 import { formatHtml } from '../../formatter';
 import { PetForm } from '../../../src/component/form/pet-form';
-import { render, screen } from '@solidjs/testing-library';
 import { BadRequest, NetworkError } from '../../../src/client/error';
 import type { PetRequest } from '../../../src/model/pet';
-import { userEvent } from '@testing-library/user-event';
 
 test('without initial pet', () => {
   const getHttpError = () => undefined;

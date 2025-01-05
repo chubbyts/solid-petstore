@@ -1,10 +1,10 @@
-import type { PetRequest } from '../../model/pet';
-import { createInvalidParametersByName, type HttpError } from '../../client/error';
 import type { Component } from 'solid-js';
 import { For, createEffect, createMemo } from 'solid-js';
 import { createStore } from 'solid-js/store';
-import { FieldSet, TextField } from './form';
+import { createInvalidParametersByName, type HttpError } from '../../client/error';
+import type { PetRequest } from '../../model/pet';
 import { Button } from '../button';
+import { FieldSet, TextField } from './form';
 
 export type PetFormProps = {
   getHttpError: () => HttpError | undefined;

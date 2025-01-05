@@ -1,27 +1,31 @@
 /** @jsxImportSource solid-js */
 
-import List from '../../../../src/component/page/pet/list';
-import type { PetFiltersFormProps } from '../../../../src/component/form/pet-filters-form';
 import { vi, test, expect } from 'vitest';
-import type { PetListRequest, PetListResponse } from '../../../../src/model/pet';
-import { formatHtml } from '../../../formatter';
 import type { RouteSectionProps } from '@solidjs/router';
 import { Route, Router, useNavigate } from '@solidjs/router';
 import { createEffect } from 'solid-js';
 import { render, screen } from '@solidjs/testing-library';
+import { userEvent } from '@testing-library/user-event';
+import List from '../../../../src/component/page/pet/list';
+import type { PetFiltersFormProps } from '../../../../src/component/form/pet-filters-form';
+import type { PetListRequest, PetListResponse } from '../../../../src/model/pet';
+import { formatHtml } from '../../../formatter';
 import type { deletePetClient, listPetsClient } from '../../../../src/client/pet';
 import type { PaginationProps } from '../../../../src/component/partial/pagination';
 import { BadRequest, NetworkError } from '../../../../src/client/error';
-import { userEvent } from '@testing-library/user-event';
 
+// eslint-disable-next-line functional/no-let
 let mockDeletePetClient: typeof deletePetClient;
+// eslint-disable-next-line functional/no-let
 let mockListPetsClient: typeof listPetsClient;
 
 vi.mock('../../../../src/client/pet', () => {
   return {
+    // eslint-disable-next-line functional/prefer-tacit
     deletePetClient: (id: string) => {
       return mockDeletePetClient(id);
     },
+    // eslint-disable-next-line functional/prefer-tacit
     listPetsClient: (petListRequest: PetListRequest) => {
       return mockListPetsClient(petListRequest);
     },
@@ -614,6 +618,7 @@ test('delete success', async () => {
   ];
 
   mockListPetsClient = async (petListRequest: PetListRequest) => {
+    // eslint-disable-next-line functional/immutable-data
     const petListCall = petListCalls.shift();
     if (!petListCall) {
       throw new Error('Missing call');
@@ -771,6 +776,7 @@ test('submit', async () => {
   ];
 
   mockListPetsClient = async (petListRequest: PetListRequest) => {
+    // eslint-disable-next-line functional/immutable-data
     const petListCall = petListCalls.shift();
     if (!petListCall) {
       throw new Error('Missing call');

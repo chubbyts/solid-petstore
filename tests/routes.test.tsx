@@ -1,12 +1,12 @@
 /** @jsxImportSource solid-js */
 
 import { test, expect, vi } from 'vitest';
-import { formatHtml } from './formatter';
 import { render, screen } from '@solidjs/testing-library';
-import Routes from '../src/routes';
 import type { RouteSectionProps } from '@solidjs/router';
 import { Router, useNavigate } from '@solidjs/router';
 import { createEffect } from 'solid-js';
+import Routes from '../src/routes';
+import { formatHtml } from './formatter';
 
 vi.mock('../src/component/page/home', () => {
   return {

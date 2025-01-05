@@ -1,22 +1,24 @@
 /** @jsxImportSource solid-js */
 
-import Create from '../../../../src/component/page/pet/create';
-import type { PetFormProps } from '../../../../src/component/form/pet-form';
 import { userEvent } from '@testing-library/user-event';
 import { vi, test, expect } from 'vitest';
-import type { PetRequest, PetResponse } from '../../../../src/model/pet';
-import { formatHtml } from '../../../formatter';
-import { UnprocessableEntity } from '../../../../src/client/error';
 import type { RouteSectionProps } from '@solidjs/router';
 import { Route, Router, useNavigate } from '@solidjs/router';
 import { createEffect } from 'solid-js';
 import { render, screen } from '@solidjs/testing-library';
+import { UnprocessableEntity } from '../../../../src/client/error';
+import { formatHtml } from '../../../formatter';
+import type { PetRequest, PetResponse } from '../../../../src/model/pet';
+import type { PetFormProps } from '../../../../src/component/form/pet-form';
+import Create from '../../../../src/component/page/pet/create';
 import type { createPetClient } from '../../../../src/client/pet';
 
+// eslint-disable-next-line functional/no-let
 let mockCreatePetClient: typeof createPetClient;
 
 vi.mock('../../../../src/client/pet', () => {
   return {
+    // eslint-disable-next-line functional/prefer-tacit
     createPetClient: (pet: PetRequest) => {
       return mockCreatePetClient(pet);
     },
@@ -87,7 +89,6 @@ test('default', async () => {
 });
 
 test('unprocessable entity', async () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   mockCreatePetClient = async (_: PetRequest) => {
     return new Promise<UnprocessableEntity>((resolve) =>
       resolve(new UnprocessableEntity({ title: 'unprocessable entity' })),

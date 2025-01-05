@@ -1,8 +1,8 @@
 /** @jsxImportSource solid-js */
 
 import { render } from '@solidjs/testing-library';
-import Home from '../../../src/component/page/home';
 import { test, expect } from 'vitest';
+import Home from '../../../src/component/page/home';
 import { formatHtml } from '../../formatter';
 
 test('default', () => {
