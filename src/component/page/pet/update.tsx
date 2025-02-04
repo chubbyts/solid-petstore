@@ -1,7 +1,7 @@
 import type { Component } from 'solid-js';
-import { Show, createEffect, onCleanup } from 'solid-js';
-import { H1 } from '../../heading';
+import { Show, createEffect } from 'solid-js';
 import { useNavigate, useParams } from '@solidjs/router';
+import { H1 } from '../../heading';
 import type { PetRequest } from '../../../model/pet';
 import { readPetClient as readClient, updatePetClient as updateClient } from '../../../client/pet';
 import { HttpError as HttpErrorPartial } from '../../partial/http-error';
@@ -26,12 +26,9 @@ const PetUpdate: Component = () => {
   };
 
   createEffect(() => {
+    // eslint-disable-next-line functional/immutable-data
     document.title = pageTitle;
     actions.readModel(id);
-  });
-
-  onCleanup(() => {
-    document.title = '';
   });
 
   return (

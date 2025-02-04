@@ -1,12 +1,12 @@
 /** @jsxImportSource solid-js */
 
 import { test, expect, vi } from 'vitest';
-import { formatHtml } from './formatter';
 import { render, screen } from '@solidjs/testing-library';
-import Routes from '../src/routes';
 import type { RouteSectionProps } from '@solidjs/router';
 import { Router, useNavigate } from '@solidjs/router';
 import { createEffect } from 'solid-js';
+import Routes from '../src/routes';
+import { formatHtml } from './formatter';
 
 vi.mock('../src/component/page/home', () => {
   return {
@@ -65,9 +65,10 @@ test('home page', async () => {
 
   expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
     "<div>
-      <div><div data-testid="page-home-mock"></div></div>
-    </div>
-    "
+      <div>
+        <div data-testid="page-home-mock"></div>
+      </div>
+    </div>"
   `);
 });
 
@@ -92,9 +93,10 @@ test('not found', async () => {
 
   expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
     "<div>
-      <div><div data-testid="page-not-found-mock"></div></div>
-    </div>
-    "
+      <div>
+        <div data-testid="page-not-found-mock"></div>
+      </div>
+    </div>"
   `);
 });
 
@@ -119,9 +121,10 @@ test('pet list', async () => {
 
   expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
     "<div>
-      <div><div data-testid="page-pet-list-mock"></div></div>
-    </div>
-    "
+      <div>
+        <div data-testid="page-pet-list-mock"></div>
+      </div>
+    </div>"
   `);
 });
 
@@ -146,9 +149,10 @@ test('pet create', async () => {
 
   expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
     "<div>
-      <div><div data-testid="page-pet-create-mock"></div></div>
-    </div>
-    "
+      <div>
+        <div data-testid="page-pet-create-mock"></div>
+      </div>
+    </div>"
   `);
 });
 
@@ -173,9 +177,10 @@ test('pet read', async () => {
 
   expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
     "<div>
-      <div><div data-testid="page-pet-read-mock"></div></div>
-    </div>
-    "
+      <div>
+        <div data-testid="page-pet-read-mock"></div>
+      </div>
+    </div>"
   `);
 });
 
@@ -200,8 +205,9 @@ test('pet update', async () => {
 
   expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
     "<div>
-      <div><div data-testid="page-pet-update-mock"></div></div>
-    </div>
-    "
+      <div>
+        <div data-testid="page-pet-update-mock"></div>
+      </div>
+    </div>"
   `);
 });

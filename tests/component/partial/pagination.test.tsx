@@ -6,33 +6,27 @@ import { test, expect } from 'vitest';
 import { formatHtml } from '../../formatter';
 import { Pagination } from '../../../src/component/partial/pagination';
 
-test('max pages 1', () => {
+test('max pages 1', async () => {
   const submitPage = (): void => {};
 
   const { container } = render(() => (
     <Pagination getCurrentPage={() => 1} getMaxPages={() => 1} getTotalPages={() => 10} submitPage={submitPage} />
   ));
 
-  expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
-    "<div></div>
-    "
-  `);
+  expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot('"<div></div>"');
 });
 
-test('total pages 1', () => {
+test('total pages 1', async () => {
   const submitPage = (): void => {};
 
   const { container } = render(() => (
     <Pagination getCurrentPage={() => 1} getMaxPages={() => 7} getTotalPages={() => 1} submitPage={submitPage} />
   ));
 
-  expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
-    "<div></div>
-    "
-  `);
+  expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot('"<div></div>"');
 });
 
-test('current 1', () => {
+test('current 1', async () => {
   const submitPage = (): void => {};
 
   const { container } = render(() => (
@@ -46,22 +40,22 @@ test('current 1', () => {
           <button class="border-r border-gray-300 px-3 py-2 bg-gray-100">1</button>
         </li>
         <li class="inline-block">
-          <button class="border-r border-gray-300 px-3 py-2">2</button>
+          <button class="border-r border-gray-300 px-3 py-2 ">2</button>
         </li>
         <li class="inline-block">
-          <button class="border-r border-gray-300 px-3 py-2">3</button>
+          <button class="border-r border-gray-300 px-3 py-2 ">3</button>
         </li>
         <li class="inline-block">
-          <button class="border-r border-gray-300 px-3 py-2">4</button>
+          <button class="border-r border-gray-300 px-3 py-2 ">4</button>
         </li>
         <li class="inline-block">
-          <button class="border-r border-gray-300 px-3 py-2">5</button>
+          <button class="border-r border-gray-300 px-3 py-2 ">5</button>
         </li>
         <li class="inline-block">
-          <button class="border-r border-gray-300 px-3 py-2">6</button>
+          <button class="border-r border-gray-300 px-3 py-2 ">6</button>
         </li>
         <li class="inline-block">
-          <button class="border-r border-gray-300 px-3 py-2">7</button>
+          <button class="border-r border-gray-300 px-3 py-2 ">7</button>
         </li>
         <li class="inline-block">
           <button class="border-r border-gray-300 px-3 py-2">&gt;</button>
@@ -70,12 +64,11 @@ test('current 1', () => {
           <button class="border-r border-gray-300 px-3 py-2">»</button>
         </li>
       </ul>
-    </div>
-    "
+    </div>"
   `);
 });
 
-test('current 4', () => {
+test('current 4', async () => {
   const submitPage = (): void => {};
 
   const { container } = render(() => (
@@ -92,25 +85,25 @@ test('current 4', () => {
           <button class="border-r border-gray-300 px-3 py-2">&lt;</button>
         </li>
         <li class="inline-block">
-          <button class="border-r border-gray-300 px-3 py-2">1</button>
+          <button class="border-r border-gray-300 px-3 py-2 ">1</button>
         </li>
         <li class="inline-block">
-          <button class="border-r border-gray-300 px-3 py-2">2</button>
+          <button class="border-r border-gray-300 px-3 py-2 ">2</button>
         </li>
         <li class="inline-block">
-          <button class="border-r border-gray-300 px-3 py-2">3</button>
+          <button class="border-r border-gray-300 px-3 py-2 ">3</button>
         </li>
         <li class="inline-block">
           <button class="border-r border-gray-300 px-3 py-2 bg-gray-100">4</button>
         </li>
         <li class="inline-block">
-          <button class="border-r border-gray-300 px-3 py-2">5</button>
+          <button class="border-r border-gray-300 px-3 py-2 ">5</button>
         </li>
         <li class="inline-block">
-          <button class="border-r border-gray-300 px-3 py-2">6</button>
+          <button class="border-r border-gray-300 px-3 py-2 ">6</button>
         </li>
         <li class="inline-block">
-          <button class="border-r border-gray-300 px-3 py-2">7</button>
+          <button class="border-r border-gray-300 px-3 py-2 ">7</button>
         </li>
         <li class="inline-block">
           <button class="border-r border-gray-300 px-3 py-2">&gt;</button>
@@ -119,12 +112,11 @@ test('current 4', () => {
           <button class="border-r border-gray-300 px-3 py-2">»</button>
         </li>
       </ul>
-    </div>
-    "
+    </div>"
   `);
 });
 
-test('current 7', () => {
+test('current 7', async () => {
   const submitPage = (): void => {};
 
   const { container } = render(() => (
@@ -141,25 +133,25 @@ test('current 7', () => {
           <button class="border-r border-gray-300 px-3 py-2">&lt;</button>
         </li>
         <li class="inline-block">
-          <button class="border-r border-gray-300 px-3 py-2">4</button>
+          <button class="border-r border-gray-300 px-3 py-2 ">4</button>
         </li>
         <li class="inline-block">
-          <button class="border-r border-gray-300 px-3 py-2">5</button>
+          <button class="border-r border-gray-300 px-3 py-2 ">5</button>
         </li>
         <li class="inline-block">
-          <button class="border-r border-gray-300 px-3 py-2">6</button>
+          <button class="border-r border-gray-300 px-3 py-2 ">6</button>
         </li>
         <li class="inline-block">
           <button class="border-r border-gray-300 px-3 py-2 bg-gray-100">7</button>
         </li>
         <li class="inline-block">
-          <button class="border-r border-gray-300 px-3 py-2">8</button>
+          <button class="border-r border-gray-300 px-3 py-2 ">8</button>
         </li>
         <li class="inline-block">
-          <button class="border-r border-gray-300 px-3 py-2">9</button>
+          <button class="border-r border-gray-300 px-3 py-2 ">9</button>
         </li>
         <li class="inline-block">
-          <button class="border-r border-gray-300 px-3 py-2">10</button>
+          <button class="border-r border-gray-300 px-3 py-2 ">10</button>
         </li>
         <li class="inline-block">
           <button class="border-r border-gray-300 px-3 py-2">&gt;</button>
@@ -168,12 +160,11 @@ test('current 7', () => {
           <button class="border-r border-gray-300 px-3 py-2">»</button>
         </li>
       </ul>
-    </div>
-    "
+    </div>"
   `);
 });
 
-test('current 10', () => {
+test('current 10', async () => {
   const submitPage = (): void => {};
 
   const { container } = render(() => (
@@ -190,29 +181,28 @@ test('current 10', () => {
           <button class="border-r border-gray-300 px-3 py-2">&lt;</button>
         </li>
         <li class="inline-block">
-          <button class="border-r border-gray-300 px-3 py-2">4</button>
+          <button class="border-r border-gray-300 px-3 py-2 ">4</button>
         </li>
         <li class="inline-block">
-          <button class="border-r border-gray-300 px-3 py-2">5</button>
+          <button class="border-r border-gray-300 px-3 py-2 ">5</button>
         </li>
         <li class="inline-block">
-          <button class="border-r border-gray-300 px-3 py-2">6</button>
+          <button class="border-r border-gray-300 px-3 py-2 ">6</button>
         </li>
         <li class="inline-block">
-          <button class="border-r border-gray-300 px-3 py-2">7</button>
+          <button class="border-r border-gray-300 px-3 py-2 ">7</button>
         </li>
         <li class="inline-block">
-          <button class="border-r border-gray-300 px-3 py-2">8</button>
+          <button class="border-r border-gray-300 px-3 py-2 ">8</button>
         </li>
         <li class="inline-block">
-          <button class="border-r border-gray-300 px-3 py-2">9</button>
+          <button class="border-r border-gray-300 px-3 py-2 ">9</button>
         </li>
         <li class="inline-block">
           <button class="border-r border-gray-300 px-3 py-2 bg-gray-100">10</button>
         </li>
       </ul>
-    </div>
-    "
+    </div>"
   `);
 });
 
@@ -220,6 +210,7 @@ test('buttons', async () => {
   const pages: number[] = [];
 
   const submitPage = (page: number): void => {
+    // eslint-disable-next-line functional/immutable-data
     pages.push(page);
   };
 

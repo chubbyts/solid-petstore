@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
-import { createModelResource } from '../../src/hook/create-model-resource';
 import { useFunctionMock } from '@chubbyts/chubbyts-function-mock/dist/function-mock';
+import { createModelResource } from '../../src/hook/create-model-resource';
 import type { CreateClient, ReadClient, DeleteClient, ListClient, UpdateClient } from '../../src/client/client';
 import type { ModelListRequest, ModelListResponse, ModelRequest, ModelResponse } from '../../src/model/model';
 import { BadRequest } from '../../src/client/error';

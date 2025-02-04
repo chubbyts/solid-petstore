@@ -11,7 +11,7 @@ on:
 jobs:
   node18:
     name: Node 18
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: checkout
         uses: actions/checkout@v4
@@ -22,10 +22,10 @@ jobs:
       - run: npm install -g pnpm@latest
       - run: pnpm install
       - run: pnpm run build
-      - run: TZ=Europe/Zurich pnpm test -- --coverage
+      - run: TZ=Europe/Zurich pnpm test --run --coverage
   node20:
     name: Node 20
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: checkout
         uses: actions/checkout@v4
@@ -36,13 +36,27 @@ jobs:
       - run: npm install -g pnpm@latest
       - run: pnpm install
       - run: pnpm run build
-      - run: TZ=Europe/Zurich pnpm test -- --coverage
+      - run: TZ=Europe/Zurich pnpm test --run --coverage
+  node22:
+    name: Node 22
+    runs-on: ubuntu-24.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: checkout node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install -g pnpm@latest
+      - run: pnpm install
+      - run: pnpm run build
+      - run: TZ=Europe/Zurich pnpm test --run --coverage
       - name: coveralls.io
         uses: coverallsapp/github-action@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: sonarcloud.io
-        uses: sonarsource/sonarcloud-github-action@master
+        uses: sonarsource/sonarqube-scan-action@v4.2.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

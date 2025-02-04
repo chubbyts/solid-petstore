@@ -1,12 +1,12 @@
 import type { Component } from 'solid-js';
-import { For, Show, createEffect, onCleanup } from 'solid-js';
-import { H1 } from '../../heading';
+import { For, Show, createEffect } from 'solid-js';
 import { useParams } from '@solidjs/router';
+import { de } from 'date-fns/locale';
+import { format } from 'date-fns';
+import { H1 } from '../../heading';
 import { readPetClient as readClient } from '../../../client/pet';
 import { HttpError as HttpErrorPartial } from '../../partial/http-error';
 import { AnchorButton } from '../../button';
-import { de } from 'date-fns/locale';
-import { format } from 'date-fns';
 import { createModelResource } from '../../../hook/create-model-resource';
 
 const pageTitle = 'Pet Read';
@@ -18,12 +18,9 @@ const PetRead: Component = () => {
   const { getModel: getPet, getHttpError, actions } = createModelResource({ readClient });
 
   createEffect(() => {
+    // eslint-disable-next-line functional/immutable-data
     document.title = pageTitle;
     actions.readModel(id);
-  });
-
-  onCleanup(() => {
-    document.title = '';
   });
 
   return (

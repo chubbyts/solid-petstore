@@ -1,12 +1,12 @@
 /** @jsxImportSource solid-js */
 
-import { HttpError as HttpErrorPartial } from '../../../src/component/partial/http-error';
 import { test, expect } from 'vitest';
+import { render } from '@solidjs/testing-library';
+import { HttpError as HttpErrorPartial } from '../../../src/component/partial/http-error';
 import { formatHtml } from '../../formatter';
 import { HttpError, BadRequestOrUnprocessableEntity } from '../../../src/client/error';
-import { render } from '@solidjs/testing-library';
 
-test('minimal', () => {
+test('minimal', async () => {
   const httpError = new HttpError({
     title: 'This is the title',
   });
@@ -18,12 +18,11 @@ test('minimal', () => {
       <div data-testid="http-error" class="mb-6 bg-red-300 px-5 py-4">
         <p class="font-bold">This is the title</p>
       </div>
-    </div>
-    "
+    </div>"
   `);
 });
 
-test('maximal', () => {
+test('maximal', async () => {
   const httpError = new BadRequestOrUnprocessableEntity({
     title: 'This is the title',
     detail: 'This is the detail',
@@ -40,10 +39,11 @@ test('maximal', () => {
         <p>This is the detail</p>
         <p>This is the instance</p>
         <ul>
-          <li><strong>Invalid Parameter Name</strong>: Invalid Parameter Reason</li>
+          <li>
+            <strong>Invalid Parameter Name</strong>: Invalid Parameter Reason
+          </li>
         </ul>
       </div>
-    </div>
-    "
+    </div>"
   `);
 });

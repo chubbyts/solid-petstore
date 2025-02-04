@@ -35,6 +35,7 @@ export const createModelResource = <
 
     const response = await listClient(req);
 
+    // eslint-disable-next-line functional/no-let
     let success: boolean;
 
     if (response instanceof HttpError) {
@@ -62,6 +63,7 @@ export const createModelResource = <
 
     const response = await createClient(req);
 
+    // eslint-disable-next-line functional/no-let
     let success: boolean;
 
     if (response instanceof HttpError) {
@@ -89,6 +91,7 @@ export const createModelResource = <
 
     const response = await readClient(id);
 
+    // eslint-disable-next-line functional/no-let
     let success: boolean;
 
     if (response instanceof HttpError) {
@@ -116,6 +119,7 @@ export const createModelResource = <
 
     const response = await updateClient(id, req);
 
+    // eslint-disable-next-line functional/no-let
     let success: boolean;
 
     if (response instanceof HttpError) {
@@ -143,6 +147,7 @@ export const createModelResource = <
 
     const response = await deleteClient(id);
 
+    // eslint-disable-next-line functional/no-let
     let success: boolean;
 
     if (response instanceof HttpError) {
