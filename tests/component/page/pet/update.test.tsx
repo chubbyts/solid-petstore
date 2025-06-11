@@ -83,18 +83,12 @@ test('not found', async () => {
           <div data-testid="http-error" class="mb-6 bg-red-300 px-5 py-4">
             <p class="font-bold">title</p>
           </div>
-          <h1 class="mb-4 border-b pb-2 text-4xl font-black">Pet Update</h1>
-          <a
-            colortheme="gray"
-            href="/pet"
-            class="inline-block px-5 py-2 text-white bg-gray-600 hover:bg-gray-700 active"
-            link=""
-            >List</a
-          >
+          <h1 class="mb-4 border-b border-gray-200 pb-2 text-4xl font-black ">Pet Update</h1>
+          <a colortheme="gray" href="/pet" class="inline-block px-5 py-2 text-white bg-gray-600 hover:bg-gray-700 active"
+            link="">List</a>
         </div>
       </div>
-    </div>
-    "
+    </div>"
   `);
 });
 
@@ -138,23 +132,13 @@ test('default', async () => {
     "<div>
       <div>
         <div data-testid="page-pet-update">
-          <h1 class="mb-4 border-b pb-2 text-4xl font-black">Pet Update</h1>
-          <button
-            data-testid="pet-form-submit"
-            data-has-http-error="false"
-            data-has-initial-pet="true"
-          ></button
-          ><a
-            colortheme="gray"
-            href="/pet"
-            class="inline-block px-5 py-2 text-white bg-gray-600 hover:bg-gray-700 active"
-            link=""
-            >List</a
-          >
+          <h1 class="mb-4 border-b border-gray-200 pb-2 text-4xl font-black ">Pet Update</h1>
+          <button data-testid="pet-form-submit" data-has-http-error="false" data-has-initial-pet="true"></button>
+          <a colortheme="gray" href="/pet" class="inline-block px-5 py-2 text-white bg-gray-600 hover:bg-gray-700 active"
+            link="">List</a>
         </div>
       </div>
-    </div>
-    "
+    </div>"
   `);
 });
 
@@ -213,23 +197,13 @@ test('unprocessable entity', async () => {
           <div data-testid="http-error" class="mb-6 bg-red-300 px-5 py-4">
             <p class="font-bold">unprocessable entity</p>
           </div>
-          <h1 class="mb-4 border-b pb-2 text-4xl font-black">Pet Update</h1>
-          <button
-            data-testid="pet-form-submit"
-            data-has-http-error="true"
-            data-has-initial-pet="true"
-          ></button
-          ><a
-            colortheme="gray"
-            href="/pet"
-            class="inline-block px-5 py-2 text-white bg-gray-600 hover:bg-gray-700 active"
-            link=""
-            >List</a
-          >
+          <h1 class="mb-4 border-b border-gray-200 pb-2 text-4xl font-black ">Pet Update</h1>
+          <button data-testid="pet-form-submit" data-has-http-error="true" data-has-initial-pet="true"></button>
+          <a colortheme="gray" href="/pet" class="inline-block px-5 py-2 text-white bg-gray-600 hover:bg-gray-700 active"
+            link="">List</a>
         </div>
       </div>
-    </div>
-    "
+    </div>"
   `);
 });
 
@@ -288,8 +262,9 @@ test('successful', async () => {
 
   expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
     "<div>
-      <div><div data-testid="page-pet-list-mock"></div></div>
-    </div>
-    "
+      <div>
+        <div data-testid="page-pet-list-mock"></div>
+      </div>
+    </div>"
   `);
 });

@@ -7,7 +7,6 @@ import {
   parser as eslintTypescriptParser,
 } from 'typescript-eslint';
 import eslintUnusedImports from 'eslint-plugin-unused-imports';
-import eslintTailwindcss from 'eslint-plugin-tailwindcss';
 import eslintSolid from 'eslint-plugin-solid';
 
 export default eslintTypescriptConfig({
@@ -17,7 +16,6 @@ export default eslintTypescriptConfig({
     eslintImport.flatConfigs.typescript,
     eslintSolid.configs['flat/recommended'],
     eslintSolid.configs['flat/typescript'],
-    eslintTailwindcss.configs['flat/recommended'],
     eslintTypescriptConfigs.strict,
   ],
   plugins: {

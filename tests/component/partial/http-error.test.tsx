@@ -18,8 +18,7 @@ test('minimal', () => {
       <div data-testid="http-error" class="mb-6 bg-red-300 px-5 py-4">
         <p class="font-bold">This is the title</p>
       </div>
-    </div>
-    "
+    </div>"
   `);
 });
 
@@ -40,10 +39,11 @@ test('maximal', () => {
         <p>This is the detail</p>
         <p>This is the instance</p>
         <ul>
-          <li><strong>Invalid Parameter Name</strong>: Invalid Parameter Reason</li>
+          <li>
+            <strong>Invalid Parameter Name</strong>: Invalid Parameter Reason
+          </li>
         </ul>
       </div>
-    </div>
-    "
+    </div>"
   `);
 });

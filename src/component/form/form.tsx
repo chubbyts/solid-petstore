@@ -27,7 +27,7 @@ export const TextField: Component<TextFieldProps> = (props: TextFieldProps) => {
       <input
         data-testid={props['data-testid']}
         type="text"
-        class={`mb-3 mt-2 block w-full border px-3 py-2 ${
+        class={`mt-2 mb-3 block w-full border px-3 py-2 ${
           props.getInvalidParameters().length > 0 ? 'border-red-600 bg-red-100' : 'border-gray-300'
         }`}
         onBlur={(event) => props.setValue(event.currentTarget.value)}
