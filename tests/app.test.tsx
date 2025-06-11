@@ -7,14 +7,14 @@ import { userEvent } from '@testing-library/user-event';
 import App from '../src/app';
 import { formatHtml } from './formatter';
 
-test('close navigation', async () => {
+test('close navigation', () => {
   const { container } = render(() => <Router root={App} />);
 
   expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
     "<div>
       <div class="relative flex min-h-full flex-col md:flex-row">
         <nav
-          class="absolute flow-root h-16 w-full bg-gray-900 px-4 py-3 text-2xl font-semibold uppercase leading-relaxed text-gray-100">
+          class="absolute flow-root h-16 w-full bg-gray-900 px-4 py-3 text-2xl leading-relaxed font-semibold text-gray-100 uppercase">
           <button class="float-right block border-2 p-2 md:hidden" data-testid="navigation-toggle">
             <span class="block h-2 w-6 border-t-2"></span>
             <span class="block h-2 w-6 border-t-2"></span>
@@ -46,7 +46,7 @@ test('open navigation', async () => {
     "<div>
       <div class="relative flex min-h-full flex-col md:flex-row">
         <nav
-          class="absolute flow-root h-16 w-full bg-gray-900 px-4 py-3 text-2xl font-semibold uppercase leading-relaxed text-gray-100">
+          class="absolute flow-root h-16 w-full bg-gray-900 px-4 py-3 text-2xl leading-relaxed font-semibold text-gray-100 uppercase">
           <button class="float-right block border-2 p-2 md:hidden" data-testid="navigation-toggle">
             <span class="block h-2 w-6 border-t-2"></span>
             <span class="block h-2 w-6 border-t-2"></span>

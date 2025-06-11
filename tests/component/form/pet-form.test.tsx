@@ -8,7 +8,7 @@ import { PetForm } from '../../../src/component/form/pet-form';
 import { BadRequest, NetworkError } from '../../../src/client/error';
 import type { PetRequest } from '../../../src/model/pet';
 
-test('without initial pet', async () => {
+test('without initial pet', () => {
   const getHttpError = () => undefined;
   const getInitialPet = () => undefined;
   const submitPet = () => {};
@@ -22,10 +22,10 @@ test('without initial pet', async () => {
       <form>
         <fieldset class="mb-3 border border-gray-300 px-4 py-3 ">
           <label class="block  ">Name
-            <input type="text" data-testid="pet-form-name" class="mb-3 mt-2 block w-full border px-3 py-2 border-gray-300">
+            <input type="text" data-testid="pet-form-name" class="mt-2 mb-3 block w-full border px-3 py-2 border-gray-300">
           </label>
           <label class="block  ">Tag
-            <input type="text" data-testid="pet-form-tag" class="mb-3 mt-2 block w-full border px-3 py-2 border-gray-300">
+            <input type="text" data-testid="pet-form-tag" class="mt-2 mb-3 block w-full border px-3 py-2 border-gray-300">
           </label>
           <div class="mb-3">
             <div class="mb-2 block">Vaccinations</div>
@@ -42,7 +42,7 @@ test('without initial pet', async () => {
   `);
 });
 
-test('with initial pet', async () => {
+test('with initial pet', () => {
   const getHttpError = () => undefined;
   const getInitialPet = () => ({ name: 'Brownie', tag: '0001-000', vaccinations: [{ name: 'rabies' }] });
   const submitPet = () => {};
@@ -56,10 +56,10 @@ test('with initial pet', async () => {
       <form>
         <fieldset class="mb-3 border border-gray-300 px-4 py-3 ">
           <label class="block  ">Name
-            <input type="text" data-testid="pet-form-name" class="mb-3 mt-2 block w-full border px-3 py-2 border-gray-300">
+            <input type="text" data-testid="pet-form-name" class="mt-2 mb-3 block w-full border px-3 py-2 border-gray-300">
           </label>
           <label class="block  ">Tag
-            <input type="text" data-testid="pet-form-tag" class="mb-3 mt-2 block w-full border px-3 py-2 border-gray-300">
+            <input type="text" data-testid="pet-form-tag" class="mt-2 mb-3 block w-full border px-3 py-2 border-gray-300">
           </label>
           <div class="mb-3">
             <div class="mb-2 block">Vaccinations</div>
@@ -67,7 +67,7 @@ test('with initial pet', async () => {
               <fieldset class="mb-3 border border-gray-300 px-4 py-3 ">
                 <label class="block  ">Name
                   <input type="text" data-testid="pet-form-vaccinations-0-name"
-                    class="mb-3 mt-2 block w-full border px-3 py-2 border-gray-300">
+                    class="mt-2 mb-3 block w-full border px-3 py-2 border-gray-300">
                 </label>
                 <button data-testid="pet-form-remove-vaccination-0" colortheme="red"
                   class="inline-block px-5 py-2 text-white bg-red-600 hover:bg-red-700 mb-3">Remove</button>
@@ -103,7 +103,7 @@ test('bad request', () => {
   render(() => <PetForm getHttpError={getHttpError} getInitialPet={getInitialPet} submitPet={submitPet} />);
 });
 
-test('bad request - with query string name', async () => {
+test('bad request - with query string name', () => {
   const getHttpError = () =>
     new BadRequest({
       title: 'bad request',
@@ -125,13 +125,13 @@ test('bad request - with query string name', async () => {
         <fieldset class="mb-3 border border-gray-300 px-4 py-3 ">
           <label class="block text-red-600 ">Name
             <input type="text" data-testid="pet-form-name"
-              class="mb-3 mt-2 block w-full border px-3 py-2 border-red-600 bg-red-100">
+              class="mt-2 mb-3 block w-full border px-3 py-2 border-red-600 bg-red-100">
             <ul class="mb-3">
               <li>reason1</li>
             </ul>
           </label>
           <label class="block  ">Tag
-            <input type="text" data-testid="pet-form-tag" class="mb-3 mt-2 block w-full border px-3 py-2 border-gray-300">
+            <input type="text" data-testid="pet-form-tag" class="mt-2 mb-3 block w-full border px-3 py-2 border-gray-300">
           </label>
           <div class="mb-3">
             <div class="mb-2 block">Vaccinations</div>
@@ -139,7 +139,7 @@ test('bad request - with query string name', async () => {
               <fieldset class="mb-3 border border-gray-300 px-4 py-3 ">
                 <label class="block text-red-600 ">Name
                   <input type="text" data-testid="pet-form-vaccinations-0-name"
-                    class="mb-3 mt-2 block w-full border px-3 py-2 border-red-600 bg-red-100">
+                    class="mt-2 mb-3 block w-full border px-3 py-2 border-red-600 bg-red-100">
                   <ul class="mb-3">
                     <li>reason2</li>
                   </ul>

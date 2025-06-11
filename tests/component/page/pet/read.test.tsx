@@ -56,7 +56,7 @@ test('not found', async () => {
           <div data-testid="http-error" class="mb-6 bg-red-300 px-5 py-4">
             <p class="font-bold">title</p>
           </div>
-          <h1 class="mb-4 border-b pb-2 text-4xl font-black ">Pet Read</h1>
+          <h1 class="mb-4 border-b border-gray-200 pb-2 text-4xl font-black ">Pet Read</h1>
           <a colortheme="gray" href="/pet" class="inline-block px-5 py-2 text-white bg-gray-600 hover:bg-gray-700 active"
             link="">List</a>
         </div>
@@ -105,7 +105,7 @@ test('success without vaccinations', async () => {
     "<div>
       <div>
         <div data-testid="page-pet-read">
-          <h1 class="mb-4 border-b pb-2 text-4xl font-black ">Pet Read</h1>
+          <h1 class="mb-4 border-b border-gray-200 pb-2 text-4xl font-black ">Pet Read</h1>
           <div>
             <dl>
               <dt class="font-bold">Id</dt>
@@ -170,7 +170,7 @@ test('success with vaccinations', async () => {
     "<div>
       <div>
         <div data-testid="page-pet-read">
-          <h1 class="mb-4 border-b pb-2 text-4xl font-black ">Pet Read</h1>
+          <h1 class="mb-4 border-b border-gray-200 pb-2 text-4xl font-black ">Pet Read</h1>
           <div>
             <dl>
               <dt class="font-bold">Id</dt>

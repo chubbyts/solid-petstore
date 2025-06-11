@@ -6,7 +6,7 @@ import { HttpError as HttpErrorPartial } from '../../../src/component/partial/ht
 import { formatHtml } from '../../formatter';
 import { HttpError, BadRequestOrUnprocessableEntity } from '../../../src/client/error';
 
-test('minimal', async () => {
+test('minimal', () => {
   const httpError = new HttpError({
     title: 'This is the title',
   });
@@ -22,7 +22,7 @@ test('minimal', async () => {
   `);
 });
 
-test('maximal', async () => {
+test('maximal', () => {
   const httpError = new BadRequestOrUnprocessableEntity({
     title: 'This is the title',
     detail: 'This is the detail',

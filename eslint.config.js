@@ -7,14 +7,15 @@ import {
   parser as eslintTypescriptParser,
 } from 'typescript-eslint';
 import eslintUnusedImports from 'eslint-plugin-unused-imports';
-import eslintTailwindcss from 'eslint-plugin-tailwindcss';
+import eslintSolid from 'eslint-plugin-solid';
 
 export default eslintTypescriptConfig({
   extends: [
     eslint.configs.recommended,
     eslintImport.flatConfigs.recommended,
     eslintImport.flatConfigs.typescript,
-    eslintTailwindcss.configs['flat/recommended'],
+    eslintSolid.configs['flat/recommended'],
+    eslintSolid.configs['flat/typescript'],
     eslintTypescriptConfigs.strict,
   ],
   plugins: {
@@ -49,7 +50,6 @@ export default eslintTypescriptConfig({
     'no-var': 'error',
     'prefer-const': 'error',
     'unused-imports/no-unused-imports': 'error',
-    'vue/one-component-per-file': 'off',
   },
   settings: {
     'import/resolver': {

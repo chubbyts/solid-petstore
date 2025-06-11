@@ -8,7 +8,7 @@ import { PetFiltersForm } from '../../../src/component/form/pet-filters-form';
 import { BadRequest, NetworkError } from '../../../src/client/error';
 import type { PetFilters } from '../../../src/model/pet';
 
-test('default', async () => {
+test('default', () => {
   const getHttpError = () => undefined;
   const getInitialPetFilters = () => ({});
   const submitPetFilters = () => {};
@@ -27,7 +27,7 @@ test('default', async () => {
         <fieldset class="mb-3 border border-gray-300 px-4 py-3 ">
           <label class="block  ">Name
             <input type="text" data-testid="pet-filters-form-name"
-              class="mb-3 mt-2 block w-full border px-3 py-2 border-gray-300">
+              class="mt-2 mb-3 block w-full border px-3 py-2 border-gray-300">
           </label>
           <button data-testid="pet-filters-form-submit" colortheme="blue"
             class="inline-block px-5 py-2 text-white bg-blue-600 hover:bg-blue-700 ">Filter</button>
@@ -68,7 +68,7 @@ test('bad request', () => {
   ));
 });
 
-test('bad request - with query string name', async () => {
+test('bad request - with query string name', () => {
   const getHttpError = () =>
     new BadRequest({ title: 'bad request', invalidParameters: [{ name: 'filters[name]', reason: 'reason' }] });
   const getInitialPetFilters = () => ({});
@@ -88,7 +88,7 @@ test('bad request - with query string name', async () => {
         <fieldset class="mb-3 border border-gray-300 px-4 py-3 ">
           <label class="block text-red-600 ">Name
             <input type="text" data-testid="pet-filters-form-name"
-              class="mb-3 mt-2 block w-full border px-3 py-2 border-red-600 bg-red-100">
+              class="mt-2 mb-3 block w-full border px-3 py-2 border-red-600 bg-red-100">
             <ul class="mb-3">
               <li>reason</li>
             </ul>

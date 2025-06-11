@@ -49,7 +49,7 @@ export const Td: Component<JSX.HTMLAttributes<HTMLDivElement>> = (props: JSX.HTM
   return (
     <div
       {...props}
-      class={`block border-x border-gray-300 px-4 first:border-t first:pt-3 last:border-b last:pb-3 md:table-cell md:border-x-0 md:border-b md:px-4 md:py-3 md:first:border-l md:first:border-t-0 md:last:border-r ${
+      class={`block border-x border-gray-300 px-4 first:border-t first:pt-3 last:border-b last:pb-3 md:table-cell md:border-x-0 md:border-b md:px-4 md:py-3 md:first:border-t-0 md:first:border-l md:last:border-r ${
         props.class ?? ''
       }`}
     >

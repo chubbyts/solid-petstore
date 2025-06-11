@@ -6,7 +6,7 @@ import { test, expect } from 'vitest';
 import { formatHtml } from '../../formatter';
 import { Pagination } from '../../../src/component/partial/pagination';
 
-test('max pages 1', async () => {
+test('max pages 1', () => {
   const submitPage = (): void => {};
 
   const { container } = render(() => (
@@ -16,7 +16,7 @@ test('max pages 1', async () => {
   expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot('"<div></div>"');
 });
 
-test('total pages 1', async () => {
+test('total pages 1', () => {
   const submitPage = (): void => {};
 
   const { container } = render(() => (
@@ -26,7 +26,7 @@ test('total pages 1', async () => {
   expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot('"<div></div>"');
 });
 
-test('current 1', async () => {
+test('current 1', () => {
   const submitPage = (): void => {};
 
   const { container } = render(() => (
@@ -68,7 +68,7 @@ test('current 1', async () => {
   `);
 });
 
-test('current 4', async () => {
+test('current 4', () => {
   const submitPage = (): void => {};
 
   const { container } = render(() => (
@@ -116,7 +116,7 @@ test('current 4', async () => {
   `);
 });
 
-test('current 7', async () => {
+test('current 7', () => {
   const submitPage = (): void => {};
 
   const { container } = render(() => (
@@ -164,7 +164,7 @@ test('current 7', async () => {
   `);
 });
 
-test('current 10', async () => {
+test('current 10', () => {
   const submitPage = (): void => {};
 
   const { container } = render(() => (
