@@ -1,25 +1,34 @@
 import type { Component } from 'solid-js';
 import { Show, createEffect } from 'solid-js';
 import { useNavigate } from '@solidjs/router';
+import { useMutation } from '@tanstack/solid-query';
 import { H1 } from '../../heading';
-import { createPetClient as createClient } from '../../../client/pet';
+import { createPetClient } from '../../../client/pet';
 import { HttpError as HttpErrorPartial } from '../../partial/http-error';
 import { PetForm } from '../../form/pet-form';
 import { AnchorButton } from '../../button';
-import type { PetRequest } from '../../../model/pet';
-import { createModelResource } from '../../../hook/create-model-resource';
+import type { PetRequest, PetResponse } from '../../../model/pet';
+import type { HttpError } from '../../../client/error';
+import { provideCreateMutationFn, queryClient } from '../../../hook/use-query';
 
 const pageTitle = 'Pet Create';
 
 const PetCreate: Component = () => {
   const navigate = useNavigate();
 
-  const { getHttpError, actions } = createModelResource({ createClient });
+  const petMutation = useMutation<PetResponse, HttpError, PetRequest>(
+    () => ({
+      mutationFn: provideCreateMutationFn(createPetClient),
+      onSuccess: () => {
+        navigate('/pet');
+      },
+      retry: false,
+    }),
+    () => queryClient,
+  );
 
-  const submitPet = async (pet: PetRequest) => {
-    if (await actions.createModel(pet)) {
-      navigate('/pet');
-    }
+  const submitPet = async (petRequest: PetRequest) => {
+    petMutation.mutate(petRequest);
   };
 
   createEffect(() => {
@@ -29,9 +38,13 @@ const PetCreate: Component = () => {
 
   return (
     <div data-testid="page-pet-create">
-      <Show when={getHttpError()}>{(getHttpError) => <HttpErrorPartial httpError={getHttpError()} />}</Show>
+      <Show when={petMutation.error}>{(getHttpError) => <HttpErrorPartial httpError={getHttpError()} />}</Show>
       <H1>{pageTitle}</H1>
-      <PetForm getHttpError={getHttpError} getInitialPet={() => undefined} submitPet={submitPet} />
+      <PetForm
+        getHttpError={() => petMutation.error ?? undefined}
+        getInitialPet={() => undefined}
+        submitPet={submitPet}
+      />
       <AnchorButton href="/pet" colorTheme="gray">
         List
       </AnchorButton>

@@ -1,18 +1,20 @@
 /** @jsxImportSource solid-js */
 
 import { render } from '@solidjs/testing-library';
-import { test, expect } from 'vitest';
+import { test, expect, describe } from 'vitest';
 import Home from '../../../src/component/page/home';
 import { formatHtml } from '../../formatter';
 
-test('default', () => {
-  const { container } = render(() => <Home />);
+describe('home', () => {
+  test('default', () => {
+    const { container } = render(() => <Home />);
 
-  expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
+    expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
     "<div>
       <div>
         <h1 class="mb-4 border-b border-gray-200 pb-2 text-4xl font-black ">Home</h1>
       </div>
     </div>"
   `);
+  });
 });
