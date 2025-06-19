@@ -4,10 +4,10 @@ import { useParams } from '@solidjs/router';
 import { de } from 'date-fns/locale';
 import { format } from 'date-fns';
 import { H1 } from '../../heading';
-import { readPetClient as readClient } from '../../../client/pet';
+import { readPetClient } from '../../../client/pet';
 import { HttpError as HttpErrorPartial } from '../../partial/http-error';
 import { AnchorButton } from '../../button';
-import { createModelResource } from '../../../hook/create-model-resource';
+import { useReadQuery } from '../../../hook/read';
 
 const pageTitle = 'Pet Read';
 
@@ -15,20 +15,19 @@ const PetRead: Component = () => {
   const params = useParams();
   const id = params.id;
 
-  const { getModel: getPet, getHttpError, actions } = createModelResource({ readClient });
+  const petQuery = useReadQuery(readPetClient, 'pets', id);
 
   createEffect(() => {
     // eslint-disable-next-line functional/immutable-data
     document.title = pageTitle;
-    actions.readModel(id);
   });
 
   return (
-    <Show when={getPet() || getHttpError()}>
+    <Show when={!petQuery.isLoading}>
       <div data-testid="page-pet-read">
-        <Show when={getHttpError()}>{(getHttpError) => <HttpErrorPartial httpError={getHttpError()} />}</Show>
+        <Show when={petQuery.error}>{(getError) => <HttpErrorPartial httpError={getError()} />}</Show>
         <H1>{pageTitle}</H1>
-        <Show when={getPet()}>
+        <Show when={petQuery.data}>
           {(getPet) => (
             <div>
               <dl>
