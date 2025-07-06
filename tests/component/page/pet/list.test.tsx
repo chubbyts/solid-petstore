@@ -54,7 +54,7 @@ vi.mock('../../../../src/component/partial/pagination', () => {
 
 describe('page - pet - list', () => {
   test('bad request', async () => {
-    nock('https://petstore.test').get('/api/pets?offset=0&limit=10').reply(400, {
+    nock('https://petstore.test').get('/api/pets').query({ offset: 0, limit: 10 }).reply(400, {
       type: 'https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.1',
       status: 400,
       title: 'Bad Request',
@@ -110,7 +110,8 @@ describe('page - pet - list', () => {
 
   test('default minimal', async () => {
     nock('https://petstore.test')
-      .get('/api/pets?offset=0&limit=10')
+      .get('/api/pets')
+      .query({ offset: 0, limit: 10 })
       .reply(200, {
         offset: 0,
         limit: 10,
@@ -242,7 +243,8 @@ describe('page - pet - list', () => {
 
   test('default maximal', async () => {
     nock('https://petstore.test')
-      .get('/api/pets?offset=0&limit=10')
+      .get('/api/pets')
+      .query({ offset: 0, limit: 10 })
       .reply(200, {
         offset: 0,
         limit: 10,
@@ -390,7 +392,8 @@ describe('page - pet - list', () => {
 
   test('delete error', async () => {
     nock('https://petstore.test')
-      .get('/api/pets?offset=0&limit=10')
+      .get('/api/pets')
+      .query({ offset: 0, limit: 10 })
       .reply(200, {
         offset: 0,
         limit: 10,
@@ -474,7 +477,8 @@ describe('page - pet - list', () => {
 
   test('delete success', async () => {
     nock('https://petstore.test')
-      .get('/api/pets?offset=0&limit=10')
+      .get('/api/pets')
+      .query({ offset: 0, limit: 10 })
       .reply(200, {
         offset: 0,
         limit: 10,
@@ -543,7 +547,8 @@ describe('page - pet - list', () => {
 
   test('submit', async () => {
     nock('https://petstore.test')
-      .get('/api/pets?offset=0&limit=10')
+      .get('/api/pets')
+      .query({ offset: 0, limit: 10 })
       .reply(200, {
         offset: 0,
         limit: 10,
@@ -571,7 +576,8 @@ describe('page - pet - list', () => {
       });
 
     nock('https://petstore.test')
-      .get('/api/pets?offset=0&limit=10&sort[name]=desc')
+      .get('/api/pets')
+      .query({ offset: 0, limit: 10, sort: { name: 'desc' } })
       .reply(200, {
         offset: 0,
         limit: 10,
@@ -599,7 +605,8 @@ describe('page - pet - list', () => {
       });
 
     nock('https://petstore.test')
-      .get('/api/pets?offset=0&limit=10&filters[name]=Brownie&sort[name]=desc')
+      .get('/api/pets')
+      .query({ offset: 0, limit: 10, filters: { name: 'Brownie' }, sort: { name: 'desc' } })
       .reply(200, {
         offset: 0,
         limit: 10,
