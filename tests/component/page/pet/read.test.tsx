@@ -1,6 +1,6 @@
 /** @jsxImportSource solid-js */
 
-import { vi, test, expect } from 'vitest';
+import { vi, test, expect, describe } from 'vitest';
 import type { RouteSectionProps } from '@solidjs/router';
 import { Route, Router, useNavigate } from '@solidjs/router';
 import { createEffect } from 'solid-js';
@@ -23,33 +23,34 @@ vi.mock('../../../../src/client/pet', () => {
   };
 });
 
-test('not found', async () => {
-  mockReadPetClient = async (id: string) => {
-    expect(id).toBe('4d783b77-eb09-4603-b99b-f590b605eaa9');
+describe('read', () => {
+  test('not found', async () => {
+    mockReadPetClient = async (id: string) => {
+      expect(id).toBe('4d783b77-eb09-4603-b99b-f590b605eaa9');
 
-    return new Promise<NotFound>((resolve) => resolve(new NotFound({ title: 'title' })));
-  };
+      return new Promise<NotFound>((resolve) => resolve(new NotFound({ title: 'title' })));
+    };
 
-  const App = (props: RouteSectionProps) => {
-    const navigate = useNavigate();
+    const App = (props: RouteSectionProps) => {
+      const navigate = useNavigate();
 
-    createEffect(() => {
-      navigate('/pet/4d783b77-eb09-4603-b99b-f590b605eaa9', { scroll: false });
-    });
+      createEffect(() => {
+        navigate('/pet/4d783b77-eb09-4603-b99b-f590b605eaa9', { scroll: false });
+      });
 
-    return <div>{props.children}</div>;
-  };
+      return <div>{props.children}</div>;
+    };
 
-  const { container } = render(() => (
-    <Router root={App}>
-      <Route path="/" component={() => <div />} />
-      <Route path="/pet/:id" component={Read} />
-    </Router>
-  ));
+    const { container } = render(() => (
+      <Router root={App}>
+        <Route path="/" component={() => <div />} />
+        <Route path="/pet/:id" component={Read} />
+      </Router>
+    ));
 
-  await screen.findByTestId('page-pet-read');
+    await screen.findByTestId('page-pet-read');
 
-  expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
+    expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
     "<div>
       <div>
         <div data-testid="page-pet-read">
@@ -63,45 +64,45 @@ test('not found', async () => {
       </div>
     </div>"
   `);
-});
+  });
 
-test('success without vaccinations', async () => {
-  const petResponse: PetResponse = {
-    id: '4d783b77-eb09-4603-b99b-f590b605eaa9',
-    createdAt: '2005-08-15T15:52:01+00:00',
-    updatedAt: '2005-08-15T15:55:01+00:00',
-    name: 'Brownie',
-    tag: '0001-000',
-    vaccinations: [],
-    _links: {},
-  };
+  test('success without vaccinations', async () => {
+    const petResponse: PetResponse = {
+      id: '4d783b77-eb09-4603-b99b-f590b605eaa9',
+      createdAt: '2005-08-15T15:52:01+00:00',
+      updatedAt: '2005-08-15T15:55:01+00:00',
+      name: 'Brownie',
+      tag: '0001-000',
+      vaccinations: [],
+      _links: {},
+    };
 
-  mockReadPetClient = async (id: string) => {
-    expect(id).toBe('4d783b77-eb09-4603-b99b-f590b605eaa9');
+    mockReadPetClient = async (id: string) => {
+      expect(id).toBe('4d783b77-eb09-4603-b99b-f590b605eaa9');
 
-    return new Promise<PetResponse>((resolve) => resolve(petResponse));
-  };
+      return new Promise<PetResponse>((resolve) => resolve(petResponse));
+    };
 
-  const App = (props: RouteSectionProps) => {
-    const navigate = useNavigate();
+    const App = (props: RouteSectionProps) => {
+      const navigate = useNavigate();
 
-    createEffect(() => {
-      navigate('/pet/4d783b77-eb09-4603-b99b-f590b605eaa9', { scroll: false });
-    });
+      createEffect(() => {
+        navigate('/pet/4d783b77-eb09-4603-b99b-f590b605eaa9', { scroll: false });
+      });
 
-    return <div>{props.children}</div>;
-  };
+      return <div>{props.children}</div>;
+    };
 
-  const { container } = render(() => (
-    <Router root={App}>
-      <Route path="/" component={() => <div />} />
-      <Route path="/pet/:id" component={Read} />
-    </Router>
-  ));
+    const { container } = render(() => (
+      <Router root={App}>
+        <Route path="/" component={() => <div />} />
+        <Route path="/pet/:id" component={Read} />
+      </Router>
+    ));
 
-  await screen.findByTestId('page-pet-read');
+    await screen.findByTestId('page-pet-read');
 
-  expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
+    expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
     "<div>
       <div>
         <div data-testid="page-pet-read">
@@ -128,45 +129,45 @@ test('success without vaccinations', async () => {
       </div>
     </div>"
   `);
-});
+  });
 
-test('success with vaccinations', async () => {
-  const petResponse: PetResponse = {
-    id: '4d783b77-eb09-4603-b99b-f590b605eaa9',
-    createdAt: '2005-08-15T15:52:01+00:00',
-    updatedAt: '2005-08-15T15:55:01+00:00',
-    name: 'Brownie',
-    tag: '0001-000',
-    vaccinations: [{ name: 'Rabies' }],
-    _links: {},
-  };
+  test('success with vaccinations', async () => {
+    const petResponse: PetResponse = {
+      id: '4d783b77-eb09-4603-b99b-f590b605eaa9',
+      createdAt: '2005-08-15T15:52:01+00:00',
+      updatedAt: '2005-08-15T15:55:01+00:00',
+      name: 'Brownie',
+      tag: '0001-000',
+      vaccinations: [{ name: 'Rabies' }],
+      _links: {},
+    };
 
-  mockReadPetClient = async (id: string) => {
-    expect(id).toBe('4d783b77-eb09-4603-b99b-f590b605eaa9');
+    mockReadPetClient = async (id: string) => {
+      expect(id).toBe('4d783b77-eb09-4603-b99b-f590b605eaa9');
 
-    return new Promise<PetResponse>((resolve) => resolve(petResponse));
-  };
+      return new Promise<PetResponse>((resolve) => resolve(petResponse));
+    };
 
-  const App = (props: RouteSectionProps) => {
-    const navigate = useNavigate();
+    const App = (props: RouteSectionProps) => {
+      const navigate = useNavigate();
 
-    createEffect(() => {
-      navigate('/pet/4d783b77-eb09-4603-b99b-f590b605eaa9', { scroll: false });
-    });
+      createEffect(() => {
+        navigate('/pet/4d783b77-eb09-4603-b99b-f590b605eaa9', { scroll: false });
+      });
 
-    return <div>{props.children}</div>;
-  };
+      return <div>{props.children}</div>;
+    };
 
-  const { container } = render(() => (
-    <Router root={App}>
-      <Route path="/" component={() => <div />} />
-      <Route path="/pet/:id" component={Read} />
-    </Router>
-  ));
+    const { container } = render(() => (
+      <Router root={App}>
+        <Route path="/" component={() => <div />} />
+        <Route path="/pet/:id" component={Read} />
+      </Router>
+    ));
 
-  await screen.findByTestId('page-pet-read');
+    await screen.findByTestId('page-pet-read');
 
-  expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
+    expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
     "<div>
       <div>
         <div data-testid="page-pet-read">
@@ -197,4 +198,5 @@ test('success with vaccinations', async () => {
       </div>
     </div>"
   `);
+  });
 });

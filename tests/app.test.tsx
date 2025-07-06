@@ -1,16 +1,17 @@
 /** @jsxImportSource solid-js */
 
-import { test, expect } from 'vitest';
+import { test, expect, describe } from 'vitest';
 import { render, screen } from '@solidjs/testing-library';
 import { Router } from '@solidjs/router';
 import { userEvent } from '@testing-library/user-event';
 import App from '../src/app';
 import { formatHtml } from './formatter';
 
-test('close navigation', () => {
-  const { container } = render(() => <Router root={App} />);
+describe('app', () => {
+  test('close navigation', () => {
+    const { container } = render(() => <Router root={App} />);
 
-  expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
+    expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
     "<div>
       <div class="relative flex min-h-full flex-col md:flex-row">
         <nav
@@ -33,16 +34,16 @@ test('close navigation', () => {
       </div>
     </div>"
   `);
-});
+  });
 
-test('open navigation', async () => {
-  const { container } = render(() => <Router root={App} />);
+  test('open navigation', async () => {
+    const { container } = render(() => <Router root={App} />);
 
-  const navigationToggle = await screen.findByTestId('navigation-toggle');
+    const navigationToggle = await screen.findByTestId('navigation-toggle');
 
-  await userEvent.click(navigationToggle);
+    await userEvent.click(navigationToggle);
 
-  expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
+    expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
     "<div>
       <div class="relative flex min-h-full flex-col md:flex-row">
         <nav
@@ -65,4 +66,5 @@ test('open navigation', async () => {
       </div>
     </div>"
   `);
+  });
 });

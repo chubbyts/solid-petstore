@@ -1,6 +1,6 @@
 /** @jsxImportSource solid-js */
 
-import { test, expect, vi } from 'vitest';
+import { test, expect, vi, describe } from 'vitest';
 import { render, screen } from '@solidjs/testing-library';
 import type { RouteSectionProps } from '@solidjs/router';
 import { Router, useNavigate } from '@solidjs/router';
@@ -44,170 +44,172 @@ vi.mock('../src/component/page/not-found', () => {
   };
 });
 
-test('home page', async () => {
-  const App = (props: RouteSectionProps) => {
-    const navigate = useNavigate();
+describe('routes', () => {
+  test('home page', async () => {
+    const App = (props: RouteSectionProps) => {
+      const navigate = useNavigate();
 
-    createEffect(() => {
-      navigate('/', { scroll: false });
-    });
+      createEffect(() => {
+        navigate('/', { scroll: false });
+      });
 
-    return <div>{props.children}</div>;
-  };
+      return <div>{props.children}</div>;
+    };
 
-  const { container } = render(() => (
-    <Router root={App}>
-      <Routes />
-    </Router>
-  ));
+    const { container } = render(() => (
+      <Router root={App}>
+        <Routes />
+      </Router>
+    ));
 
-  await screen.findByTestId('page-home-mock');
+    await screen.findByTestId('page-home-mock');
 
-  expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
+    expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
     "<div>
       <div>
         <div data-testid="page-home-mock"></div>
       </div>
     </div>"
   `);
-});
+  });
 
-test('not found', async () => {
-  const App = (props: RouteSectionProps) => {
-    const navigate = useNavigate();
+  test('not found', async () => {
+    const App = (props: RouteSectionProps) => {
+      const navigate = useNavigate();
 
-    createEffect(() => {
-      navigate('/some-unknown-page', { scroll: false });
-    });
+      createEffect(() => {
+        navigate('/some-unknown-page', { scroll: false });
+      });
 
-    return <div>{props.children}</div>;
-  };
+      return <div>{props.children}</div>;
+    };
 
-  const { container } = render(() => (
-    <Router root={App}>
-      <Routes />
-    </Router>
-  ));
+    const { container } = render(() => (
+      <Router root={App}>
+        <Routes />
+      </Router>
+    ));
 
-  await screen.findByTestId('page-not-found-mock');
+    await screen.findByTestId('page-not-found-mock');
 
-  expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
+    expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
     "<div>
       <div>
         <div data-testid="page-not-found-mock"></div>
       </div>
     </div>"
   `);
-});
+  });
 
-test('pet list', async () => {
-  const App = (props: RouteSectionProps) => {
-    const navigate = useNavigate();
+  test('pet list', async () => {
+    const App = (props: RouteSectionProps) => {
+      const navigate = useNavigate();
 
-    createEffect(() => {
-      navigate('/pet', { scroll: false });
-    });
+      createEffect(() => {
+        navigate('/pet', { scroll: false });
+      });
 
-    return <div>{props.children}</div>;
-  };
+      return <div>{props.children}</div>;
+    };
 
-  const { container } = render(() => (
-    <Router root={App}>
-      <Routes />
-    </Router>
-  ));
+    const { container } = render(() => (
+      <Router root={App}>
+        <Routes />
+      </Router>
+    ));
 
-  await screen.findByTestId('page-pet-list-mock');
+    await screen.findByTestId('page-pet-list-mock');
 
-  expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
+    expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
     "<div>
       <div>
         <div data-testid="page-pet-list-mock"></div>
       </div>
     </div>"
   `);
-});
+  });
 
-test('pet create', async () => {
-  const App = (props: RouteSectionProps) => {
-    const navigate = useNavigate();
+  test('pet create', async () => {
+    const App = (props: RouteSectionProps) => {
+      const navigate = useNavigate();
 
-    createEffect(() => {
-      navigate('/pet/create', { scroll: false });
-    });
+      createEffect(() => {
+        navigate('/pet/create', { scroll: false });
+      });
 
-    return <div>{props.children}</div>;
-  };
+      return <div>{props.children}</div>;
+    };
 
-  const { container } = render(() => (
-    <Router root={App}>
-      <Routes />
-    </Router>
-  ));
+    const { container } = render(() => (
+      <Router root={App}>
+        <Routes />
+      </Router>
+    ));
 
-  await screen.findByTestId('page-pet-create-mock');
+    await screen.findByTestId('page-pet-create-mock');
 
-  expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
+    expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
     "<div>
       <div>
         <div data-testid="page-pet-create-mock"></div>
       </div>
     </div>"
   `);
-});
+  });
 
-test('pet read', async () => {
-  const App = (props: RouteSectionProps) => {
-    const navigate = useNavigate();
+  test('pet read', async () => {
+    const App = (props: RouteSectionProps) => {
+      const navigate = useNavigate();
 
-    createEffect(() => {
-      navigate('/pet/4d783b77-eb09-4603-b99b-f590b605eaa9', { scroll: false });
-    });
+      createEffect(() => {
+        navigate('/pet/4d783b77-eb09-4603-b99b-f590b605eaa9', { scroll: false });
+      });
 
-    return <div>{props.children}</div>;
-  };
+      return <div>{props.children}</div>;
+    };
 
-  const { container } = render(() => (
-    <Router root={App}>
-      <Routes />
-    </Router>
-  ));
+    const { container } = render(() => (
+      <Router root={App}>
+        <Routes />
+      </Router>
+    ));
 
-  await screen.findByTestId('page-pet-read-mock');
+    await screen.findByTestId('page-pet-read-mock');
 
-  expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
+    expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
     "<div>
       <div>
         <div data-testid="page-pet-read-mock"></div>
       </div>
     </div>"
   `);
-});
+  });
 
-test('pet update', async () => {
-  const App = (props: RouteSectionProps) => {
-    const navigate = useNavigate();
+  test('pet update', async () => {
+    const App = (props: RouteSectionProps) => {
+      const navigate = useNavigate();
 
-    createEffect(() => {
-      navigate('/pet/4d783b77-eb09-4603-b99b-f590b605eaa9/update', { scroll: false });
-    });
+      createEffect(() => {
+        navigate('/pet/4d783b77-eb09-4603-b99b-f590b605eaa9/update', { scroll: false });
+      });
 
-    return <div>{props.children}</div>;
-  };
+      return <div>{props.children}</div>;
+    };
 
-  const { container } = render(() => (
-    <Router root={App}>
-      <Routes />
-    </Router>
-  ));
+    const { container } = render(() => (
+      <Router root={App}>
+        <Routes />
+      </Router>
+    ));
 
-  await screen.findByTestId('page-pet-update-mock');
+    await screen.findByTestId('page-pet-update-mock');
 
-  expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
+    expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
     "<div>
       <div>
         <div data-testid="page-pet-update-mock"></div>
       </div>
     </div>"
   `);
+  });
 });

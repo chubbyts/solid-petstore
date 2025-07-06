@@ -5,7 +5,7 @@ import type { CreateClient, ReadClient, DeleteClient, ListClient, UpdateClient }
 import type { ModelListRequest, ModelListResponse, ModelRequest, ModelResponse } from '../../src/model/model';
 import { BadRequest } from '../../src/client/error';
 
-describe('createModelResource', () => {
+describe('create-model-resource', () => {
   describe('list', () => {
     test('missing client', async () => {
       const { actions } = createModelResource({});
