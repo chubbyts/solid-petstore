@@ -31,7 +31,7 @@ vi.mock('../../../../src/component/form/pet-form', () => {
   };
 });
 
-describe('page - pet - create', () => {
+describe('create', () => {
   test('default', async () => {
     const App = (props: RouteSectionProps) => {
       const navigate = useNavigate();

@@ -11,7 +11,7 @@ import { formatHtml } from '../../../formatter';
 import type { PetResponse } from '../../../../src/model/pet';
 import Read from '../../../../src/component/page/pet/read';
 
-describe('page - pet - read', () => {
+describe('read', () => {
   test('not found', async () => {
     nock('https://petstore.test').get('/api/pets/c9f4bea3-e706-4397-9560-01a0c0c52151').reply(404, {
       type: 'https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.5',

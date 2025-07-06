@@ -8,11 +8,11 @@ import { PetForm } from '../../../src/component/form/pet-form';
 import { BadRequest, NetworkError } from '../../../src/client/error';
 import type { PetRequest } from '../../../src/model/pet';
 
-describe('pet-filters', () => {
+describe('pet-form', () => {
   test('without initial pet', () => {
     const getHttpError = () => undefined;
     const getInitialPet = () => undefined;
-    const submitPet = () => {};
+    const submitPet = () => { };
 
     const { container } = render(() => (
       <PetForm getHttpError={getHttpError} getInitialPet={getInitialPet} submitPet={submitPet} />
@@ -46,7 +46,7 @@ describe('pet-filters', () => {
   test('with initial pet', () => {
     const getHttpError = () => undefined;
     const getInitialPet = () => ({ name: 'Brownie', tag: '0001-000', vaccinations: [{ name: 'rabies' }] });
-    const submitPet = () => {};
+    const submitPet = () => { };
 
     const { container } = render(() => (
       <PetForm getHttpError={getHttpError} getInitialPet={getInitialPet} submitPet={submitPet} />
@@ -88,7 +88,7 @@ describe('pet-filters', () => {
   test('network error', () => {
     const getHttpError = () => new NetworkError({ title: 'network error' });
     const getInitialPet = () => ({ name: 'Brownie', tag: '0001-000', vaccinations: [{ name: 'rabies' }] });
-    const submitPet = () => {};
+    const submitPet = () => { };
 
     render(() => <PetForm getHttpError={getHttpError} getInitialPet={getInitialPet} submitPet={submitPet} />);
   });
@@ -99,7 +99,7 @@ describe('pet-filters', () => {
         title: 'bad request',
       });
     const getInitialPet = () => ({ name: 'Brownie', tag: '0001-000', vaccinations: [{ name: 'rabies' }] });
-    const submitPet = () => {};
+    const submitPet = () => { };
 
     render(() => <PetForm getHttpError={getHttpError} getInitialPet={getInitialPet} submitPet={submitPet} />);
   });
@@ -114,7 +114,7 @@ describe('pet-filters', () => {
         ],
       });
     const getInitialPet = () => ({ name: 'Brownie', tag: '0001-000', vaccinations: [{ name: 'rabies' }] });
-    const submitPet = () => {};
+    const submitPet = () => { };
 
     const { container } = render(() => (
       <PetForm getHttpError={getHttpError} getInitialPet={getInitialPet} submitPet={submitPet} />

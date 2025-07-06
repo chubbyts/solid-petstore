@@ -32,7 +32,7 @@ vi.mock('../../../../src/component/form/pet-form', () => {
   };
 });
 
-describe('page - pet - update', () => {
+describe('update', () => {
   test('not found', async () => {
     nock('https://petstore.test').get('/api/pets/4d783b77-eb09-4603-b99b-f590b605eaa9').reply(404, {
       type: 'https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.5',

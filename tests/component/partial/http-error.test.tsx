@@ -6,7 +6,7 @@ import { HttpError as HttpErrorPartial } from '../../../src/component/partial/ht
 import { formatHtml } from '../../formatter';
 import { HttpError, BadRequestOrUnprocessableEntity } from '../../../src/client/error';
 
-describe('pagination', () => {
+describe('http-error', () => {
   test('minimal', () => {
     const httpError = new HttpError({
       title: 'This is the title',

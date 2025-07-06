@@ -52,7 +52,7 @@ vi.mock('../../../../src/component/partial/pagination', () => {
   };
 });
 
-describe('page - pet - list', () => {
+describe('list', () => {
   test('bad request', async () => {
     nock('https://petstore.test').get('/api/pets').query({ offset: 0, limit: 10 }).reply(400, {
       type: 'https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.1',
