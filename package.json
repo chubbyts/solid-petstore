@@ -23,7 +23,7 @@
   "dependencies": {
     "@chubbyts/chubbyts-throwable-to-error": "^2.0.2",
     "@solidjs/router": "^0.15.3",
-    "@tanstack/solid-query": "^5.80.10",
+    "@tanstack/solid-query": "^5.81.5",
     "cross-fetch": "^4.1.0",
     "date-fns": "^4.1.0",
     "nock": "^14.0.5",

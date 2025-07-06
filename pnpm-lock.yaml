@@ -15,8 +15,8 @@ importers:
         specifier: ^0.15.3
         version: 0.15.3(solid-js@1.9.7)
       '@tanstack/solid-query':
-        specifier: ^5.80.10
-        version: 5.80.10(solid-js@1.9.7)
+        specifier: ^5.81.5
+        version: 5.81.5(solid-js@1.9.7)
       cross-fetch:
         specifier: ^4.1.0
         version: 4.1.0
@@ -748,11 +748,11 @@ packages:
   '@tailwindcss/postcss@4.1.11':
     resolution: {integrity: sha512-q/EAIIpF6WpLhKEuQSEVMZNMIY8KhWoAemZ9eylNAih9jxMGAYPPWBn3I9QL/2jZ+e7OEz/tZkX5HwbBR4HohA==}
 
-  '@tanstack/query-core@5.80.10':
-    resolution: {integrity: sha512-mUNQOtzxkjL6jLbyChZoSBP6A5gQDVRUiPvW+/zw/9ftOAz+H754zCj3D8PwnzPKyHzGkQ9JbH48ukhym9LK1Q==}
+  '@tanstack/query-core@5.81.5':
+    resolution: {integrity: sha512-ZJOgCy/z2qpZXWaj/oxvodDx07XcQa9BF92c0oINjHkoqUPsmm3uG08HpTaviviZ/N9eP1f9CM7mKSEkIo7O1Q==}
 
-  '@tanstack/solid-query@5.80.10':
-    resolution: {integrity: sha512-J68kpBJ7w5kcYY0zHen6z7UWwt3Fu+awqZFmhk7TajzrXWyt08ru6+k5ZK7YwPvtwwB58c1fAfDaL/jjgdCGGA==}
+  '@tanstack/solid-query@5.81.5':
+    resolution: {integrity: sha512-VqVXaxiJIsKA6B45uApF+RUD3g8Roj/vdAuGpHMjR+RyHqlyQ+hOwgmALkzlbkbIaWCQi8CJOvrbU6WOBuMOxA==}
     peerDependencies:
       solid-js: ^1.6.0
 
@@ -3293,11 +3293,11 @@ snapshots:
       postcss: 8.5.6
       tailwindcss: 4.1.11
 
-  '@tanstack/query-core@5.80.10': {}
+  '@tanstack/query-core@5.81.5': {}
 
-  '@tanstack/solid-query@5.80.10(solid-js@1.9.7)':
+  '@tanstack/solid-query@5.81.5(solid-js@1.9.7)':
     dependencies:
-      '@tanstack/query-core': 5.80.10
+      '@tanstack/query-core': 5.81.5
       solid-js: 1.9.7
 
   '@testing-library/dom@10.4.0':
