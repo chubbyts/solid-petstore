@@ -5,9 +5,10 @@ import qs from 'qs';
 import { format } from 'date-fns';
 import { de } from 'date-fns/locale';
 import { z } from 'zod';
-import type { PetFilters, PetListRequest, PetSort } from '../../../model/pet';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/solid-query';
+import type { PetFilters, PetListRequest, PetListResponse, PetSort } from '../../../model/pet';
 import { petFiltersSchema, petSortSchema } from '../../../model/pet';
-import { deletePetClient as deleteClient, listPetsClient as listClient } from '../../../client/pet';
+import { listPetsClient, deletePetClient } from '../../../client/pet';
 import { HttpError as HttpErrorPartial } from '../../partial/http-error';
 import { H1 } from '../../heading';
 import { Pagination } from '../../partial/pagination';
@@ -15,7 +16,8 @@ import { Table, Tbody, Td, Th, Thead, Tr } from '../../table';
 import { AnchorButton, Button } from '../../button';
 import { PetFiltersForm } from '../../form/pet-filters-form';
 import { numberSchema } from '../../../model/model';
-import { createModelResource } from '../../../hook/create-model-resource';
+import type { HttpError } from '../../../client/error';
+import { provideDeleteMutationFn, provideListQueryFn } from '../../../hook/use-query';
 
 const pageTitle = 'Pet List';
 
@@ -31,15 +33,7 @@ const PetListComponent: Component = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const getQuery = createMemo(() => querySchema.parse(qs.parse(location.search.substring(1))));
-
-  const {
-    getModelList: getPetList,
-    getHttpError,
-    actions,
-  } = createModelResource({
-    listClient,
-    deleteClient,
-  });
+  const queryClient = useQueryClient();
 
   const getPetListRequest = (): PetListRequest => {
     const query = getQuery();
@@ -52,14 +46,24 @@ const PetListComponent: Component = () => {
     };
   };
 
-  const fetchPetList = async () => {
-    actions.listModel(getPetListRequest());
-  };
+  const queryKey = createMemo(() => ['pets', qs.stringify(getPetListRequest())]);
+
+  const petListQuery = useQuery<PetListResponse, HttpError>(() => ({
+    queryKey: queryKey(),
+    queryFn: provideListQueryFn(listPetsClient, getPetListRequest()),
+    retry: false,
+  }));
+
+  const petDeleteMutation = useMutation<unknown, HttpError, string>(() => ({
+    mutationFn: provideDeleteMutationFn(deletePetClient),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKey() });
+    },
+    retry: false,
+  }));
 
   const deletePet = async (id: string) => {
-    if (await actions.deleteModel(id)) {
-      fetchPetList();
-    }
+    petDeleteMutation.mutate(id);
   };
 
   const submitPage = (page: number): void => {
@@ -83,16 +87,16 @@ const PetListComponent: Component = () => {
   createEffect(() => {
     // eslint-disable-next-line functional/immutable-data
     document.title = pageTitle;
-
-    fetchPetList();
   });
 
   return (
-    <Show when={getPetList() || getHttpError()}>
+    <Show when={!petListQuery.isLoading}>
       <div data-testid="page-pet-list">
-        <Show when={getHttpError()}>{(getHttpError) => <HttpErrorPartial httpError={getHttpError()} />}</Show>
+        <Show when={petDeleteMutation.error ?? petListQuery.error}>
+          {(getHttpError) => <HttpErrorPartial httpError={getHttpError()} />}
+        </Show>
         <H1>{pageTitle}</H1>
-        <Show when={getPetList()}>
+        <Show when={petListQuery.data}>
           {(getPetList) => (
             <div>
               <Show when={getPetList()._links?.create}>
@@ -101,7 +105,7 @@ const PetListComponent: Component = () => {
                 </AnchorButton>
               </Show>
               <PetFiltersForm
-                getHttpError={getHttpError}
+                getHttpError={() => petListQuery.error ?? undefined}
                 getInitialPetFilters={() => getQuery().filters}
                 submitPetFilters={submitPetFilters}
               />
