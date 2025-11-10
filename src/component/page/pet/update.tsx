@@ -14,7 +14,7 @@ import type { HttpError } from '../../../client/error';
 const pageTitle = 'Pet Update';
 
 const PetUpdate: Component = () => {
-  const params = useParams();
+  const params = useParams<{ id: string }>();
   const queryClient = useQueryClient();
 
   const navigate = useNavigate();

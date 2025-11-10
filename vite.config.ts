@@ -1,7 +1,4 @@
-/// <reference types="vitest" />
-/// <reference types="vite/client" />
-
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config';
 import solid from 'vite-plugin-solid';
 
 export default defineConfig({
@@ -13,9 +10,13 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
+    server: {
+      deps: {
+        inline: [/solid-js/],
+      },
+    },
     include: ['tests/**/*.test.*'],
     coverage: {
-      all: true,
       clean: true,
       reporter: ['text', 'html', 'lcov'],
       provider: 'v8',

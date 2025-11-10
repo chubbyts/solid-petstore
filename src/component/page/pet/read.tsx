@@ -15,7 +15,7 @@ import type { PetResponse } from '../../../model/pet';
 const pageTitle = 'Pet Read';
 
 const PetRead: Component = () => {
-  const params = useParams();
+  const params = useParams<{ id: string }>();
 
   const petQuery = useQuery<PetResponse, HttpError>(() => ({
     queryKey: ['pets', params.id],
