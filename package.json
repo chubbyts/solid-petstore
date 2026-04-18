@@ -21,44 +21,44 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@chubbyts/chubbyts-throwable-to-error": "^2.0.2",
-    "@solidjs/router": "^0.15.4",
-    "@tanstack/solid-query": "^5.90.26",
+    "@chubbyts/chubbyts-throwable-to-error": "^2.1.1",
+    "@solidjs/router": "^0.16.1",
+    "@tanstack/solid-query": "^5.99.1",
     "cross-fetch": "^4.1.0",
     "date-fns": "^4.1.0",
-    "nock": "^14.0.11",
-    "qs": "^6.15.0",
-    "solid-js": "^1.9.11",
+    "nock": "^14.0.12",
+    "qs": "^6.15.1",
+    "solid-js": "^1.9.12",
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@chubbyts/chubbyts-function-mock": "^2.0.2",
+    "@chubbyts/chubbyts-function-mock": "^2.1.1",
     "@eslint/js": "^10.0.1",
     "@prettier/sync": "^0.6.1",
     "@solidjs/testing-library": "^0.8.10",
-    "@tailwindcss/postcss": "^4.2.1",
+    "@tailwindcss/postcss": "^4.2.2",
     "@testing-library/user-event": "^14.6.1",
     "@types/js-beautify": "^1.14.3",
-    "@types/node": "^25.5.0",
+    "@types/node": "^25.6.0",
     "@types/qs": "^6.15.0",
-    "@vitest/coverage-v8": "^4.1.0",
-    "eslint": "^10.0.3",
+    "@vitest/coverage-v8": "^4.1.4",
+    "eslint": "^10.2.1",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-functional": "^9.0.4",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-solid": "^0.14.5",
     "eslint-plugin-unused-imports": "^4.4.1",
     "js-beautify": "^1.15.4",
-    "jsdom": "^29.0.0",
-    "postcss": "^8.5.8",
-    "prettier": "^3.8.1",
+    "jsdom": "^29.0.2",
+    "postcss": "^8.5.10",
+    "prettier": "^3.8.3",
     "prettier-plugin-tailwindcss": "^0.7.2",
-    "tailwindcss": "^4.2.1",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.57.0",
-    "vite": "^8.0.0",
-    "vite-plugin-solid": "2.11.11",
-    "vitest": "^4.1.0"
+    "tailwindcss": "^4.2.2",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.58.2",
+    "vite": "^8.0.8",
+    "vite-plugin-solid": "2.11.12",
+    "vitest": "^4.1.4"
   },
   "engines": {
     "node": ">=20"
@@ -79,5 +79,5 @@
       "unrs-resolver"
     ]
   },
-  "packageManager": "pnpm@10.32.1+sha512.a706938f0e89ac1456b6563eab4edf1d1faf3368d1191fc5c59790e96dc918e4456ab2e67d613de1043d2e8c81f87303e6b40d4ffeca9df15ef1ad567348f2be"
+  "packageManager": "pnpm@10.33.0+sha512.10568bb4a6afb58c9eb3630da90cc9516417abebd3fabbe6739f0ae795728da1491e9db5a544c76ad8eb7570f5c4bb3d6c637b2cb41bfdcdb47fa823c8649319"
 }
