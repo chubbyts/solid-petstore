@@ -21,26 +21,26 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@chubbyts/chubbyts-throwable-to-error": "^2.1.1",
+    "@chubbyts/chubbyts-throwable-to-error": "^2.2.0",
     "@solidjs/router": "^0.16.1",
     "@tanstack/solid-query": "^5.100.9",
     "cross-fetch": "^4.1.0",
     "date-fns": "^4.1.0",
-    "nock": "^14.0.14",
+    "nock": "^14.0.15",
     "qs": "^6.15.1",
     "solid-js": "^1.9.12",
-    "zod": "^4.4.2"
+    "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@chubbyts/chubbyts-function-mock": "^2.1.1",
+    "@chubbyts/chubbyts-function-mock": "^2.2.0",
     "@eslint/js": "^10.0.1",
     "@prettier/sync": "^0.6.1",
     "@solidjs/testing-library": "^0.8.10",
-    "@tailwindcss/postcss": "^4.2.4",
+    "@tailwindcss/postcss": "^4.3.0",
     "@testing-library/user-event": "^14.6.1",
     "@types/js-beautify": "^1.14.3",
-    "@types/node": "^25.6.0",
-    "@types/qs": "^6.15.0",
+    "@types/node": "^25.6.2",
+    "@types/qs": "^6.15.1",
     "@vitest/coverage-v8": "^4.1.5",
     "eslint": "^10.3.0",
     "eslint-import-resolver-typescript": "^4.4.4",
@@ -50,18 +50,18 @@
     "eslint-plugin-unused-imports": "^4.4.1",
     "js-beautify": "^1.15.4",
     "jsdom": "^29.1.1",
-    "postcss": "^8.5.13",
+    "postcss": "^8.5.14",
     "prettier": "^3.8.3",
     "prettier-plugin-tailwindcss": "^0.8.0",
-    "tailwindcss": "^4.2.4",
+    "tailwindcss": "^4.3.0",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.59.1",
-    "vite": "^8.0.10",
+    "typescript-eslint": "^8.59.2",
+    "vite": "^8.0.11",
     "vite-plugin-solid": "2.11.12",
     "vitest": "^4.1.5"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "prettier": {
     "printWidth": 120,
@@ -72,12 +72,5 @@
       "prettier-plugin-tailwindcss"
     ]
   },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@tailwindcss/oxide",
-      "esbuild",
-      "unrs-resolver"
-    ]
-  },
-  "packageManager": "pnpm@10.33.2+sha512.a90faf6feeab71ad6c6e57f94e0fe1a12f5dcc22cd754db40ae9593eb6a3e0b6b12e3540218bb37ae083404b1f2ce6db2a4121e979829b4aff94b99f49da1cf8"
+  "packageManager": "pnpm@11.0.9+sha512.34ce82e6780233cf9cad8685029a8f81d2e06196c5a9bad98879f7424940c6817c4e4524fb7d38b8553ceed48b9758b8ebaf1abd3600c232c4c8cf7366086f38"
 }
