@@ -211,7 +211,7 @@ describe('pagination', () => {
     const pages: number[] = [];
 
     const submitPage = (page: number): void => {
-      // eslint-disable-next-line functional/immutable-data
+      // oxlint-disable-next-line functional/immutable-data
       pages.push(page);
     };
 

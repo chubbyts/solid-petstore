@@ -62,15 +62,16 @@ export const PetForm: Component<PetFormProps> = (props: PetFormProps) => {
                     label="Name"
                     getValue={() => vaccination.name}
                     setValue={(value) =>
-                      setPet('vaccinations', [
-                        ...pet.vaccinations.map((currentVaccination, i) => {
+                      setPet(
+                        'vaccinations',
+                        pet.vaccinations.map((currentVaccination, i) => {
                           if (i === getIndex()) {
                             return { ...currentVaccination, name: value };
                           }
 
                           return currentVaccination;
                         }),
-                      ])
+                      )
                     }
                     getInvalidParameters={() =>
                       getGroupInvalidParametersByName().get(`vaccinations[${getIndex()}][name]`) ?? []
@@ -82,7 +83,10 @@ export const PetForm: Component<PetFormProps> = (props: PetFormProps) => {
                       e.preventDefault();
                       e.stopPropagation();
 
-                      setPet('vaccinations', [...pet.vaccinations.filter((_, i) => i !== getIndex())]);
+                      setPet(
+                        'vaccinations',
+                        pet.vaccinations.filter((_, i) => i !== getIndex()),
+                      );
                     }}
                     colorTheme="red"
                     class="mb-3"

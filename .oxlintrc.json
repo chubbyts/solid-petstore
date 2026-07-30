@@ -1,0 +1,16 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "extends": ["./node_modules/@chubbyts/chubbyts-oxlint/oxlintrc.json"],
+  "rules": {
+    "eslint/no-underscore-dangle": ["error", { "allow": ["_links"] }],
+    "import/no-unassigned-import": ["error", { "allow": ["**/*.css"] }]
+  },
+  "overrides": [
+    {
+      "files": ["tests/**"],
+      "rules": {
+        "unicorn/consistent-function-scoping": "off"
+      }
+    }
+  ]
+}
