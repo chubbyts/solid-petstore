@@ -53,6 +53,7 @@ export const Pagination: Component<PaginationProps> = (props: PaginationProps) =
         <Show when={props.getCurrentPage() > 2}>
           <li class="inline-block">
             <button
+              type="button"
               class="border-r border-gray-300 px-3 py-2"
               onClick={() => {
                 props.submitPage(1);
@@ -65,6 +66,7 @@ export const Pagination: Component<PaginationProps> = (props: PaginationProps) =
         <Show when={props.getCurrentPage() > 1}>
           <li class="inline-block">
             <button
+              type="button"
               class="border-r border-gray-300 px-3 py-2"
               onClick={() => {
                 props.submitPage(props.getCurrentPage() - 1);
@@ -78,6 +80,7 @@ export const Pagination: Component<PaginationProps> = (props: PaginationProps) =
           {(page) => (
             <li class="inline-block">
               <button
+                type="button"
                 class={`border-r border-gray-300 px-3 py-2 ${props.getCurrentPage() === page ? 'bg-gray-100' : ''}`}
                 onClick={() => {
                   props.submitPage(page);
@@ -91,6 +94,7 @@ export const Pagination: Component<PaginationProps> = (props: PaginationProps) =
         <Show when={props.getCurrentPage() < props.getTotalPages()}>
           <li class="inline-block">
             <button
+              type="button"
               class="border-r border-gray-300 px-3 py-2"
               onClick={() => {
                 props.submitPage(props.getCurrentPage() + 1);
@@ -103,6 +107,7 @@ export const Pagination: Component<PaginationProps> = (props: PaginationProps) =
         <Show when={props.getCurrentPage() < props.getTotalPages() - 1}>
           <li class="inline-block">
             <button
+              type="button"
               class="border-r border-gray-300 px-3 py-2"
               onClick={() => {
                 props.submitPage(props.getTotalPages());

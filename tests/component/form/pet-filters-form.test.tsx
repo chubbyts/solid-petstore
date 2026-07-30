@@ -23,19 +23,19 @@ describe('pet-filters-form', () => {
     ));
 
     expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
-    "<div>
-      <form>
-        <fieldset class="mb-3 border border-gray-300 px-4 py-3 ">
-          <label class="block  ">Name
-            <input type="text" data-testid="pet-filters-form-name"
-              class="mt-2 mb-3 block w-full border px-3 py-2 border-gray-300">
-          </label>
-          <button data-testid="pet-filters-form-submit" colortheme="blue"
-            class="inline-block px-5 py-2 text-white bg-blue-600 hover:bg-blue-700 ">Filter</button>
-        </fieldset>
-      </form>
-    </div>"
-  `);
+      "<div>
+        <form>
+          <fieldset class="mb-3 border border-gray-300 px-4 py-3 ">
+            <label class="block  ">Name
+              <input type="text" data-testid="pet-filters-form-name"
+                class="mt-2 mb-3 block w-full border px-3 py-2 border-gray-300">
+            </label>
+            <button data-testid="pet-filters-form-submit" colortheme="blue" type="submit"
+              class="inline-block px-5 py-2 text-white bg-blue-600 hover:bg-blue-700 ">Filter</button>
+          </fieldset>
+        </form>
+      </div>"
+    `);
   });
 
   test('network error', () => {
@@ -43,13 +43,28 @@ describe('pet-filters-form', () => {
     const getInitialPetFilters = () => ({});
     const submitPetFilters = () => {};
 
-    render(() => (
+    const { container } = render(() => (
       <PetFiltersForm
         getHttpError={getHttpError}
         getInitialPetFilters={getInitialPetFilters}
         submitPetFilters={submitPetFilters}
       />
     ));
+
+    expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
+      "<div>
+        <form>
+          <fieldset class="mb-3 border border-gray-300 px-4 py-3 ">
+            <label class="block  ">Name
+              <input type="text" data-testid="pet-filters-form-name"
+                class="mt-2 mb-3 block w-full border px-3 py-2 border-gray-300">
+            </label>
+            <button data-testid="pet-filters-form-submit" colortheme="blue" type="submit"
+              class="inline-block px-5 py-2 text-white bg-blue-600 hover:bg-blue-700 ">Filter</button>
+          </fieldset>
+        </form>
+      </div>"
+    `);
   });
 
   test('bad request', () => {
@@ -60,13 +75,28 @@ describe('pet-filters-form', () => {
     const getInitialPetFilters = () => ({});
     const submitPetFilters = () => {};
 
-    render(() => (
+    const { container } = render(() => (
       <PetFiltersForm
         getHttpError={getHttpError}
         getInitialPetFilters={getInitialPetFilters}
         submitPetFilters={submitPetFilters}
       />
     ));
+
+    expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
+      "<div>
+        <form>
+          <fieldset class="mb-3 border border-gray-300 px-4 py-3 ">
+            <label class="block  ">Name
+              <input type="text" data-testid="pet-filters-form-name"
+                class="mt-2 mb-3 block w-full border px-3 py-2 border-gray-300">
+            </label>
+            <button data-testid="pet-filters-form-submit" colortheme="blue" type="submit"
+              class="inline-block px-5 py-2 text-white bg-blue-600 hover:bg-blue-700 ">Filter</button>
+          </fieldset>
+        </form>
+      </div>"
+    `);
   });
 
   test('bad request - with query string name', () => {
@@ -84,22 +114,22 @@ describe('pet-filters-form', () => {
     ));
 
     expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
-    "<div>
-      <form>
-        <fieldset class="mb-3 border border-gray-300 px-4 py-3 ">
-          <label class="block text-red-600 ">Name
-            <input type="text" data-testid="pet-filters-form-name"
-              class="mt-2 mb-3 block w-full border px-3 py-2 border-red-600 bg-red-100">
-            <ul class="mb-3">
-              <li>reason</li>
-            </ul>
-          </label>
-          <button data-testid="pet-filters-form-submit" colortheme="blue"
-            class="inline-block px-5 py-2 text-white bg-blue-600 hover:bg-blue-700 ">Filter</button>
-        </fieldset>
-      </form>
-    </div>"
-  `);
+      "<div>
+        <form>
+          <fieldset class="mb-3 border border-gray-300 px-4 py-3 ">
+            <label class="block text-red-600 ">Name
+              <input type="text" data-testid="pet-filters-form-name"
+                class="mt-2 mb-3 block w-full border px-3 py-2 border-red-600 bg-red-100">
+              <ul class="mb-3">
+                <li>reason</li>
+              </ul>
+            </label>
+            <button data-testid="pet-filters-form-submit" colortheme="blue" type="submit"
+              class="inline-block px-5 py-2 text-white bg-blue-600 hover:bg-blue-700 ">Filter</button>
+          </fieldset>
+        </form>
+      </div>"
+    `);
   });
 
   test('submit with name', async () => {

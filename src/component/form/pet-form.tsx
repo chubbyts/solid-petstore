@@ -110,7 +110,7 @@ export const PetForm: Component<PetFormProps> = (props: PetFormProps) => {
             </Button>
           </div>
         </div>
-        <Button data-testid="pet-form-submit" colorTheme="blue">
+        <Button data-testid="pet-form-submit" type="submit" colorTheme="blue">
           Save
         </Button>
       </FieldSet>

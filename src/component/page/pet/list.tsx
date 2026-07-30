@@ -119,6 +119,7 @@ const PetListComponent: Component = () => {
                       <Th>
                         <span>Name (</span>
                         <button
+                          type="button"
                           data-testid="pet-sort-name-asc"
                           onClick={() => submitPetSort({ ...getQuery().sort, name: 'asc' })}
                         >
@@ -126,6 +127,7 @@ const PetListComponent: Component = () => {
                         </button>
                         <span>|</span>
                         <button
+                          type="button"
                           data-testid="pet-sort-name-desc"
                           onClick={() => submitPetSort({ ...getQuery().sort, name: 'desc' })}
                         >
@@ -133,6 +135,7 @@ const PetListComponent: Component = () => {
                         </button>
                         <span>|</span>
                         <button
+                          type="button"
                           data-testid="pet-sort-name--"
                           onClick={() => submitPetSort({ ...getQuery().sort, name: undefined })}
                         >
