@@ -6,7 +6,19 @@ export default defineConfig(({ mode }) => ({
     jsx: 'automatic',
     jsxImportSource: 'solid-js',
   },
-  plugins: [solid({ hot: mode !== 'test' })],
+  plugins: [
+    solid({ hot: mode !== 'test' }),
+    {
+      // vitest passes the ssr conditions to node, the browser condition breaks node only packages like nock
+      name: 'remove-ssr-browser-condition',
+      enforce: 'post',
+      configEnvironment: (name, config) => {
+        if (name === 'ssr' && config.resolve?.conditions) {
+          config.resolve.conditions = config.resolve.conditions.filter((condition) => condition !== 'browser');
+        }
+      },
+    },
+  ],
   test: {
     globals: true,
     environment: 'jsdom',
