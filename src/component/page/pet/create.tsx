@@ -24,7 +24,7 @@ const PetCreate: Component = () => {
     retry: false,
   }));
 
-  const submitPet = async (petRequest: PetRequest) => {
+  const submitPet = (petRequest: PetRequest): void => {
     petMutation.mutate(petRequest);
   };
 

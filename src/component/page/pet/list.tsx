@@ -57,12 +57,12 @@ const PetListComponent: Component = () => {
   const petDeleteMutation = useMutation<unknown, HttpError, string>(() => ({
     mutationFn: provideDeleteMutationFn(deletePetClient),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKey() });
+      void queryClient.invalidateQueries({ queryKey: queryKey() });
     },
     retry: false,
   }));
 
-  const deletePet = async (id: string) => {
+  const deletePet = (id: string): void => {
     petDeleteMutation.mutate(id);
   };
 
