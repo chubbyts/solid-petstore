@@ -2,9 +2,11 @@ import { defineConfig } from 'vitest/config';
 import solid from 'vite-plugin-solid';
 
 export default defineConfig(({ mode }) => ({
-  esbuild: {
-    jsx: 'automatic',
-    jsxImportSource: 'solid-js',
+  oxc: {
+    jsx: {
+      runtime: 'automatic',
+      importSource: 'solid-js',
+    },
   },
   plugins: [
     solid({ hot: mode !== 'test' }),

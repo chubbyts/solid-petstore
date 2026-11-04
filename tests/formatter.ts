@@ -1,7 +1,7 @@
-import style_html from 'js-beautify/js/src/html';
+import beautify from 'js-beautify';
 
 export const formatHtml = (html: string): string => {
-  return style_html(html, {
+  return beautify.html(html, {
     indent_size: 2,
     wrap_line_length: 120,
     inline: [],
