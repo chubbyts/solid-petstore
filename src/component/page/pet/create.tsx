@@ -1,25 +1,29 @@
 import type { Component } from 'solid-js';
-import { Show, createEffect } from 'solid-js';
 import { useNavigate } from '@solidjs/router';
-import { useMutation } from '@tanstack/solid-query';
-import { H1 } from '../../heading';
-import { createPetClient } from '../../../client/pet';
-import { HttpError as HttpErrorPartial } from '../../partial/http-error';
+import { useMutation, useQueryClient } from '@tanstack/solid-query';
 import { PetForm } from '../../form/pet-form';
-import { AnchorButton } from '../../button';
 import type { PetRequest, PetResponse } from '../../../model/pet';
+import { Breadcrumb, PageHeader } from '../../heading';
+import { createPetClient } from '../../../client/pet';
 import type { HttpError } from '../../../client/error';
 import { provideCreateMutationFn } from '../../../hook/use-query';
+import { useToast } from '../../../hook/use-toast';
+import { useDocumentTitle } from '../../../hook/use-document-title';
+import { usePageError } from '../../../hook/use-page-error';
 
-const pageTitle = 'Pet Create';
+const pageTitle = 'New pet';
 
 const PetCreate: Component = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const showToast = useToast();
 
   const petMutation = useMutation<PetResponse, HttpError, PetRequest>(() => ({
     mutationFn: provideCreateMutationFn(createPetClient),
-    onSuccess: () => {
-      navigate('/pet');
+    onSuccess: (pet) => {
+      showToast(`Created “${pet.name}” — 201 Created`);
+      void queryClient.invalidateQueries({ queryKey: ['pets'] });
+      navigate(`/pet/${pet.id}`);
     },
     retry: false,
   }));
@@ -28,23 +32,25 @@ const PetCreate: Component = () => {
     petMutation.mutate(petRequest);
   };
 
-  createEffect(() => {
-    // oxlint-disable-next-line functional/immutable-data
-    document.title = pageTitle;
-  });
+  useDocumentTitle(() => pageTitle);
+  usePageError(
+    () => petMutation.error,
+    () => true,
+  );
 
   return (
-    <div data-testid="page-pet-create">
-      <Show when={petMutation.error}>{(getHttpError) => <HttpErrorPartial httpError={getHttpError()} />}</Show>
-      <H1>{pageTitle}</H1>
+    <div data-testid="page-pet-create" class="flex flex-col gap-[22px]">
+      <Breadcrumb items={[{ label: 'Pets', href: '/pet' }, { label: 'New' }]} />
+      <PageHeader title={pageTitle} />
       <PetForm
         getHttpError={() => petMutation.error ?? undefined}
         getInitialPet={() => undefined}
         submitPet={submitPet}
+        submitLabel="Create pet"
+        cancelHref="/pet"
+        listHref="/pet"
+        getIsPending={() => petMutation.isPending}
       />
-      <AnchorButton href="/pet" colorTheme="gray">
-        List
-      </AnchorButton>
     </div>
   );
 };

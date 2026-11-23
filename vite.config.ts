@@ -30,6 +30,7 @@ export default defineConfig(({ mode }) => ({
       },
     },
     include: ['tests/**/*.test.*'],
+    setupFiles: ['tests/setup.ts'],
     coverage: {
       clean: true,
       reporter: ['text', 'html', 'lcov'],

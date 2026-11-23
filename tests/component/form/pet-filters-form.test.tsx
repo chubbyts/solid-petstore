@@ -1,182 +1,208 @@
 /** @jsxImportSource solid-js */
 
 import { test, expect, vi, describe } from 'vitest';
-import { render, screen } from '@solidjs/testing-library';
 import { userEvent } from '@testing-library/user-event';
+import { render, screen } from '@solidjs/testing-library';
+import { createSignal } from 'solid-js';
 import { formatHtml } from '../../formatter';
-import { PetFiltersForm } from '../../../src/component/form/pet-filters-form';
-import { BadRequest, NetworkError } from '../../../src/client/error';
+import { filterDelay, PetFiltersForm } from '../../../src/component/form/pet-filters-form';
+import { BadRequest } from '../../../src/client/error';
 import type { PetFilters } from '../../../src/model/pet';
+
+const submitPetFilters = (): void => {};
 
 describe('pet-filters-form', () => {
   test('default', () => {
-    const getHttpError = () => undefined;
-    const getInitialPetFilters = () => ({});
-    const submitPetFilters = () => {};
-
     const { container } = render(() => (
       <PetFiltersForm
-        getHttpError={getHttpError}
-        getInitialPetFilters={getInitialPetFilters}
+        getHttpError={() => undefined}
+        getInitialPetFilters={() => ({})}
         submitPetFilters={submitPetFilters}
       />
     ));
 
     expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
       "<div>
-        <form>
-          <fieldset class="mb-3 border border-gray-300 px-4 py-3 ">
-            <label class="block  ">Name
-              <input type="text" data-testid="pet-filters-form-name"
-                class="mt-2 mb-3 block w-full border px-3 py-2 border-gray-300">
-            </label>
-            <button data-testid="pet-filters-form-submit" colortheme="blue" type="submit"
-              class="inline-block px-5 py-2 text-white bg-blue-600 hover:bg-blue-700 ">Filter</button>
-          </fieldset>
+        <form role="search" class="flex flex-[1_1_260px] flex-col gap-1">
+          <label class="relative flex items-center">
+            <span class="sr-only">Filter by name</span>
+            <span class="text-fg-muted pointer-events-none absolute left-3 flex">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+                stroke-linejoin="round" width="16" height="16" stroke-width="2">
+                <circle cx="11" cy="11" r="7"></circle>
+                <path d="m20 20-3.5-3.5"></path>
+              </svg>
+            </span>
+            <input data-testid="pet-filters-form-name" type="search" placeholder="Filter by name"
+              class="h-10 w-full pr-3 pl-9 min-w-0 rounded-lg border px-3 text-fg placeholder:text-fg-placeholder focus:border-focus border-line-control bg-canvas"
+              aria-describedby="pet-filters-name-hint">
+          </label>
+          <span id="pet-filters-name-hint" class="sr-only">Results update as you type</span>
         </form>
       </div>"
     `);
   });
 
-  test('network error', () => {
-    const getHttpError = () => new NetworkError({ title: 'network error' });
-    const getInitialPetFilters = () => ({});
-    const submitPetFilters = () => {};
-
-    const { container } = render(() => (
-      <PetFiltersForm
-        getHttpError={getHttpError}
-        getInitialPetFilters={getInitialPetFilters}
-        submitPetFilters={submitPetFilters}
-      />
-    ));
-
-    expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
-      "<div>
-        <form>
-          <fieldset class="mb-3 border border-gray-300 px-4 py-3 ">
-            <label class="block  ">Name
-              <input type="text" data-testid="pet-filters-form-name"
-                class="mt-2 mb-3 block w-full border px-3 py-2 border-gray-300">
-            </label>
-            <button data-testid="pet-filters-form-submit" colortheme="blue" type="submit"
-              class="inline-block px-5 py-2 text-white bg-blue-600 hover:bg-blue-700 ">Filter</button>
-          </fieldset>
-        </form>
-      </div>"
-    `);
-  });
-
-  test('bad request', () => {
-    const getHttpError = () =>
-      new BadRequest({
-        title: 'bad request',
-      });
-    const getInitialPetFilters = () => ({});
-    const submitPetFilters = () => {};
-
-    const { container } = render(() => (
-      <PetFiltersForm
-        getHttpError={getHttpError}
-        getInitialPetFilters={getInitialPetFilters}
-        submitPetFilters={submitPetFilters}
-      />
-    ));
-
-    expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
-      "<div>
-        <form>
-          <fieldset class="mb-3 border border-gray-300 px-4 py-3 ">
-            <label class="block  ">Name
-              <input type="text" data-testid="pet-filters-form-name"
-                class="mt-2 mb-3 block w-full border px-3 py-2 border-gray-300">
-            </label>
-            <button data-testid="pet-filters-form-submit" colortheme="blue" type="submit"
-              class="inline-block px-5 py-2 text-white bg-blue-600 hover:bg-blue-700 ">Filter</button>
-          </fieldset>
-        </form>
-      </div>"
-    `);
-  });
-
-  test('bad request - with query string name', () => {
-    const getHttpError = () =>
-      new BadRequest({ title: 'bad request', invalidParameters: [{ name: 'filters[name]', reason: 'reason' }] });
-    const getInitialPetFilters = () => ({});
-    const submitPetFilters = () => {};
-
-    const { container } = render(() => (
-      <PetFiltersForm
-        getHttpError={getHttpError}
-        getInitialPetFilters={getInitialPetFilters}
-        submitPetFilters={submitPetFilters}
-      />
-    ));
-
-    expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
-      "<div>
-        <form>
-          <fieldset class="mb-3 border border-gray-300 px-4 py-3 ">
-            <label class="block text-red-600 ">Name
-              <input type="text" data-testid="pet-filters-form-name"
-                class="mt-2 mb-3 block w-full border px-3 py-2 border-red-600 bg-red-100">
-              <ul class="mb-3">
-                <li>reason</li>
-              </ul>
-            </label>
-            <button data-testid="pet-filters-form-submit" colortheme="blue" type="submit"
-              class="inline-block px-5 py-2 text-white bg-blue-600 hover:bg-blue-700 ">Filter</button>
-          </fieldset>
-        </form>
-      </div>"
-    `);
-  });
-
-  test('submit with name', async () => {
-    const getHttpError = () => undefined;
-    const getInitialPetFilters = () => ({ name: 'Brown' });
-    const submitPetFilters = vi.fn((petFilters: PetFilters) => {
-      expect(petFilters).toEqual({ name: 'Brownie' });
+  test('bad request with invalid name', () => {
+    const httpError = new BadRequest({
+      title: 'Bad Request',
+      invalidParameters: [{ name: 'filters[name]', reason: 'Too small' }],
     });
+
+    const { container } = render(() => (
+      <PetFiltersForm
+        getHttpError={() => httpError}
+        getInitialPetFilters={() => ({ name: '' })}
+        submitPetFilters={submitPetFilters}
+      />
+    ));
+
+    expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
+      "<div>
+        <form role="search" class="flex flex-[1_1_260px] flex-col gap-1">
+          <label class="relative flex items-center">
+            <span class="sr-only">Filter by name</span>
+            <span class="text-fg-muted pointer-events-none absolute left-3 flex">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+                stroke-linejoin="round" width="16" height="16" stroke-width="2">
+                <circle cx="11" cy="11" r="7"></circle>
+                <path d="m20 20-3.5-3.5"></path>
+              </svg>
+            </span>
+            <input data-testid="pet-filters-form-name" type="search" placeholder="Filter by name"
+              class="h-10 w-full pr-3 pl-9 min-w-0 rounded-lg border px-3 text-fg placeholder:text-fg-placeholder focus:border-focus border-danger-field-line bg-danger-field"
+              aria-invalid="true" aria-describedby="pet-filters-name-hint pet-filters-name-errors">
+          </label>
+          <span id="pet-filters-name-hint" class="sr-only">Results update as you type</span>
+          <ul class="text-danger m-0 list-none p-0 text-[13px]" id="pet-filters-name-errors">
+            <li>Too small</li>
+          </ul>
+        </form>
+      </div>"
+    `);
+  });
+
+  test('submit on enter', async () => {
+    const submitPetFiltersMock = vi.fn((_: PetFilters) => {});
 
     render(() => (
       <PetFiltersForm
-        getHttpError={getHttpError}
-        getInitialPetFilters={getInitialPetFilters}
-        submitPetFilters={submitPetFilters}
+        getHttpError={() => undefined}
+        getInitialPetFilters={() => ({})}
+        submitPetFilters={submitPetFiltersMock}
       />
     ));
 
-    const nameField = await screen.findByTestId('pet-filters-form-name');
+    const input = screen.getByRole('searchbox', { name: 'Filter by name' });
 
-    await userEvent.type(nameField, 'ie');
+    // unchanged: no submit
+    await userEvent.type(input, '{Enter}');
 
-    const submitButton = await screen.findByTestId('pet-filters-form-submit');
+    await userEvent.type(input, 'Brownie{Enter}');
 
-    await userEvent.click(submitButton);
-
-    expect(submitPetFilters).toHaveBeenCalledTimes(1);
+    expect(submitPetFiltersMock).toHaveBeenCalledTimes(1);
+    expect(submitPetFiltersMock).toHaveBeenNthCalledWith(1, { name: 'Brownie' });
   });
 
-  test('submit without name', async () => {
-    const getHttpError = () => undefined;
-    const getInitialPetFilters = () => ({ name: '' });
-    const submitPetFilters = vi.fn((petFilters: PetFilters) => {
-      expect(petFilters).toEqual({ name: undefined });
-    });
+  test('submit while typing, once per pause', async () => {
+    const submitPetFiltersMock = vi.fn((_: PetFilters) => {});
+    const [getInitialPetFilters, setInitialPetFilters] = createSignal<PetFilters>({});
 
     render(() => (
       <PetFiltersForm
-        getHttpError={getHttpError}
+        getHttpError={() => undefined}
         getInitialPetFilters={getInitialPetFilters}
-        submitPetFilters={submitPetFilters}
+        submitPetFilters={submitPetFiltersMock}
       />
     ));
 
-    const nameField = await screen.findByTestId('pet-filters-form-name');
+    const input = screen.getByRole('searchbox', { name: 'Filter by name' }) as HTMLInputElement;
 
-    await userEvent.type(nameField, '{enter}');
+    await userEvent.type(input, 'Bro');
 
-    expect(submitPetFilters).toHaveBeenCalledTimes(1);
+    // not per character
+    expect(submitPetFiltersMock).toHaveBeenCalledTimes(0);
+
+    await vi.waitFor(() => expect(submitPetFiltersMock).toHaveBeenCalledTimes(1));
+    expect(submitPetFiltersMock).toHaveBeenNthCalledWith(1, { name: 'Bro' });
+
+    await userEvent.type(input, 'wn');
+
+    // the submitted filter arrives (url) while typing: the typing is kept
+    setInitialPetFilters({ name: 'Bro' });
+
+    expect(input.value).toBe('Brown');
+
+    await vi.waitFor(() => expect(submitPetFiltersMock).toHaveBeenCalledTimes(2));
+    expect(submitPetFiltersMock).toHaveBeenNthCalledWith(2, { name: 'Brown' });
+
+    // no further submits once the filter is applied
+    setInitialPetFilters({ name: 'Brown' });
+    await new Promise((resolve) => setTimeout(resolve, filterDelay * 2));
+    expect(submitPetFiltersMock).toHaveBeenCalledTimes(2);
+  });
+
+  test('other updates neither postpone the submit nor use outdated props', async () => {
+    const outdatedSubmitPetFiltersMock = vi.fn((_: PetFilters) => {});
+    const submitPetFiltersMock = vi.fn((_: PetFilters) => {});
+    const [getSubmitPetFilters, setSubmitPetFilters] = createSignal(outdatedSubmitPetFiltersMock);
+    const [getInitialPetFilters, setInitialPetFilters] = createSignal<PetFilters>({});
+
+    render(() => (
+      <PetFiltersForm
+        getHttpError={() => undefined}
+        getInitialPetFilters={getInitialPetFilters}
+        submitPetFilters={getSubmitPetFilters()}
+      />
+    ));
+
+    const input = screen.getByRole('searchbox', { name: 'Filter by name' });
+
+    await userEvent.type(input, 'Bro');
+
+    const typedAt = Date.now();
+
+    // e.g. a refetch: new props while waiting
+    for (const _ of [1, 2, 3, 4]) {
+      setSubmitPetFilters(() => submitPetFiltersMock);
+      setInitialPetFilters({});
+      await new Promise((resolve) => setTimeout(resolve, filterDelay / 4));
+    }
+
+    await vi.waitFor(() => expect(submitPetFiltersMock).toHaveBeenCalledTimes(1));
+    expect(Date.now() - typedAt).toBeLessThan(filterDelay * 1.5);
+    expect(submitPetFiltersMock).toHaveBeenNthCalledWith(1, { name: 'Bro' });
+    expect(outdatedSubmitPetFiltersMock).not.toHaveBeenCalled();
+  });
+
+  test('submit when cleared and follow outer changes', async () => {
+    const submitPetFiltersMock = vi.fn((_: PetFilters) => {});
+    const [getInitialPetFilters, setInitialPetFilters] = createSignal<PetFilters>({ name: 'Brownie' });
+
+    render(() => (
+      <PetFiltersForm
+        getHttpError={() => undefined}
+        getInitialPetFilters={getInitialPetFilters}
+        submitPetFilters={submitPetFiltersMock}
+      />
+    ));
+
+    const input = screen.getByRole('searchbox', { name: 'Filter by name' }) as HTMLInputElement;
+
+    expect(input.value).toBe('Brownie');
+
+    await userEvent.clear(input);
+
+    await vi.waitFor(() => expect(submitPetFiltersMock).toHaveBeenCalledTimes(1));
+    expect(submitPetFiltersMock).toHaveBeenNthCalledWith(1, { name: undefined });
+
+    // outer change (e.g. "Clear filter" or browser navigation)
+    setInitialPetFilters({ name: 'Snowball' });
+
+    expect(input.value).toBe('Snowball');
+
+    // taken as submitted: no submit of it
+    await new Promise((resolve) => setTimeout(resolve, filterDelay * 2));
+    expect(submitPetFiltersMock).toHaveBeenCalledTimes(1);
   });
 });

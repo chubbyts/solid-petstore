@@ -15,16 +15,17 @@ const userManager = new UserManager({
   automaticSilentRenew: false,
 });
 
-const createUser = (expiresAt: number): User => {
+const createUser = (expiresAt: number, profile: Partial<User['profile']> = {}): User => {
   return new User({
     access_token: 'access-token',
     token_type: 'Bearer',
     expires_at: expiresAt,
-    profile: { sub: 'sub', iss: 'iss', aud: 'aud', exp: 1, iat: 1 },
+    profile: { sub: 'sub', iss: 'iss', aud: 'aud', exp: 1, iat: 1, ...profile },
   });
 };
 
-const createValidUser = (): User => createUser(Math.floor(Date.now() / 1000) + 3600);
+const createValidUser = (profile: Partial<User['profile']> = {}): User =>
+  createUser(Math.floor(Date.now() / 1000) + 3600, profile);
 const createExpiredUser = (): User => createUser(Math.floor(Date.now() / 1000) - 3600);
 
 const renderUseOidc = (props: Partial<OidcProviderProps> = {}) => {
@@ -97,6 +98,7 @@ describe('use-oidc', () => {
     await waitFor(() => expect(result.isLoading).toBe(false));
 
     expect(result.isAuthenticated).toBe(true);
+    expect(result.username).toBe('sub');
     expect(result.error).toBeUndefined();
 
     await result.logout();
@@ -115,6 +117,7 @@ describe('use-oidc', () => {
     await waitFor(() => expect(result.isLoading).toBe(false));
 
     expect(result.isAuthenticated).toBe(false);
+    expect(result.username).toBeUndefined();
     expect(result.error).toBeUndefined();
   });
 
@@ -176,14 +179,24 @@ describe('use-oidc', () => {
     expect(result.isAuthenticated).toBe(false);
 
     // event UserLoaded
-    await userManager.events.load(createValidUser());
+    await userManager.events.load(createValidUser({ preferred_username: 'admin', name: 'Admin' }));
 
     expect(result.isAuthenticated).toBe(true);
+    expect(result.username).toBe('admin');
+
+    await userManager.events.load(createValidUser({ name: 'Admin', email: 'admin@petstore.test' }));
+
+    expect(result.username).toBe('Admin');
+
+    await userManager.events.load(createValidUser({ email: 'admin@petstore.test' }));
+
+    expect(result.username).toBe('admin@petstore.test');
 
     // event UserUnloaded
     await userManager.events.unload();
 
     expect(result.isAuthenticated).toBe(false);
+    expect(result.username).toBeUndefined();
 
     await userManager.events.load(createValidUser());
 
