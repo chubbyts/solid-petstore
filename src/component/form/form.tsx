@@ -1,50 +1,64 @@
 import type { Component, JSX } from 'solid-js';
 import { For, Show } from 'solid-js';
 import type { InvalidParameter } from '../../client/error';
+import { cx } from '../class-names';
 
-export const FieldSet: Component<JSX.FieldsetHTMLAttributes<HTMLFieldSetElement>> = (
-  props: JSX.FieldsetHTMLAttributes<HTMLFieldSetElement>,
-) => {
+export const inputClasses = (hasError: boolean): string =>
+  cx(
+    'min-w-0 rounded-lg border px-3 text-fg placeholder:text-fg-placeholder focus:border-focus',
+    hasError ? 'border-danger-field-line bg-danger-field' : 'border-line-control bg-canvas',
+  );
+
+export const labelClasses = 'text-sm font-semibold';
+
+export type FieldErrorsProps = {
+  id: string;
+  getInvalidParameters: () => Array<InvalidParameter>;
+};
+
+export const FieldErrors: Component<FieldErrorsProps> = (props: FieldErrorsProps) => {
   return (
-    <fieldset {...props} class={`mb-3 border border-gray-300 px-4 py-3 ${props.class ?? ''}`}>
-      {props.children}
-    </fieldset>
+    <Show when={props.getInvalidParameters().length > 0}>
+      <ul id={props.id} class="text-danger m-0 list-none p-0 text-[13px]">
+        <For each={props.getInvalidParameters()}>{(invalidParameter) => <li>{invalidParameter.reason}</li>}</For>
+      </ul>
+    </Show>
   );
 };
 
 export type TextFieldProps = {
   'data-testid'?: string;
-  label: string;
+  id: string;
+  label: JSX.Element;
   getValue: () => string;
   setValue: (value: string) => void;
   getInvalidParameters: () => Array<InvalidParameter>;
+  placeholder?: string;
+  required?: boolean;
 };
 
 export const TextField: Component<TextFieldProps> = (props: TextFieldProps) => {
+  const hasError = () => props.getInvalidParameters().length > 0;
+  const errorId = () => `${props.id}-errors`;
+
   return (
-    <label class={`block ${props.getInvalidParameters().length > 0 ? 'text-red-600' : ''} `}>
-      {props.label}
+    <div class="flex flex-col gap-1.5">
+      <label for={props.id} class={labelClasses}>
+        {props.label}
+      </label>
       <input
         data-testid={props['data-testid']}
+        id={props.id}
         type="text"
-        class={`mt-2 mb-3 block w-full border px-3 py-2 ${
-          props.getInvalidParameters().length > 0 ? 'border-red-600 bg-red-100' : 'border-gray-300'
-        }`}
-        onBlur={(event) => props.setValue(event.currentTarget.value)}
-        onKeyDown={(event) => {
-          if (event.code !== 'Enter') {
-            return;
-          }
-
-          props.setValue(event.currentTarget.value);
-        }}
+        class={cx('h-11', inputClasses(hasError()))}
+        aria-required={props.required || undefined}
+        aria-invalid={hasError() || undefined}
+        aria-describedby={hasError() ? errorId() : undefined}
+        placeholder={props.placeholder}
         value={props.getValue()}
+        onInput={(e) => props.setValue(e.currentTarget.value)}
       />
-      <Show when={props.getInvalidParameters().length > 0}>
-        <ul class="mb-3">
-          <For each={props.getInvalidParameters()}>{(invalidParameter) => <li>{invalidParameter.reason}</li>}</For>
-        </ul>
-      </Show>
-    </label>
+      <FieldErrors id={errorId()} getInvalidParameters={props.getInvalidParameters} />
+    </div>
   );
 };

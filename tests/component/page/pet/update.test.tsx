@@ -1,292 +1,192 @@
 /** @jsxImportSource solid-js */
 
-import { vi, test, expect, describe } from 'vitest';
-import type { RouteSectionProps } from '@solidjs/router';
-import { Route, Router, useNavigate } from '@solidjs/router';
-import { createEffect } from 'solid-js';
-import { render, screen } from '@solidjs/testing-library';
+import { vi, test, expect, describe, afterEach } from 'vitest';
+import { screen } from '@solidjs/testing-library';
 import { userEvent } from '@testing-library/user-event';
-import { QueryClient, QueryClientProvider } from '@tanstack/solid-query';
+import { Route } from '@solidjs/router';
 import nock from 'nock';
 import Update from '../../../../src/component/page/pet/update';
 import type { PetFormProps } from '../../../../src/component/form/pet-form';
-import type { PetRequest, PetResponse } from '../../../../src/model/pet';
+import type { PetResponse } from '../../../../src/model/pet';
 import { formatHtml } from '../../../formatter';
+import { renderRoute } from '../../../render';
 
 vi.mock('../../../../src/component/form/pet-form', () => {
   return {
-    PetForm: (props: PetFormProps) => {
-      const onSubmit = () => {
-        props.submitPet({ name: 'Brownie', vaccinations: [] });
-      };
-
-      return (
+    PetForm: (props: PetFormProps) => (
+      <div>
         <button
           data-testid="pet-form-submit"
           data-has-http-error={!!props.getHttpError()}
           data-has-initial-pet={!!props.getInitialPet()}
-          onClick={onSubmit}
+          data-submit-label={props.submitLabel}
+          data-cancel-href={props.cancelHref}
+          data-list-href={props.listHref}
+          data-is-pending={!!props.getIsPending?.()}
+          onClick={() => props.submitPet({ name: 'Brownie', vaccinations: [] })}
         />
-      );
-    },
+        {props.meta}
+      </div>
+    ),
   };
 });
 
+const id = '4d783b77-eb09-4603-b99b-f590b605eaa9';
+
+const petResponse: PetResponse = {
+  id,
+  createdAt: '2005-08-15T15:52:01+00:00',
+  name: 'Brownie',
+  vaccinations: [],
+  _links: {},
+};
+
+const renderUpdate = () =>
+  renderRoute({
+    path: '/pet/:id/update',
+    url: `/pet/${id}/update`,
+    component: Update,
+    routes: <Route path="/pet/:id" component={() => <div data-testid="page-pet-read-mock" />} />,
+  });
+
 describe('update', () => {
+  afterEach(() => {
+    nock.cleanAll();
+  });
+
   test('not found', async () => {
-    nock('https://petstore.test').get('/api/pets/4d783b77-eb09-4603-b99b-f590b605eaa9').reply(404, {
-      type: 'https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.5',
-      status: 404,
-      title: 'Not Found',
-      _httpError: 'NotFound',
-      detail: 'There is no entry with id "4d783b77-eb09-4603-b99b-f590b605eaa9"',
-    });
-
-    const App = (props: RouteSectionProps) => {
-      const navigate = useNavigate();
-
-      createEffect(() => {
-        navigate('/pet/4d783b77-eb09-4603-b99b-f590b605eaa9/update', { scroll: false });
-      });
-
-      return (
-        <QueryClientProvider
-          client={
-            new QueryClient({
-              defaultOptions: {
-                queries: {
-                  retry: false,
-                },
-              },
-            })
-          }
-        >
-          {props.children}
-        </QueryClientProvider>
-      );
-    };
-
-    const { container } = render(() => (
-      <Router root={App}>
-        <Route path="/" component={() => <div />} />
-        <Route path="/pet/:id/update" component={Update} />
-      </Router>
-    ));
-
-    await screen.findByTestId('page-pet-update');
-
-    expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
-    "<div>
-      <div data-testid="page-pet-update">
-        <div data-testid="http-error" class="mb-6 bg-red-300 px-5 py-4">
-          <p class="font-bold">Not Found</p>
-          <p>There is no entry with id "4d783b77-eb09-4603-b99b-f590b605eaa9"</p>
-        </div>
-        <h1 class="mb-4 border-b border-gray-200 pb-2 text-4xl font-black ">Pet Update</h1>
-        <a colortheme="gray" href="/pet" class="inline-block px-5 py-2 text-white bg-gray-600 hover:bg-gray-700 active"
-          link="">List</a>
-      </div>
-    </div>"
-  `);
-  });
-
-  test('default', async () => {
-    const petResponse: PetResponse = {
-      id: '0a006ee6-7840-439a-8801-cee1d0f1e692',
-      createdAt: '2005-08-15T15:52:01+00:00',
-      updatedAt: '2005-08-15T15:55:01+00:00',
-      name: 'Brownie',
-      tag: '0001-000',
-      vaccinations: [{ name: 'Rabies' }],
-      _links: {},
-    };
-
-    nock('https://petstore.test').get('/api/pets/0a006ee6-7840-439a-8801-cee1d0f1e692').reply(200, petResponse);
-
-    const App = (props: RouteSectionProps) => {
-      const navigate = useNavigate();
-
-      createEffect(() => {
-        navigate('/pet/0a006ee6-7840-439a-8801-cee1d0f1e692/update', { scroll: false });
-      });
-
-      return (
-        <QueryClientProvider
-          client={
-            new QueryClient({
-              defaultOptions: {
-                queries: {
-                  retry: false,
-                },
-              },
-            })
-          }
-        >
-          {props.children}
-        </QueryClientProvider>
-      );
-    };
-
-    const { container } = render(() => (
-      <Router root={App}>
-        <Route path="/" component={() => <div />} />
-        <Route path="/pet/:id/update" component={Update} />
-      </Router>
-    ));
-
-    await screen.findByTestId('page-pet-update');
-
-    expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
-    "<div>
-      <div data-testid="page-pet-update">
-        <h1 class="mb-4 border-b border-gray-200 pb-2 text-4xl font-black ">Pet Update</h1>
-        <button data-testid="pet-form-submit" data-has-http-error="false" data-has-initial-pet="true"></button>
-        <a colortheme="gray" href="/pet" class="inline-block px-5 py-2 text-white bg-gray-600 hover:bg-gray-700 active"
-          link="">List</a>
-      </div>
-    </div>"
-  `);
-  });
-
-  test('unprocessable entity', async () => {
-    const petResponse: PetResponse = {
-      id: '796348ce-c637-4096-8d8d-238368924d2f',
-      createdAt: '2005-08-15T15:52:01+00:00',
-      updatedAt: '2005-08-15T15:55:01+00:00',
-      name: 'Brownie',
-      tag: '0001-000',
-      vaccinations: [{ name: 'Rabies' }],
-      _links: {},
-    };
-
-    nock('https://petstore.test').get('/api/pets/796348ce-c637-4096-8d8d-238368924d2f').reply(200, petResponse);
-
     nock('https://petstore.test')
-      .put('/api/pets/796348ce-c637-4096-8d8d-238368924d2f', { name: 'Brownie', vaccinations: [] })
-      .reply(422, {
-        type: 'https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.5',
-        status: 422,
-        title: 'Unprocessable Entity',
-        _httpError: 'UnprocessableEntity',
-        detail: 'Field validation issues',
+      .get(`/api/pets/${id}`)
+      .reply(404, {
+        title: 'Not Found',
+        detail: `There is no entry with id "${id}"`,
       });
 
-    const App = (props: RouteSectionProps) => {
-      const navigate = useNavigate();
-
-      createEffect(() => {
-        navigate('/pet/796348ce-c637-4096-8d8d-238368924d2f/update', { scroll: false });
-      });
-
-      return (
-        <QueryClientProvider
-          client={
-            new QueryClient({
-              defaultOptions: {
-                queries: {
-                  retry: false,
-                },
-              },
-            })
-          }
-        >
-          {props.children}
-        </QueryClientProvider>
-      );
-    };
-
-    const { container } = render(() => (
-      <Router root={App}>
-        <Route path="/" component={() => <div />} />
-        <Route path="/pet/:id/update" component={Update} />
-      </Router>
-    ));
-
-    const testButton = await screen.findByTestId('pet-form-submit');
-
-    await userEvent.click(testButton);
+    const { container } = renderUpdate();
 
     await screen.findByTestId('http-error');
 
+    expect(document.title).toBe('Edit pet – Petstore Admin');
     expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
-    "<div>
-      <div data-testid="page-pet-update">
-        <div data-testid="http-error" class="mb-6 bg-red-300 px-5 py-4">
-          <p class="font-bold">Unprocessable Entity</p>
-          <p>Field validation issues</p>
+      "<div>
+        <div role="alert" data-testid="http-error"
+          class="border-danger-field-line bg-danger-field text-danger-fg flex flex-col gap-1 rounded-lg border px-3 py-2.5 text-sm">
+          <p class="m-0">
+            <strong class="text-danger">404 Not Found</strong>
+          </p>
+          <p class="m-0">There is no entry with id "4d783b77-eb09-4603-b99b-f590b605eaa9"</p>
         </div>
-        <h1 class="mb-4 border-b border-gray-200 pb-2 text-4xl font-black ">Pet Update</h1>
-        <button data-testid="pet-form-submit" data-has-http-error="true" data-has-initial-pet="true"></button>
-        <a colortheme="gray" href="/pet" class="inline-block px-5 py-2 text-white bg-gray-600 hover:bg-gray-700 active"
-          link="">List</a>
-      </div>
-    </div>"
-  `);
+        <div data-testid="page-pet-update" class="flex flex-col gap-[22px]">
+          <nav aria-label="Breadcrumb" class="text-fg-muted text-sm">
+            <ol class="m-0 flex list-none flex-wrap items-center gap-2 p-0">
+              <li class="flex items-center gap-2">
+                <a href="/pet" class="text-fg-muted hover:text-fg no-underline hover:underline active" link="">Pets</a>
+              </li>
+              <li class="flex items-center gap-2">
+                <span aria-hidden="true">/</span>
+                <span aria-current="page" class="text-fg">Edit</span>
+              </li>
+            </ol>
+          </nav>
+          <header class="flex flex-wrap items-end justify-between gap-4">
+            <div class="flex min-w-0 flex-col gap-1">
+              <h1 class="m-0 text-[26px] font-bold tracking-[-0.01em] break-words">Edit pet</h1>
+            </div>
+            <a data-testid="back-to-list" href="/pet"
+              class="inline-flex shrink-0 items-center justify-center gap-2 no-underline h-11 rounded-control px-4 border border-line-control bg-surface font-medium text-fg hover:bg-surface-hover hover:text-fg active"
+              link="">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+                stroke-linejoin="round" width="16" height="16" stroke-width="2">
+                <path d="M19 12H5"></path>
+                <path d="m12 19-7-7 7-7"></path>
+              </svg>Back to list
+            </a>
+          </header>
+        </div>
+      </div>"
+    `);
+  });
+
+  test('default', async () => {
+    nock('https://petstore.test').get(`/api/pets/${id}`).reply(200, petResponse);
+
+    const { container } = renderUpdate();
+
+    await screen.findByTestId('pet-form-submit');
+
+    expect(document.title).toBe('Edit Brownie – Petstore Admin');
+    expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
+      "<div>
+        <div data-testid="page-pet-update" class="flex flex-col gap-[22px]">
+          <nav aria-label="Breadcrumb" class="text-fg-muted text-sm">
+            <ol class="m-0 flex list-none flex-wrap items-center gap-2 p-0">
+              <li class="flex items-center gap-2">
+                <a href="/pet" class="text-fg-muted hover:text-fg no-underline hover:underline active" link="">Pets</a>
+              </li>
+              <li class="flex items-center gap-2">
+                <span aria-hidden="true">/</span>
+                <a href="/pet/4d783b77-eb09-4603-b99b-f590b605eaa9"
+                  class="text-fg-muted hover:text-fg no-underline hover:underline active" link="">Brownie</a>
+              </li>
+              <li class="flex items-center gap-2">
+                <span aria-hidden="true">/</span>
+                <span aria-current="page" class="text-fg">Edit</span>
+              </li>
+            </ol>
+          </nav>
+          <header class="flex flex-wrap items-end justify-between gap-4">
+            <div class="flex min-w-0 flex-col gap-1">
+              <h1 class="m-0 text-[26px] font-bold tracking-[-0.01em] break-words">Edit Brownie</h1>
+            </div>
+          </header>
+          <div>
+            <button data-testid="pet-form-submit" data-has-http-error="false" data-has-initial-pet="true"
+              data-submit-label="Save changes" data-cancel-href="/pet/4d783b77-eb09-4603-b99b-f590b605eaa9"
+              data-list-href="/pet" data-is-pending="false"></button>
+            <div class="text-fg-muted flex min-w-0 flex-col gap-px text-[13px] leading-4">
+              <span class="break-all">ID: 4d783b77-eb09-4603-b99b-f590b605eaa9</span>
+              <span>Created: <time datetime="2005-08-15T15:52:01+00:00">15 Aug 2005, 17:52</time>
+              </span>
+              <span>Last updated: Never</span>
+            </div>
+          </div>
+        </div>
+      </div>"
+    `);
+  });
+
+  test('unprocessable entity', async () => {
+    nock('https://petstore.test').get(`/api/pets/${id}`).reply(200, petResponse);
+    nock('https://petstore.test').put(`/api/pets/${id}`, { name: 'Brownie', vaccinations: [] }).reply(422, {
+      title: 'Unprocessable Entity',
+      detail: 'Field validation issues',
+    });
+
+    renderUpdate();
+
+    const submit = await screen.findByTestId('pet-form-submit');
+
+    await userEvent.click(submit);
+
+    await vi.waitFor(() => expect(submit.getAttribute('data-has-http-error')).toBe('true'));
+    // no invalid field to focus (form mocked): the focus moves to the error, so it's noticed
+    await vi.waitFor(() => expect(document.activeElement).toBe(screen.getByTestId('http-error')));
   });
 
   test('successful', async () => {
-    const petRequest: PetRequest = {
-      name: 'Brownie',
-      tag: '0001-000',
-      vaccinations: [{ name: 'Rabies' }],
-    };
-
-    const petResponse: PetResponse = {
-      id: 'fd115a9b-c4df-4bc0-ae2a-8b59b00502f2',
-      createdAt: '2005-08-15T15:52:01+00:00',
-      updatedAt: '2005-08-15T15:55:01+00:00',
-      ...petRequest,
-      _links: {},
-    };
-
-    nock('https://petstore.test').get('/api/pets/fd115a9b-c4df-4bc0-ae2a-8b59b00502f2').reply(200, petResponse);
-
+    nock('https://petstore.test').get(`/api/pets/${id}`).reply(200, petResponse);
     nock('https://petstore.test')
-      .put('/api/pets/fd115a9b-c4df-4bc0-ae2a-8b59b00502f2', { name: 'Brownie', vaccinations: [] })
-      .reply(200, petResponse);
+      .put(`/api/pets/${id}`, { name: 'Brownie', vaccinations: [] })
+      .reply(200, { ...petResponse, updatedAt: '2005-08-15T15:55:01+00:00' });
 
-    const App = (props: RouteSectionProps) => {
-      const navigate = useNavigate();
+    const { queryClient, history } = renderUpdate();
 
-      createEffect(() => {
-        navigate('/pet/fd115a9b-c4df-4bc0-ae2a-8b59b00502f2/update', { scroll: false });
-      });
+    await userEvent.click(await screen.findByTestId('pet-form-submit'));
 
-      return (
-        <QueryClientProvider
-          client={
-            new QueryClient({
-              defaultOptions: {
-                queries: {
-                  retry: false,
-                },
-              },
-            })
-          }
-        >
-          {props.children}
-        </QueryClientProvider>
-      );
-    };
-
-    const { container } = render(() => (
-      <Router root={App}>
-        <Route path="/" component={() => <div />} />
-        <Route path="/pet" component={() => <div data-testid="page-pet-list-mock" />} />
-        <Route path="/pet/:id/update" component={Update} />
-      </Router>
-    ));
-
-    const testButton = await screen.findByTestId('pet-form-submit');
-
-    await userEvent.click(testButton);
-
-    await screen.findByTestId('page-pet-list-mock');
-
-    expect(formatHtml(container.outerHTML)).toMatchInlineSnapshot(`
-    "<div>
-      <div data-testid="page-pet-list-mock"></div>
-    </div>"
-  `);
+    await screen.findByTestId('page-pet-read-mock');
+    expect(history.get()).toBe(`/pet/${id}`);
+    expect((await screen.findByTestId('toast')).textContent).toBe('Saved “Brownie” — 200 OK');
+    // the read page shows the saved pet right away
+    expect(queryClient.getQueryData<PetResponse>(['pets', id])?.updatedAt).toBe('2005-08-15T15:55:01+00:00');
   });
 });

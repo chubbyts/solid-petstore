@@ -1,18 +1,17 @@
 import type { Component } from 'solid-js';
-import { createEffect } from 'solid-js';
-import { H1 } from '../heading';
+import { PageHeader } from '../heading';
+import { BackToList } from '../partial/back-to-list';
+import { useDocumentTitle } from '../../hook/use-document-title';
 
 const pageTitle = 'Not Found';
 
 const NotFound: Component = () => {
-  createEffect(() => {
-    // oxlint-disable-next-line functional/immutable-data
-    document.title = pageTitle;
-  });
+  useDocumentTitle(() => pageTitle);
 
   return (
-    <div>
-      <H1>{pageTitle}</H1>
+    <div data-testid="page-not-found" class="flex flex-col gap-[22px]">
+      <PageHeader eyebrow="404" title={pageTitle} action={<BackToList href="/pet" />} />
+      <p class="text-fg-muted m-0">There is no page at this address.</p>
     </div>
   );
 };

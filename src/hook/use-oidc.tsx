@@ -12,6 +12,7 @@ export type OidcProviderProps = {
 export type Oidc = {
   isLoading: boolean;
   isAuthenticated: boolean;
+  username?: string;
   error?: Error;
   login: () => Promise<void>;
   logout: () => Promise<void>;
@@ -20,10 +21,19 @@ export type Oidc = {
 type OidcState = {
   isLoading: boolean;
   isAuthenticated: boolean;
+  username: string | undefined;
   error: Error | undefined;
 };
 
 const OidcContext = createContext<Oidc>();
+
+const resolveUsername = (user: User | null | undefined): string | undefined => {
+  if (!user || user.expired) {
+    return undefined;
+  }
+
+  return user.profile.preferred_username ?? user.profile.name ?? user.profile.email ?? user.profile.sub;
+};
 
 // check if returning back from authority server (response_mode: query)
 const hasAuthParams = (): boolean => {
@@ -33,7 +43,12 @@ const hasAuthParams = (): boolean => {
 };
 
 export const OidcProvider: ParentComponent<OidcProviderProps> = (props) => {
-  const [state, setState] = createStore<OidcState>({ isLoading: true, isAuthenticated: false, error: undefined });
+  const [state, setState] = createStore<OidcState>({
+    isLoading: true,
+    isAuthenticated: false,
+    username: undefined,
+    error: undefined,
+  });
 
   const signinCallback = async (): Promise<User | undefined> => {
     const user = await props.userManager.signinCallback();
@@ -50,7 +65,12 @@ export const OidcProvider: ParentComponent<OidcProviderProps> = (props) => {
       const signedInUser = hasAuthParams() ? await signinCallback() : undefined;
       const user = signedInUser ?? (await props.userManager.getUser());
 
-      setState({ isLoading: false, isAuthenticated: user ? !user.expired : false, error: undefined });
+      setState({
+        isLoading: false,
+        isAuthenticated: user ? !user.expired : false,
+        username: resolveUsername(user),
+        error: undefined,
+      });
     } catch (error) {
       setState({ isLoading: false, error: throwableToError(error) });
     }
@@ -70,12 +90,12 @@ export const OidcProvider: ParentComponent<OidcProviderProps> = (props) => {
 
   // event UserLoaded (e.g. initial load, silent renew success)
   const handleUserLoaded = (user: User): void => {
-    setState({ isLoading: false, isAuthenticated: !user.expired, error: undefined });
+    setState({ isLoading: false, isAuthenticated: !user.expired, username: resolveUsername(user), error: undefined });
   };
 
   // event UserUnloaded (e.g. userManager.removeUser) / UserSignedOut (e.g. user was signed out in background)
   const handleUserUnloaded = (): void => {
-    setState({ isAuthenticated: false });
+    setState({ isAuthenticated: false, username: undefined });
   };
 
   // event SilentRenewError (silent renew error)
@@ -105,6 +125,9 @@ export const OidcProvider: ParentComponent<OidcProviderProps> = (props) => {
     },
     get isAuthenticated() {
       return state.isAuthenticated;
+    },
+    get username() {
+      return state.username;
     },
     get error() {
       return state.error;
